@@ -13,7 +13,7 @@ work-bank/
 │ │ ├── routes/ # Define las rutas de la API  
 │ │ └── server.js # Punto de entrada del servidor Express  
 │ └── package.json  
-│ ├── frontend/  
+├── frontend/  
 │ ├── css/ # Archivos CSS  
 │ ├── js/ # Lógica de frontend en JS puro (fetch, validaciones, etc.)  
 │ ├── img/ # Imágenes del sitio  
