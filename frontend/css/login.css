@@ -26,16 +26,14 @@ body {
 
 .container {
     display: flex;
-    width: 1000px; 
-    height: 580px; 
+    width: 1000px;
+    height: 580px;
     background: rgba(255,255,255,0.95);
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-    
 }
 
-/* Logo */
 .logo {
     display: flex;
     align-items: center;
@@ -51,18 +49,16 @@ body {
 .logo a {
     font-family: 'Playfair Display', serif;
     font-size: 1.7rem;
-    color: white !important;   /* fuerza que siempre sea blanco */
-    text-decoration: none;     /* quita subrayado */
+    color: white !important;
+    text-decoration: none;
     cursor: pointer;
     transition: color 0.3s ease;
-    
 }
 
 .logo a:hover {
-    color: var(--resaltar);    /* cambia a azul solo al pasar el mouse */
+    color: var(--resaltar);
 }
 
-/* Panel Izquierdo */
 .left-panel {
     flex: 1;
     background: var(--principal-oscuro);
@@ -70,11 +66,6 @@ body {
     padding: 40px 30px;
     display: flex;
     flex-direction: column;
-    
-}
-
-.message-welcome {
-    margin: 60px 0;
 }
 
 .left-panel h1 {
@@ -93,6 +84,10 @@ body {
     color: var(--resaltar);
     font-weight: 500;
     text-decoration: none;
+}
+
+.message-welcome {
+    margin: 60px 0;
 }
 
 .container-socials {
@@ -134,7 +129,6 @@ body {
     -webkit-text-fill-color: transparent;
 }
 
-/* Panel Derecho */
 .right-panel {
     flex: 1.2;
     background: var(--fondo-principal);
@@ -157,20 +151,22 @@ form {
     max-width: 350px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
 }
 
 label {
     font-size: 0.9rem;
     color: var(--texto-secundario);
-    margin-bottom: -8px;
+    margin-bottom: 2px;
 }
 
 input {
-    padding: 10px 12px;
+    height: 46px;
+    padding: 3px 12px;
     border: 1px solid var(--fondo-secundario);
-    border-radius: 6px;
+    border-radius: 10px;
     font-size: 0.9rem;
+    line-height: 1.2;
     outline: none;
     transition: 0.3s ease;
 }
@@ -180,15 +176,21 @@ input:focus {
     box-shadow: 0 0 6px rgba(30, 136, 229, 0.4);
 }
 
+input::placeholder{
+    color: var(--extra);
+    opacity: 0.6;
+}
+
 .forgot {
     font-size: 0.85rem;
     text-align: center; 
     margin-top: -5px;
 }
 
-.forgot a {
+.forgot a, .register a, .left-panel a {
     color: var(--resaltar);
     text-decoration: none;
+    font-weight: 500;
     transition: color 0.3s ease;
 }
 
@@ -236,18 +238,7 @@ input:focus {
     color: white;
 }
 
-.register {
-    margin-top: 15px;
-    font-size: 0.9rem;
-}
-
-.register a {
-    color: var(--resaltar);
-    font-weight: 500;
-    text-decoration: none;
-}
-
-/* RESPONSIVE */
+/* --- Responsive --- */
 @media (max-width: 768px) {
     .container {
         flex-direction: column;
@@ -265,26 +256,4 @@ input:focus {
     .left-panel h1 {
         font-size: 2rem;
     }
-}
-
-/* --- Campos más delgados/compactos --- */
-form { 
-    gap: 10px; 
-}
-
-label{
-    margin-bottom: 2px;        /* más pegado al input */
-}
-
-input{
-    height: 46px;              /* ↓ altura (antes la daba el padding) */
-    padding: 3px 12px;         /* ↓ padding vertical */
-    font-size: 0.9rem;
-    border-radius: 10px;
-    line-height: 1.2;          /* evita que se “engorden” por la línea */
-}
-
-input::placeholder{
-    color: var(--extra);
-    opacity: .60;
 }

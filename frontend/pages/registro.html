@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workbank.W-Registro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="../css/registro.css">
+</head>
+<body>
+
+    <div class="container">
+        <div class="left-panel">
+            <h2>Registro</h2>
+            <form id="loginForm">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" nombre="nombre" placeholder="Tu nombre" required>
+
+                <label for="apellido">Apellido</label>
+                <input type="text" id="apellido" nombre="nombre" placeholder="Tu apellido" required>
+
+                <label for="email">Correo electrónico</label>
+                <input type="email" id="email" nombre="email" placeholder="ejemplo@gmail.com" required>
+
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" nombre="password" placeholder="****" required>
+
+                <label for="confirmarPassword">Confirmar contraseña</label>
+                <input type="password" id="confirmarPassword" nombre="confirmarPassword" placeholder="****" required>
+
+                <fieldset>
+                    <legend>Documento</legend>
+                    <div class="documento">
+                        <select id="tipoDocumento" name="tipoDocumento" required>
+                            <option value="C.C">C.C</option>
+                            <option value="T.I">T.I</option>
+                            <option value="C.E">C.E</option>
+                            <option value="P.E.P">P.E.P</option>
+                            <option value="P.P">P.P</option>
+                            <option value="P.P.T">P.P.T</option>
+                        </select>
+                        <input type="text" id="numeroDocumento" name="tipoDocumento" placeholder="Ejemplo: 123456789" required>
+                    </div>
+                </fieldset>
+
+                <label for="rol">Soy...</label>
+                <select id="rol" name="rol" required>
+                    <option value="trabajador">Trabajador</option>
+                    <option value="empleador">Empleador</option>
+                </select>
+
+                <label for="documentoPdf">Documento en PDF</label>
+                <input type="file" id="documentoPdf" name="documentoPdf" placeholder="Documento de identidad PDF" required>
+                <button type="submit" class="btn">Ingresar</button>
+
+            </form>
+
+            <div class="login">
+                ¿Ya tienes cuenta? <a href="">Inicia sesión</a>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="logo">
+                <img src="../img/logos.png" alt="logo">
+                <a href="index.html" class="logo-text">Workbank.W</a>
+            </div>
+
+            <div class="message-welcome">
+                <h1>BIENVENIDO</h1>
+                <p>Recuerda notificarnos cualquier problema que tengas, para nosotros tu opinión es la más valiosa</p>
+                <a href="mailto:Workbank2025oficial@gmail.com">Workbank2025oficial@gmail.com</a>
+            </div>
+
+            <div class="container-socials">
+                <p>"Haz tareas simples, gana sin complicaciones"</p>
+                <div class="socials">
+                    <i class="fab fa-facebook icon-facebook"></i>
+                    <i class="fab fa-instagram icon-instagram"></i>
+                    <i class="fab fa-whatsapp icon-whatsapp"></i>
+                    <i class="fab fa-tiktok icon-tiktok"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="../js/registro.js"></script>
+    
+</body>
+</html>
