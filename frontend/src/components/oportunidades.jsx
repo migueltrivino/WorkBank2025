@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import fondoOp from "../assets/fondo_op.jpg";
+import '../css/Oportunidades.css'
 
 export default function oportunidades() {
     useEffect(() => {

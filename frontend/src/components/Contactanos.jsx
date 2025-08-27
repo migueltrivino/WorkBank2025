@@ -1,8 +1,8 @@
 import { FaWhatsapp } from "react-icons/fa";
 import { SiGmail } from "react-icons/si";
-import "../index.css";
+import "../css/Contactanos.css";
 
-export default function contactanos() {
+export default function Contactanos() {
     return (
     <section id="contactanos" className="contact-section">
         <div className="contact-header">

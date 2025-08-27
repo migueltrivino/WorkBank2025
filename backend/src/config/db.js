@@ -3,10 +3,10 @@ const mysql = require("mysql2");
 // Creamos la conexión
 const connection = mysql.createConnection({
   host: "localhost",     //  solo el host
-  port: 3307,            // si tu MySQL corre en 3007
+  port: 3306,            // si tu MySQL corre en 3007
   user: "root",          // tu usuario MySQL
-  password: "2008",      // tu contraseña MySQL
-  database: "work_bank"  // el nombre de tu base de datos
+  password: "",      // tu contraseña MySQL
+  database: "Work_Bank"  // el nombre de tu base de datos
 });
 
 // Conectar

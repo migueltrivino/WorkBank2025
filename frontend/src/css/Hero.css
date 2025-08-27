@@ -1,0 +1,51 @@
+.hero {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 4rem;
+  text-align: left;
+  font-family: var(--font-body);
+  background-image: url("../assets/Fondo_index.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+.hero-text {
+  max-width: 1900px;
+  animation: fadeIn 2s ease-in-out;
+}
+
+.hero h1 {
+  font-family: var(--font-title);
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.hero p {
+  font-style: italic;
+  font-size: 1.4rem;
+  margin-bottom: 3rem;
+  color: var(--text-muted);
+}
+
+.btn {
+  padding: 10px 25px;
+  border-radius: 25px;
+  background: #cbd5e1;
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background: var(--accent);
+  color: var(--text-light);
+  transform: scale(1.05);
+}

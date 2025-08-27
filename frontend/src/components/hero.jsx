@@ -1,5 +1,5 @@
 import fondoOp from "../assets/Fondo_index.png";
-import "../index.css";
+import "../css/Hero.css";
 
 export default function Hero() {
     return (
