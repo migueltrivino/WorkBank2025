@@ -7,7 +7,7 @@
   import ConocerMas from "./components/ConocerMas";
   import Contactanos from "./components/Contactanos";
   import Registro from "./pages/Registro";
-  import Login from "./pages/LoginFormulario"
+  import IniciarSesion from "./pages/IniciarSesion"
   
 
   function App() {
@@ -27,7 +27,7 @@
           } />
 
           <Route path="/registro" element={<Registro />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/iniciarsesion" element={<IniciarSesion />} />
         
 
         </Routes>

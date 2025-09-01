@@ -4,15 +4,15 @@ import LoginPanel from '../components/LoginPanel';
 import InformacionFormulario from '../components/InformacionFormularios';
 
 
-function Login() {
+function IniciarSesion() {
     return (   
         
         <div className={styles.container}>
-            <LoginPanel/>
             <InformacionFormulario/>
+            <LoginPanel/>
         </div>
 
     );
 }
 
-export default Login;
+export default IniciarSesion;

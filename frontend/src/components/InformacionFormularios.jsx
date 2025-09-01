@@ -1,13 +1,16 @@
 import React from "react";
 import styles from '../css/InformacionFormulario.module.css'
 import logo from "../assets/logos.png";
+import { Link } from "react-router-dom";
 
 function InformacionFormularios() {
   return (
     <div className={styles['right-panel']}>
       <div className={styles.logo}>
         <img src={logo} alt="logo" />
-        <a href="index.html" className={styles['logo-text']}>Workbank.W</a>
+        <Link to="/" className={styles["logo-text"]}>
+        Workbank.W
+        </Link>
     </div>
 
       <div className={styles['message-welcome']}>

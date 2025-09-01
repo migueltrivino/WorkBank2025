@@ -53,7 +53,7 @@
 .forgot {
     font-size: 0.85rem;
     text-align: center; 
-    margin-top: -5px;
+    margin: 5px 0;
 }
 
 .forgot a, .register a {
@@ -90,6 +90,7 @@
 .google-btn {
     display: flex;
     align-items: center;
+    margin-bottom: 20px;
     justify-content: center;
     gap: 12px;
     background: #fff;
