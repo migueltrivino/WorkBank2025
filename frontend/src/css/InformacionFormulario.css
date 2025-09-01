@@ -1,0 +1,95 @@
+.right-panel {
+    flex: 1;
+    background: var(--principal-oscuro);
+    color: white;
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 10px;
+}
+
+.logo img {
+    width: 80px;
+    height: 50px;
+}
+
+.logo a {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem;
+    color: white !important;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.logo a:hover {
+    color: var(--resaltar);
+}
+
+
+.message-welcome {
+    margin: 60px 0;
+}
+
+.right-panel h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.right-panel p {
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+    color: var(--fondo-secundario);
+}
+
+.right-panel a {
+    color: var(--resaltar);
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.container-socials {
+    margin-top: 80px;
+}
+
+.right-panel .socials {
+    display: flex;
+    gap: 15px;
+}
+
+.right-panel .socials i {
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.icon-facebook:hover {
+    transform: scale(1.2);
+    color: var(--resaltar);
+}
+
+.icon-instagram:hover {
+    transform: scale(1.2);
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.icon-whatsapp:hover {
+    transform: scale(1.2);
+    color: #25D366;
+}
+
+.icon-tiktok:hover {
+    transform: scale(1.2);
+    background: linear-gradient(45deg, #25F4EE, #FE2C55);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}

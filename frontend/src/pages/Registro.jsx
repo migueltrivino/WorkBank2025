@@ -1,13 +1,13 @@
 import React from "react";
-import LeftPanel from "../components/LeftPanel";
-import RightPanel from "../components/RightPanel";
-import "../css/Registro.css";
+import RegistroPanel from "../components/RegistroPanel";
+import InformacionFormulario from "../components/InformacionFormularios";
+import '../css/container.css'
 
 function Registro() {
   return (
     <div className="container">
-      <LeftPanel />
-      <RightPanel />
+      <RegistroPanel/>
+      <InformacionFormulario/>
     </div>
   );
 }

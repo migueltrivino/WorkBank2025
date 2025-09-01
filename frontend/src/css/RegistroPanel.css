@@ -1,0 +1,106 @@
+.left-panel {
+    flex: 1.2;
+    background: var(--fondo-principal);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.left-panel h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--principal-oscuro);
+    margin-bottom: 10px;
+}
+
+form {
+    width: 100%;
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px; 
+}
+
+label {
+    font-size: 0.9rem;
+    color: var(--texto-secundario);
+    margin-bottom: 2px; 
+}
+
+input {
+    height: 25px; 
+    padding: 3px 12px;
+    border: 1px solid var(--fondo-secundario);
+    border-radius: 10px; 
+    font-size: 0.9rem;
+    line-height: 1.2;
+    outline: none;
+    transition: 0.3s ease;
+}
+
+input:focus {
+    border-color: var(--resaltar);
+    box-shadow: 0 0 6px rgba(30, 136, 229, 0.4);
+}
+
+input::placeholder {
+    color: var(--extra);
+    opacity: .60;
+}
+
+fieldset {
+    border: none;
+    padding: 0; 
+    margin: 0;  
+}
+
+select {
+    border: 1px solid var(--fondo-secundario);
+    border-radius: 10px;
+    color: var(--extra);
+    padding: 5px 10px;
+}
+
+input[type="file"] {
+    height: auto;          
+    padding: 0;            
+    border: 1px solid var(--fondo-secundario);          
+    border-radius: 0;      
+    box-shadow: none;      
+    background: transparent; 
+    margin-bottom: 12px;
+    color: var(--extra);
+}
+
+.btn {
+    background: var(--resaltar);
+    border: none;
+    padding: 5px;
+    border-radius: 6px;
+    color: white;
+    font-size: 0.95rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn:hover {
+    background: linear-gradient(90deg, var(--resaltar), var(--contraste));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(30, 136, 229, 0.4);
+}
+
+.login {
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.login a {
+    color: var(--resaltar);
+    font-weight: 500;
+    text-decoration: none;
+}
