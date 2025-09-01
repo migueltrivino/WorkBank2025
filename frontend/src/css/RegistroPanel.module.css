@@ -1,4 +1,4 @@
-.right-panel {
+.left-panel {
     flex: 1.2;
     background: var(--fondo-principal);
     display: flex;
@@ -8,69 +8,77 @@
     padding: 40px;
 }
 
-.right-panel h2 {
+.left-panel h2 {
     font-family: 'Playfair Display', serif;
     font-size: 2rem;
     color: var(--principal-oscuro);
-    margin-bottom: 25px;
+    margin-bottom: 10px;
 }
 
-form {
+.form {
     width: 100%;
     max-width: 350px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 3px; 
 }
 
-label {
+.label {
     font-size: 0.9rem;
     color: var(--texto-secundario);
-    margin-bottom: 2px;
+    margin-bottom: 2px; 
 }
 
-input {
-    height: 46px;
+.input {
+    height: 25px; 
     padding: 3px 12px;
     border: 1px solid var(--fondo-secundario);
-    border-radius: 10px;
+    border-radius: 10px; 
     font-size: 0.9rem;
     line-height: 1.2;
     outline: none;
     transition: 0.3s ease;
 }
 
-input:focus {
+.input:focus {
     border-color: var(--resaltar);
     box-shadow: 0 0 6px rgba(30, 136, 229, 0.4);
 }
 
-input::placeholder{
+.input::placeholder {
     color: var(--extra);
-    opacity: 0.6;
+    opacity: .60;
 }
 
-.forgot {
-    font-size: 0.85rem;
-    text-align: center; 
-    margin-top: -5px;
+.fieldset {
+    border: none;
+    padding: 0; 
+    margin: 0;  
 }
 
-.forgot a, .register a {
-    color: var(--resaltar);
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s ease;
+.select {
+    border: 1px solid var(--fondo-secundario);
+    border-radius: 10px;
+    color: var(--extra);
+    padding: 5px 10px;
+    margin-right: 8px;
 }
 
-.forgot a:hover {
-    color: var(--contraste);
+.input[type="file"] {
+    height: auto;          
+    padding: 0;            
+    border: 1px solid var(--fondo-secundario);          
+    border-radius: 0;      
+    box-shadow: none;      
+    background: transparent; 
+    margin-bottom: 12px;
+    color: var(--extra);
 }
 
 .btn {
     background: var(--resaltar);
     border: none;
-    padding: 11px;
+    padding: 5px;
     border-radius: 6px;
     color: white;
     font-size: 0.95rem;
@@ -87,32 +95,13 @@ input::placeholder{
     box-shadow: 0 6px 15px rgba(30, 136, 229, 0.4);
 }
 
-.google-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    background: #fff;
-    border: 1px solid var(--fondo-secundario);
-    color: var(--texto-secundario);
+.login {
+    margin-top: 10px;
+    font-size: 0.9rem;
 }
 
-.google-btn img {
-    width: 28px;
-    height: 28px;
-}
-
-.google-btn:hover {
-    background: var(--extra);
-    color: white;
-}
-
-/* --- Responsive --- */
-@media (max-width: 768px) {
-    .right-panel {
-        flex: none;
-        width: 100%;
-        height: auto;
-        padding: 25px;
-    }
+.login a {
+    color: var(--resaltar);
+    font-weight: 500;
+    text-decoration: none;
 }

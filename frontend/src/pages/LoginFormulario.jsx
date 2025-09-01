@@ -1,5 +1,5 @@
 import React from 'react'
-import '../css/container.css'
+import styles from '../css/Container.module.css'
 import LoginPanel from '../components/LoginPanel';
 import InformacionFormulario from '../components/InformacionFormularios';
 
@@ -7,7 +7,7 @@ import InformacionFormulario from '../components/InformacionFormularios';
 function Login() {
     return (   
         
-        <div className="container">
+        <div className={styles.container}>
             <LoginPanel/>
             <InformacionFormulario/>
         </div>

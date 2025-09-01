@@ -1,5 +1,5 @@
 import React from 'react'
-import "../css/LoginPanel.css"
+import "../css/LoginPanel.module.css"
 
 
 function LoginPanel() {

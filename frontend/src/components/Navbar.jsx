@@ -16,7 +16,7 @@ export default function Navbar() {
             <li><a href="#oportunidades">Oportunidades</a></li>
             <li><a href="#contacto">Contáctanos</a></li>
             <li><Link to="/login"><i className="fa-solid fa-key"></i> Iniciar Sesión</Link></li>
-            <li><Link to="/Registro"><i className="fa-solid fa-user"></i> Registro</Link></li>
+            <li><Link to="/registro"><i className="fa-solid fa-user"></i> Registro</Link></li>
         </ul>
         </nav>
     </header>

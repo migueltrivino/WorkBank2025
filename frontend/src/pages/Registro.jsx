@@ -1,13 +1,13 @@
 import React from "react";
 import RegistroPanel from "../components/RegistroPanel";
-import InformacionFormulario from "../components/InformacionFormularios";
-import '../css/container.css'
+import InformacionFormularios from "../components/InformacionFormularios";
+import styles from '../css/Container.module.css'
 
 function Registro() {
   return (
-    <div className="container">
+    <div className={styles.container}>
       <RegistroPanel/>
-      <InformacionFormulario/>
+      <InformacionFormularios/>
     </div>
   );
 }

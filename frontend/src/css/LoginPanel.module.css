@@ -1,4 +1,4 @@
-.left-panel {
+.right-panel {
     flex: 1.2;
     background: var(--fondo-principal);
     display: flex;
@@ -8,76 +8,69 @@
     padding: 40px;
 }
 
-.left-panel h2 {
+.right-panel h2 {
     font-family: 'Playfair Display', serif;
     font-size: 2rem;
     color: var(--principal-oscuro);
-    margin-bottom: 10px;
+    margin-bottom: 25px;
 }
 
-form {
+.form {
     width: 100%;
     max-width: 350px;
     display: flex;
     flex-direction: column;
-    gap: 3px; 
+    gap: 10px;
 }
 
-label {
+.label {
     font-size: 0.9rem;
     color: var(--texto-secundario);
-    margin-bottom: 2px; 
+    margin-bottom: 2px;
 }
 
-input {
-    height: 25px; 
+.input {
+    height: 46px;
     padding: 3px 12px;
     border: 1px solid var(--fondo-secundario);
-    border-radius: 10px; 
+    border-radius: 10px;
     font-size: 0.9rem;
     line-height: 1.2;
     outline: none;
     transition: 0.3s ease;
 }
 
-input:focus {
+.input:focus {
     border-color: var(--resaltar);
     box-shadow: 0 0 6px rgba(30, 136, 229, 0.4);
 }
 
-input::placeholder {
+.input::placeholder{
     color: var(--extra);
-    opacity: .60;
+    opacity: 0.6;
 }
 
-fieldset {
-    border: none;
-    padding: 0; 
-    margin: 0;  
+.forgot {
+    font-size: 0.85rem;
+    text-align: center; 
+    margin-top: -5px;
 }
 
-select {
-    border: 1px solid var(--fondo-secundario);
-    border-radius: 10px;
-    color: var(--extra);
-    padding: 5px 10px;
+.forgot a, .register a {
+    color: var(--resaltar);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
 }
 
-input[type="file"] {
-    height: auto;          
-    padding: 0;            
-    border: 1px solid var(--fondo-secundario);          
-    border-radius: 0;      
-    box-shadow: none;      
-    background: transparent; 
-    margin-bottom: 12px;
-    color: var(--extra);
+.forgot a:hover {
+    color: var(--contraste);
 }
 
 .btn {
     background: var(--resaltar);
     border: none;
-    padding: 5px;
+    padding: 11px;
     border-radius: 6px;
     color: white;
     font-size: 0.95rem;
@@ -94,13 +87,32 @@ input[type="file"] {
     box-shadow: 0 6px 15px rgba(30, 136, 229, 0.4);
 }
 
-.login {
-    margin-top: 10px;
-    font-size: 0.9rem;
+.google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: #fff;
+    border: 1px solid var(--fondo-secundario);
+    color: var(--texto-secundario);
 }
 
-.login a {
-    color: var(--resaltar);
-    font-weight: 500;
-    text-decoration: none;
+.google-btn img {
+    width: 28px;
+    height: 28px;
+}
+
+.google-btn:hover {
+    background: var(--extra);
+    color: white;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .right-panel {
+        flex: none;
+        width: 100%;
+        height: auto;
+        padding: 25px;
+    }
 }
