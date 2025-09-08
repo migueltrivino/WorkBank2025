@@ -7,7 +7,7 @@ export default function Hero() {
         <div className="hero-text">
         <h1>Trabajar juntos es el primer paso para lograr grandes cosas.</h1>
         <p>El lugar donde el trabajo y la confianza se encuentran, donde todos tienen una oportunidad.</p>
-        <a href="#conoce-mas" className="btn">Conoce más...</a>
+        <a href="#conocer-mas" className="btn">Conoce mas...</a>
         </div>
     </section>
     );

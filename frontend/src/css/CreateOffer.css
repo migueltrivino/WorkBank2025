@@ -1,0 +1,145 @@
+/* Fondo oscuro semi-transparente */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center; /* completamente centrado */
+  padding: 0;
+  z-index: 9999; /* más alto que el navbar */
+}
+
+/* Contenedor del modal */
+.modal {
+  background: #f5f7fa; /* gris muy claro */
+  padding: 2rem;
+  border-radius: 10px;
+  width: 90%; /* ocupa casi toda la pantalla en móviles */
+  max-width: 500px; /* ancho máximo en escritorio */
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  animation: fadeIn 0.3s ease;
+  font-family: "Playfair Display";
+  max-height: 90vh; /* evita que sobresalga en altura */
+  overflow-y: auto; /* scroll interno si el contenido es muy grande */
+  box-sizing: border-box;
+  margin: 0 auto;
+}
+
+/* Contenedor del formulario */
+.modal form {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centra el bloque del formulario */
+  width: 100%;
+}
+
+/* Contenedor de cada campo con su label */
+.modal .form-group {
+  width: 100%;
+  max-width: 350px;   
+  margin: 0 auto 1rem auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Label encima de cada input */
+.modal .form-group label {
+  text-align: left; /* alineado a la izquierda */
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #2a5482;
+}
+
+/* Inputs y selects */
+.modal input,
+.modal textarea,
+.modal select {
+  width: 100%;        /* ocupa el ancho del form-group, no del modal */
+  padding: 12px 15px;
+  border: 1px solid #2a5482;
+  border-radius: 20px;
+  font-size: 0.95rem;
+  background: #e3e6ed;
+  color: #333;
+  transition: all 0.25s ease-in-out;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+/* Placeholder */
+.modal input::placeholder,
+.modal textarea::placeholder {
+  color: #90A4AE;
+  font-style: italic;
+}
+
+/* Focus */
+.modal input:focus,
+.modal textarea:focus,
+.modal select:focus {
+  border-color: #3182de;
+  box-shadow: 0 0 8px rgba(58, 128, 210, 0.4);
+  background: #fff;
+  outline: none;
+}
+
+/* Botones */
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  max-width: 350px;   
+  margin: 1rem auto 0 auto;
+}
+
+.btn-create,
+.btn-cancel {
+  flex: 1;
+  padding: 10px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.2s ease;
+}
+
+.btn-create {
+  background: #3a506b;
+  color: #fff;
+}
+
+.btn-create:hover {
+  background: #2a3b4d;
+  transform: scale(1.03);
+}
+
+.btn-cancel {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.btn-cancel:hover {
+  background: #cfcfcf;
+  transform: scale(1.03);
+}
+
+/* Animación modal */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

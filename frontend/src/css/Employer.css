@@ -1,0 +1,437 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Raleway:wght@400;600&display=swap');
+
+:root {
+  --primary: #1a374d;
+  --secondary: #406882;
+  --accent: #6998ab;
+  --light: #f0f0f0;
+  --white: #ffffff;
+  --navbar: #37474F;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Raleway', sans-serif;
+  background: var(--light);
+}
+
+/* NAVBAR */
+.employer-navbar {
+  height: 105px;
+  background: var(--navbar);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  position: fixed;
+  top: 0; left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Playfair Display', serif;
+}
+
+.logo-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.nav-right { display: flex; align-items: center; }
+
+/* PERFIL Y MENÚ */
+.profile-menu { position: relative; }
+
+.profile-img {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid var(--accent);
+}
+
+.dropdown {
+  position: absolute;
+  top: 50px; right: 0;
+  background: var(--white);
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 150px;
+}
+
+.dropdown button {
+  background: none;
+  border: none;
+  padding: 10px 15px;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary);
+}
+
+.dropdown button:hover {
+  background: var(--light);
+}
+
+/* LAYOUT GENERAL */
+.layout {
+  display: flex;
+  margin-top: 105px; 
+  height: calc(100vh - 105px);
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 64px;
+  background: var(--secondary);
+  color: var(--white);
+  padding: 20px 10px;
+  overflow: hidden;
+  transition: width 0.3s ease;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  height: calc(100vh - 105px);
+  flex-shrink: 0;
+}
+
+.sidebar:hover {
+  width: 220px;
+}
+
+.sidebar ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.sidebar li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: padding 0.3s ease, justify-content 0.3s ease;
+}
+
+.sidebar:not(:hover) li { justify-content: center; }
+
+.sidebar .item-label {
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-width 0.3s ease, opacity 0.2s ease, margin-left 0.3s ease;
+  margin-left: 0;
+}
+
+.sidebar:hover .item-label {
+  max-width: 180px;
+  opacity: 1;
+  margin-left: 6px;
+}
+
+/* ==== MAIN ==== */
+.main-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  padding: 40px 20px;
+  overflow-y: auto;
+  max-height: calc(100vh - 105px);
+}
+
+/* Bienvenida */
+.welcome-title {
+  margin-bottom: 30px;
+  animation: fadeDown 0.8s ease-out;
+}
+
+.welcome-title h2 {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #111827;
+}
+
+.user-name {
+  background: linear-gradient(90deg, #5076c7, #23717e, #133171);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+  animation: shine 4s linear infinite;
+}
+
+.welcome-title p {
+  font-size: 18px;
+  color: #374151;
+  font-style: italic;
+  padding: 12px 20px;
+  background: #ffffff;
+  border-left: 4px solid #2563eb;
+  border-radius: 8px;
+  display: inline-block;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin-top: 20px;
+}
+
+/* ==== CARRUSEL ==== */
+
+.carousel {
+  width: 90%;
+  margin: 0 auto 40px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.carousel-slide {
+  width: 100%;
+  height: 350px;
+  background-size: cover;       /* que la imagen cubra */
+  background-position: center;
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.6s ease, opacity 0.6s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.carousel-slide img {
+  display: none; /* ya no se usa img directo */
+}
+
+.carousel-text {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: bold;
+  padding: 20px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.7));
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  animation: fadeInUp 0.6s ease;
+}
+
+/* Estado activo */
+.carousel-slide.active {
+  opacity: 1;
+  transform: scale(1);
+  z-index: 2;
+}
+
+/* Slides laterales */
+.carousel-slide:not(.active) {
+  opacity: 0.6;
+  transform: scale(0.9);
+  z-index: 1;
+}
+
+/* ==== INDICADORES ==== */
+.carousel-indicators {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+  gap: 8px;
+}
+
+.carousel-indicators span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ccc;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.carousel-indicators .active {
+  background: #2563eb;
+}
+
+
+/* de notificaciones */
+.notif-menu {
+  position: relative;
+  padding: 18px;
+}
+
+.notif-icon {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.notif-icon:hover {
+  transform: scale(1.1);
+}
+
+.notif-dropdown {
+  position: absolute;
+  top: 35px;
+  right: 0;
+  width: 280px;
+  max-height: 300px; /* scroll si se llena */
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 12px;
+  z-index: 100;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.notif-dropdown p {
+  font-weight: bold;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.notif-dropdown ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.notif-dropdown li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  color: #333 !important;
+  padding: 8px 10px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  transition: background 0.2s ease;
+  
+}
+
+.notif-dropdown li:hover {
+  background: #d6d8e8;
+}
+
+/* Botón de ver más */
+.notif-dropdown button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #555;
+  font-size: 16px;
+  transition: color 0.2s ease;
+}
+
+.notif-dropdown button:hover {
+  color: #e91e63; /* rosado consistente */
+}
+
+/* Scroll bonito */
+.notif-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.notif-dropdown::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.notif-dropdown::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+/* Animación de aparición */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+
+
+/* ==== HELP CARD (ajustada) ==== */
+.help-card {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  max-width: 900px;   /* antes 700px */
+  width: 100%;
+  min-height: 250px;  /* 🔹 hace que se vea más cuadrada */
+  margin: 30px auto;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.help-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 25px rgba(37, 99, 235, 0.35);
+}
+
+.help-img {
+  border-radius: 16px;
+  width: 180px;   /* 🔹 agrandada */
+  height: 180px;  /* 🔹 agrandada */
+  object-fit: cover;
+  flex-shrink: 0; /* evita que la imagen se deforme cuando el texto crece */
+}
+
+.help-text {
+  flex: 1; /* texto ocupa el resto del espacio */
+  text-align: left; /* alineado a la izquierda */
+}
+
+.help-text h2 {
+  font-size: 26px;
+  margin-bottom: 10px;
+  color: #111827;
+}
+
+.help-text p {
+  font-size: 17px;
+  margin-bottom: 20px;
+  color: #374151;
+}
+
+.offer-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 22px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.offer-btn:hover {
+  background: #1e40af;
+  transform: scale(1.05);
+}
+
+

@@ -1,21 +1,19 @@
 const express = require("express");
-const connection = require("./config/db");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const offerRoutes = require("./routes/offers");
 
 const app = express();
-app.use(express.json());
+const PORT = 5000;
 
-// Ruta de prueba para listar usuarios
-app.get("/usuarios", (req, res) => {
-  connection.query("SELECT * FROM usuarios", (err, results) => {
-    if (err) {
-        console.error("❌ Error en la consulta:", err);
-        return res.status(500).json({ error: "Error en la base de datos" });
-    }
-    res.json(results);
-    });
-});
+// Middlewares
+app.use(cors());
+app.use(bodyParser.json());
 
-const PORT = 4000;
+// Rutas
+app.use("/api/ofertas", offerRoutes);
+
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
+

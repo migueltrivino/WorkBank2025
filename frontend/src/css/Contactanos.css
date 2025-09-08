@@ -1,7 +1,7 @@
 .contact-section {
   background: linear-gradient(to bottom, #0f2242, #256272);
   text-align: center;
-  padding: 3rem 1rem 0;
+  padding: 3rem 1rem 6rem;
   color: white;
 }
 
@@ -26,49 +26,71 @@
 .icon {
   font-size: 2.5rem;
   color: white;
-  transition: color 0.3s ease;
+  transition: transform 0.3s ease;
+  font-size: 20px;
 }
 
-.icon.whatsapp:hover {
-  color: #25d366; /* verde WhatsApp */
+.icon-whatsapp {
+  font-size: 40px;        /* Tamaño del icono */
+  color: #ffffff;         /* Color oficial WhatsApp */
+  transition: all 0.3s ease-in-out;
+  margin: 10px;           /* Espaciado opcional */
 }
 
-.icon.gmail:hover {
-  color: #ea4335; /* rojo Gmail */
+.icon-whatsapp:hover {
+  color: #2e993c;         /* Verde más oscuro al pasar el mouse */
+  transform: scale(1.2);  /* Pequeño zoom */
 }
 
-/* === FOOTER === */
+.icon-gmail {
+  font-size: 40px;        /* Tamaño del icono */
+  color: #ffffff;         /* Color oficial WhatsApp */
+  transition: all 0.3s ease-in-out;
+  margin: 10px;           /* Espaciado opcional */
+}
+
+.icon-gmail:hover {
+  color: #8c2812;         /* Verde más oscuro al pasar el mouse */
+  transform: scale(1.2);  /* Pequeño zoom */
+}
+
+
+
+/* Reset básico por si acaso */
+html, body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background: #111;
+  
+}
+
+/* FOOTER: fondo a lo ancho, contenido centrado */
 .footer {
+  width: 100%;
   background: #111;
   color: #ccc;
-  padding: 2rem 1rem;
+  padding: 2.5rem 0;   /* espacio arriba/abajo */
   margin-top: 3rem;
 }
 
+/* Contenido centrado dentro del footer */
 .footer-container {
+  max-width: 1200px;
+  margin: 0 auto;          /* centra el contenido */
+  padding: 0 1rem;         /* padding lateral dentro del max-width */
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 2rem;
-  align-items: flex-start;
+  align-items: start;
   text-align: left;
 }
 
-.footer-logo img {
-  max-width: 60px;
-}
 
-.footer-column h4 {
-  color: white;
-  font-size: 1.2rem;
-  margin-bottom: 10px;
-}
 
-.footer-column ul {
-  list-style: none;
-  padding: 0;
-}
 
-.footer-column li {
-  margin-bottom: 8px;
-  font-size: 0.95rem;
-}
+/* pequeños estilos internos */
+.footer-logo img { max-width: 120px; display:block; }
+.footer-column h4 { color: #fff; margin-bottom: .5rem; }
+.footer-column ul { list-style: none; padding: 0; margin: 0; }
+.footer-column li { margin-bottom: .5rem; font-size: .95rem; color:#ccc; }
