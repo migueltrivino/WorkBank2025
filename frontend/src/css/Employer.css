@@ -13,7 +13,7 @@
 
 body {
   font-family: 'Raleway', sans-serif;
-  background: var(--light);
+  background: linear-gradient(135deg, #adbed3, #5274a1, #a9caf4);
 }
 
 /* NAVBAR */
@@ -91,12 +91,12 @@ body {
   height: calc(100vh - 105px);
 }
 
-/* SIDEBAR */
+/* === SIDEBAR === */
 .sidebar {
-  width: 64px;
+  width: 90px;
   background: var(--secondary);
   color: var(--white);
-  padding: 20px 10px;
+  padding: 20px 12px;
   overflow: hidden;
   transition: width 0.3s ease;
   white-space: nowrap;
@@ -104,41 +104,82 @@ body {
   top: 0;
   height: calc(100vh - 105px);
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .sidebar:hover {
-  width: 220px;
+  width: 230px;
+}
+
+/* Secciones */
+.sidebar small {
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #cfd8dc;
+  margin: 15px 0 8px 12px;
+  opacity: 0.8;
+  transition: opacity 0.3s;
 }
 
 .sidebar ul {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 12px;
+  padding: 0;
+  margin: 0;
 }
 
 .sidebar li {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   cursor: pointer;
-  transition: padding 0.3s ease, justify-content 0.3s ease;
+  padding: 10px 12px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
-.sidebar:not(:hover) li { justify-content: center; }
+/* Hover efecto */
+.sidebar li:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(4px);
+}
 
+/* Icono activo */
+.sidebar li.active {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.sidebar li.active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10%;
+  bottom: 10%;
+  width: 4px;
+  border-radius: 4px;
+  background: #4fc3f7; /* barra azul brillante */
+}
+
+/* Label de ítems */
 .sidebar .item-label {
   max-width: 0;
   opacity: 0;
   overflow: hidden;
-  transition: max-width 0.3s ease, opacity 0.2s ease, margin-left 0.3s ease;
+  transition: max-width 0.3s ease, opacity 0.25s ease, margin-left 0.3s;
   margin-left: 0;
 }
 
 .sidebar:hover .item-label {
   max-width: 180px;
   opacity: 1;
-  margin-left: 6px;
+  margin-left: 4px;
 }
 
 /* ==== MAIN ==== */
@@ -161,14 +202,14 @@ body {
 }
 
 .welcome-title h2 {
-  font-size: 32px;
+  font-size: 45px;
   font-weight: bold;
   margin-bottom: 10px;
   color: #111827;
 }
 
 .user-name {
-  background: linear-gradient(90deg, #5076c7, #23717e, #133171);
+  background: linear-gradient(90deg, #e0dced, #80c8d4, #83dbd8);
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -177,93 +218,76 @@ body {
 }
 
 .welcome-title p {
-  font-size: 18px;
-  color: #374151;
+  font-size: 25px;
+  margin-top: 40px;
+  color: #eef0f5; 
   font-style: italic;
-  padding: 12px 20px;
-  background: #ffffff;
-  border-left: 4px solid #2563eb;
-  border-radius: 8px;
-  display: inline-block;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  margin-top: 20px;
+  animation: fadeIn 0.9s ease-in-out;
 }
 
-/* ==== CARRUSEL ==== */
-
-.carousel {
-  width: 90%;
-  margin: 0 auto 40px auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.carousel-slide {
-  width: 100%;
-  height: 350px;
-  background-size: cover;       /* que la imagen cubra */
-  background-position: center;
-  border-radius: 16px;
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.6s ease, opacity 0.6s ease;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-}
-
-.carousel-slide img {
-  display: none; /* ya no se usa img directo */
-}
-
-.carousel-text {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
+.frases-container {
+  margin-top: 15px;
   text-align: center;
-  color: #fff;
-  font-size: 1.3rem;
-  font-weight: bold;
-  padding: 20px;
-  background: linear-gradient(transparent, rgba(0,0,0,0.7));
-  border-bottom-left-radius: 16px;
-  border-bottom-right-radius: 16px;
-  animation: fadeInUp 0.6s ease;
-}
-
-/* Estado activo */
-.carousel-slide.active {
-  opacity: 1;
-  transform: scale(1);
-  z-index: 2;
-}
-
-/* Slides laterales */
-.carousel-slide:not(.active) {
-  opacity: 0.6;
-  transform: scale(0.9);
-  z-index: 1;
-}
-
-/* ==== INDICADORES ==== */
-.carousel-indicators {
+  height: 40px; 
   display: flex;
   justify-content: center;
-  margin-top: 12px;
-  gap: 8px;
+  align-items: center;
 }
 
-.carousel-indicators span {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #ccc;
-  cursor: pointer;
-  transition: background 0.3s ease;
+.frase {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #1e3a8a; /* azul elegante */
 }
 
-.carousel-indicators .active {
-  background: #2563eb;
+
+
+/* ==== ESTADÍSTICAS ==== */
+
+.stat-card svg {
+  margin-bottom: 10px;
+}
+
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+  width: 90%;
+  margin: 20px auto 40px auto;
+}
+
+.stat-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  /* Aquí va el box-shadow */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 20px rgba(37, 99, 235, 0.25);
+}
+
+.stat-card h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #1e3a8a;
+}
+
+.stat-number {
+  font-size: 40px;
+  font-weight: bold;
+  color: #2563eb;
+  margin-bottom: 8px;
+}
+
+.stat-sub {
+  font-size: 14px;
+  color: #6b7280;
 }
 
 
@@ -339,7 +363,7 @@ body {
 }
 
 .notif-dropdown button:hover {
-  color: #e91e63; /* rosado consistente */
+  color: #4fe200;
 }
 
 /* Scroll bonito */
@@ -380,9 +404,9 @@ body {
   border-radius: 20px;
   padding: 30px;
   box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-  max-width: 900px;   /* antes 700px */
+  max-width: 900px;  
   width: 100%;
-  min-height: 250px;  /* 🔹 hace que se vea más cuadrada */
+  min-height: 250px;  
   margin: 30px auto;
   transition: box-shadow 0.3s ease, transform 0.2s ease;
 }
@@ -394,14 +418,14 @@ body {
 
 .help-img {
   border-radius: 16px;
-  width: 180px;   /* 🔹 agrandada */
-  height: 180px;  /* 🔹 agrandada */
+  width: 180px;   
+  height: 180px;  
   object-fit: cover;
   flex-shrink: 0; /* evita que la imagen se deforme cuando el texto crece */
 }
 
 .help-text {
-  flex: 1; /* texto ocupa el resto del espacio */
+  flex: 1; 
   text-align: left; /* alineado a la izquierda */
 }
 

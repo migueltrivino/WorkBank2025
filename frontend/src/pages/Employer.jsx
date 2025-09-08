@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Home,
   FileText,
@@ -9,29 +9,27 @@ import {
   LogOut,
   User,
   Settings,
-  Eye
+  Eye,
+  Briefcase,
+  Users,
+  MessageSquare,
+  CheckCircle
 } from "lucide-react";
 import "../css/Employer.css";
 import logo from "../assets/logos.png";
-import CreateOffer from "../components/CreateOffer"; // ✅ IMPORTA BIEN
-
-// /assets para el carrusel
-import img1 from "../assets/carrusel1.jpg";
-import img2 from "../assets/carrusel2.jpg";
-import img3 from "../assets/carrusel3.jpg";
+import CreateOffer from "../components/CreateOffer";
 
 // Imagen para la help
 import helpImg from "../assets/ofertab.jpg";
 
 export default function Employer() {
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
 
-  //  formulario
+  // formulario
   const [showForm, setShowForm] = useState(false);
 
-  // frases motivadoras
+  // frases motivadoras (rotan solas cada 10s)
   const frases = [
     "Hoy es un gran día para encontrar talento.",
     "El éxito empieza con una gran contratación.",
@@ -39,23 +37,16 @@ export default function Employer() {
     "Cada oferta publicada es una nueva oportunidad.",
     "El talento correcto transforma cualquier negocio."
   ];
-
-  const usuario = "Alejo";
-  const fraseMotivadora = frases[Math.floor(Math.random() * frases.length)];
-
-  // carrusel
-  const slides = [
-    { id: 1, text: "Encuentra al mejor talento en minutos.", img: img1 },
-    { id: 2, text: "Publica ofertas de empleo fácilmente.", img: img2 },
-    { id: 3, text: "Gestiona postulaciones en un solo lugar.", img: img3 }
-  ];
+  const [fraseIndex, setFraseIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 4000);
+      setFraseIndex((prev) => (prev + 1) % frases.length);
+    }, 10000); // 10s
     return () => clearInterval(interval);
-  }, [slides.length]);
+  }, [frases.length]);
+
+  const usuario = "Alejo";
 
   return (
     <div className="employer-container">
@@ -135,16 +126,16 @@ export default function Employer() {
               <Home size={18} /> <span className="item-label">Inicio</span>
             </li>
             <li>
-              <FileText size={18} /> <span className="item-label">Ofertas</span>
+              <FileText size={18} /> <span className="item-label">Mis ofertas</span>
             </li>
             <li>
-              <Star size={18} /> <span className="item-label">Favoritos</span>
+              <Star size={18} /> <span className="item-label">Postulaciones</span>
             </li>
             <li>
-              <History size={18} /> <span className="item-label">Historial</span>
+              <History size={18} /> <span className="item-label">Reseñas</span>
             </li>
             <li>
-              <Bell size={18} /> <span className="item-label">Notificaciones</span>
+              <Bell size={18} /> <span className="item-label">Historial</span>
             </li>
           </ul>
         </aside>
@@ -158,44 +149,55 @@ export default function Employer() {
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              ¡Bienvenido! a WorkBank.W,{" "}
-              <span className="user-name">{usuario}</span>
+              <span className="typewriter">
+                ¡Bienvenido! a WorkBank.W,{" "}
+                <span className="user-name">{usuario}</span>
+              </span>
             </motion.h2>
-            <p>{fraseMotivadora}</p>
+
+            {/* Frases motivacionales dinámicas */}
+            <div className="frases-container">
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={fraseIndex}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 1 }}
+                  className="frase"
+                >
+                  {frases[fraseIndex]}
+                </motion.p>
+              </AnimatePresence>
+            </div>
           </div>
 
-          {/* Carrusel */}
-          <div className="carousel">
-            {slides.map((slide, index) => (
-              <motion.div
-                key={slide.id}
-                className={`carousel-slide ${
-                  index === currentSlide ? "active" : ""
-                }`}
-                style={{ backgroundImage: `url(${slide.img})` }}
-                initial={false}
-                animate={{
-                  scale: index === currentSlide ? 1 : 0.9,
-                  opacity: index === currentSlide ? 1 : 0.6
-                }}
-                transition={{ duration: 0.6 }}
-              >
-                <div className="carousel-text">
-                  <p>{slide.text}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Indicadores */}
-          <div className="carousel-indicators">
-            {slides.map((_, index) => (
-              <span
-                key={index}
-                className={index === currentSlide ? "active" : ""}
-                onClick={() => setCurrentSlide(index)}
-              ></span>
-            ))}
+          {/* === ESTADÍSTICAS === */}
+          <div className="stats-container">
+            <div className="stat-card">
+              <Briefcase size={28} color="#2563eb" />
+              <h3>Ofertas activas</h3>
+              <p className="stat-number">12</p>
+              <span className="stat-sub">En curso actualmente</span>
+            </div>
+            <div className="stat-card">
+              <Users size={28} color="#16a34a" />
+              <h3>Postulaciones</h3>
+              <p className="stat-number">87</p>
+              <span className="stat-sub">Últimos 30 días</span>
+            </div>
+            <div className="stat-card">
+              <MessageSquare size={28} color="#f59e0b" />
+              <h3>Reseñas</h3>
+              <p className="stat-number">4.8</p>
+              <span className="stat-sub">Promedio de candidatos</span>
+            </div>
+            <div className="stat-card">
+              <CheckCircle size={28} color="#10b981" />
+              <h3>Contrataciones</h3>
+              <p className="stat-number">34</p>
+              <span className="stat-sub">Completadas este mes</span>
+            </div>
           </div>
 
           {/* Card de ayuda */}
@@ -217,3 +219,4 @@ export default function Employer() {
     </div>
   );
 }
+
