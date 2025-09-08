@@ -1,16 +1,20 @@
 const express = require("express");
+const authRoutes = require("./routes/authRoutes");
+const path = require("path");
+const cors = require("cors");
+
 const app = express();
 
-// Middleware para interpretar JSON
+app.use(cors());
+
+// Para poder recibir JSON y datos de formulario
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Importamos rutas
-const usuariosRoutes = require("./routes/usuarios");
-app.use("/api/usuarios", usuariosRoutes);
+// Carpeta para archivos subidos
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Ruta de prueba
-app.get("/", (req, res) => {
-    res.send("Bienvenido a WorkBank Backend ");
-});
+// Rutas
+app.use("/api/auth", authRoutes);
 
 module.exports = app;

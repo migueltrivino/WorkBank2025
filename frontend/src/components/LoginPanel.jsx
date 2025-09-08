@@ -1,26 +1,79 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from "../css/LoginPanel.module.css"
 import googleLogo from '../assets/google.png'
+import { useNavigate } from 'react-router-dom'
 
 
 function LoginPanel() {
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    email: "",
+    user_password: ""
+  });
+
+  const [mensaje, setMensaje] = useState("");
+  const [tipoMensaje, setTipoMensaje] = useState("")
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("http://localhost:4000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+      });
+
+      const result = await res.json();
+
+      if (res.ok) {
+        setMensaje(result.message);
+        setTipoMensaje("exito")
+        setTimeout(() => {
+          navigate("/"); 
+        }, 1500);
+
+      } else {
+        setMensaje(`❌ ${result.message}`);
+        setTipoMensaje("error")
+      }
+    } catch (error) {
+      console.error(error);
+      setMensaje("❌ Error de conexión con el servidor");
+      setTipoMensaje("error")
+    }
+  };
+
   return (
     <div className={styles['right-panel']}>
       <h2>Iniciar sesión</h2>
-      <form className={styles.form} id="loginForm">
+      <form className={styles.form} id="loginForm" onSubmit={handleSubmit}>
         <label className={styles.label} htmlFor="email">Correo electrónico</label>
-        <input className={styles.input}
+        <input
+          className={styles.input}
           type="email"
           id="email"
+          name="email"
           placeholder="ejemplo@gmail.com"
+          value={formData.email}
+          onChange={handleChange}
           required
         />
 
-        <label className={styles.label} htmlFor="password">Contraseña</label>
-        <input className={styles.input}
+        <label className={styles.label} htmlFor="user_password">Contraseña</label>
+        <input
+          className={styles.input}
           type="password"
-          id="password"
+          id="user_password"
+          name="user_password"
           placeholder="********"
+          value={formData.user_password}
+          onChange={handleChange}
           required
         />
 
@@ -39,6 +92,8 @@ function LoginPanel() {
 
       <div className={styles.register}>
         ¿Nuevo en Workbank? <a href="/registro">Crea tu cuenta</a>
+        {mensaje && <p className={`${styles.mensaje} ${styles[tipoMensaje]}`}>{mensaje}</p>}
+
       </div>
     </div>
   );
