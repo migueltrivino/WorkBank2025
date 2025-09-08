@@ -1,0 +1,152 @@
+/* ==== MAIN ==== */
+.main-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  padding: 40px 20px;
+  overflow-y: auto;
+  max-height: calc(100vh - 105px);
+}
+
+/* Bienvenida */
+.welcome-title {
+  margin-bottom: 30px;
+  animation: fadeDown 0.8s ease-out;
+}
+
+.welcome-title h2 {
+  font-size: 45px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #111827;
+}
+
+.user-name {
+  background: linear-gradient(90deg, #e0dced, #80c8d4, #83dbd8);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+  animation: shine 4s linear infinite;
+}
+
+.frases-container {
+  margin-top: 15px;
+  text-align: center;
+  height: 40px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.frase {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #1e3a8a;
+}
+
+/* ==== ESTADÍSTICAS ==== */
+.stat-card svg { margin-bottom: 10px; }
+
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+  width: 90%;
+  margin: 20px auto 40px auto;
+}
+
+.stat-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 20px rgba(37, 99, 235, 0.25);
+}
+
+.stat-card h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #1e3a8a;
+}
+
+.stat-number {
+  font-size: 40px;
+  font-weight: bold;
+  color: #2563eb;
+  margin-bottom: 8px;
+}
+
+.stat-sub {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* ==== HELP CARD ==== */
+.help-card {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  max-width: 900px;  
+  width: 100%;
+  min-height: 250px;  
+  margin: 30px auto;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.help-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 25px rgba(37, 99, 235, 0.35);
+}
+
+.help-img {
+  border-radius: 16px;
+  width: 180px;   
+  height: 180px;  
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.help-text { flex: 1; text-align: left; }
+
+.help-text h2 {
+  font-size: 26px;
+  margin-bottom: 10px;
+  color: #111827;
+}
+
+.help-text p {
+  font-size: 17px;
+  margin-bottom: 20px;
+  color: #374151;
+}
+
+.offer-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 22px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.offer-btn:hover {
+  background: #1e40af;
+  transform: scale(1.05);
+}
