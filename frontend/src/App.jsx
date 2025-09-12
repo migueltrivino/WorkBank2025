@@ -8,6 +8,8 @@
   import Contactanos from "./components/Contactanos";
   import Registro from "./pages/Registro";
   import EmployerDashboard from "./pages/Employer";
+  import EmployerOffers from "./pages/EmployerOffers";
+  
 
 
   function App() {
@@ -28,6 +30,7 @@
           } />
           <Route path="/employer" element={<EmployerDashboard />} />
           <Route path="/registro" element={<Registro />} />
+          <Route path="/employeroffers" element={<EmployerOffers />} />
         </Routes>
       </>
     );

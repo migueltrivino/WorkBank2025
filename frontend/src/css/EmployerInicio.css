@@ -7,10 +7,10 @@
   justify-content: flex-start;
   text-align: center;
   padding: 40px 20px;
-  overflow-y: auto;
-  max-height: calc(100vh - 105px);
+  height: 100%;          /* ahora ocupa bien el espacio dentro del layout */
+  overflow-y: auto;      /* scroll solo aquí cuando haga falta */
+  overflow-x: hidden;    /* evita scroll horizontal fantasma */
 }
-
 /* Bienvenida */
 .welcome-title {
   margin-bottom: 30px;

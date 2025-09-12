@@ -11,6 +11,13 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;  /* evita que aparezca el scroll innecesario */
+}
+
 body {
   font-family: 'Raleway', sans-serif;
   background: linear-gradient(135deg, #adbed3, #5274a1, #a9caf4);
