@@ -16,11 +16,24 @@ const Offer = {
       data.id_usuario,
       data.fecha_publicacion
     ]);
-    return result.insertId; // Aquí sigue devolviendo el ID auto-generado
+    return result.insertId;
+  },
+
+  // 🔹 Nuevo método: obtener todas las ofertas de un empleador
+  getByUser: async (id_usuario) => {
+    const query = `
+      SELECT id_oferta, titulo_oferta, descripcion_oferta, fecha_vencimiento, fecha_publicacion
+      FROM ofertas_laborales
+      WHERE id_usuario = ?
+      ORDER BY fecha_publicacion DESC
+    `;
+    const [rows] = await pool.query(query, [id_usuario]);
+    return rows;
   }
 };
 
 module.exports = Offer;
+
 
 
 
