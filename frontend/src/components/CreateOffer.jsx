@@ -15,18 +15,18 @@ export default function CreateOfferForm({ onClose }) {
     const nuevaOferta = {
       titulo_oferta: titulo,
       descripcion_oferta: descripcion,
-      fecha_vencimiento: fechaVencimiento,
+      fecha_vencimiento: new Date(fechaVencimiento).toISOString(), 
       id_servicio: parseInt(idServicio),
       id_categoria: parseInt(idCategoria),
       id_usuario: parseInt(idUsuario),
-      fecha_publicacion: new Date().toISOString().split("T")[0]
+      
     };
 
     try {
       const res = await fetch("http://localhost:5000/api/ofertas", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(nuevaOferta)
+        body: JSON.stringify(nuevaOferta),
       });
       const data = await res.json();
       console.log("Respuesta del backend:", data);
@@ -41,7 +41,7 @@ export default function CreateOfferForm({ onClose }) {
       <div className="modal">
         <h2>Crear Nueva Oferta</h2>
         <form onSubmit={handleSubmit} className="form-vertical">
-          
+
           <div className="form-group">
             <label className="form-label">Título de la oferta</label>
             <input
@@ -66,7 +66,7 @@ export default function CreateOfferForm({ onClose }) {
           <div className="form-group">
             <label className="form-label">Fecha de vencimiento</label>
             <input
-              type="date"
+              type="datetime-local"  
               value={fechaVencimiento}
               onChange={(e) => setFechaVencimiento(e.target.value)}
               required
@@ -123,5 +123,6 @@ export default function CreateOfferForm({ onClose }) {
     </div>
   );
 }
+
 
 

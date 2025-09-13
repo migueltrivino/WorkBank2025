@@ -1,6 +1,7 @@
 const pool = require("../config/db");
 
 const Offer = {
+  // Crear una oferta
   create: async (data) => {
     const query = `
       INSERT INTO ofertas_laborales 
@@ -19,7 +20,19 @@ const Offer = {
     return result.insertId;
   },
 
-  // 🔹 Nuevo método: obtener todas las ofertas de un empleador
+  // Obtener todas las ofertas
+  getAll: async () => {
+    const [rows] = await pool.query("SELECT * FROM ofertas_laborales");
+    return rows;
+  },
+
+  // Obtener una oferta por ID
+  getById: async (id) => {
+    const [rows] = await pool.query("SELECT * FROM ofertas_laborales WHERE id_oferta = ?", [id]);
+    return rows[0];
+  },
+
+  // Obtener todas las ofertas de un usuario
   getByUser: async (id_usuario) => {
     const query = `
       SELECT id_oferta, titulo_oferta, descripcion_oferta, fecha_vencimiento, fecha_publicacion
@@ -33,6 +46,7 @@ const Offer = {
 };
 
 module.exports = Offer;
+
 
 
 
