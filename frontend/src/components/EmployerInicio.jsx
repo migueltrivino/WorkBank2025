@@ -12,9 +12,11 @@ export default function Main() {
   const frases = [
     "Hoy es un gran día para encontrar talento.",
     "El éxito empieza con una gran contratación.",
-    "Conecta con quienes harán crecer tu empresa.",
+    "Conecta con personas que estan dispuestas a ayudarte.",
     "Cada oferta publicada es una nueva oportunidad.",
-    "El talento correcto transforma cualquier negocio."
+    "El talento correcto transforma.",
+    "Las oportunidades nacen cuando alguien se atreve a ofrecerlas.",
+    "Cada talento suma, cada esfuerzo cuenta."
   ];
   const [fraseIndex, setFraseIndex] = useState(0);
 

@@ -1,25 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "../css/CreateOffer.css";
 
-export default function CreateOfferForm({ onClose }) {
+export default function CreateOfferForm({ onClose, idUsuario }) {
   const [titulo, setTitulo] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [fechaVencimiento, setFechaVencimiento] = useState("");
   const [idServicio, setIdServicio] = useState("");
   const [idCategoria, setIdCategoria] = useState("");
-  const [idUsuario, setIdUsuario] = useState("");
+
+  const modalRef = useRef(null);
+
+  
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        onClose();
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [onClose]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!idUsuario) {
+      console.error("No se ha proporcionado un usuario logueado.");
+      return;
+    }
+
     const nuevaOferta = {
       titulo_oferta: titulo,
       descripcion_oferta: descripcion,
-      fecha_vencimiento: new Date(fechaVencimiento).toISOString(), 
+      fecha_vencimiento: fechaVencimiento,
       id_servicio: parseInt(idServicio),
       id_categoria: parseInt(idCategoria),
       id_usuario: parseInt(idUsuario),
-      
     };
 
     try {
@@ -28,20 +45,22 @@ export default function CreateOfferForm({ onClose }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(nuevaOferta),
       });
+
+      if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
+
       const data = await res.json();
-      console.log("Respuesta del backend:", data);
+      console.log("Oferta creada:", data);
       onClose();
     } catch (err) {
-      console.error("Error:", err);
+      console.error("Error al crear la oferta:", err);
     }
   };
 
   return (
     <div className="modal-overlay">
-      <div className="modal">
+      <div className="modal" ref={modalRef}>
         <h2>Crear Nueva Oferta</h2>
         <form onSubmit={handleSubmit} className="form-vertical">
-
           <div className="form-group">
             <label className="form-label">Título de la oferta</label>
             <input
@@ -54,19 +73,19 @@ export default function CreateOfferForm({ onClose }) {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Descripción de la oferta</label>
+            <label className="form-label">Descripción</label>
             <textarea
               placeholder="Ej: Pasear perros 2 veces al día"
               value={descripcion}
               onChange={(e) => setDescripcion(e.target.value)}
               required
-            ></textarea>
+            />
           </div>
 
           <div className="form-group">
             <label className="form-label">Fecha de vencimiento</label>
             <input
-              type="datetime-local"  
+              type="date"
               value={fechaVencimiento}
               onChange={(e) => setFechaVencimiento(e.target.value)}
               required
@@ -101,17 +120,6 @@ export default function CreateOfferForm({ onClose }) {
             </select>
           </div>
 
-          <div className="form-group">
-            <label className="form-label">ID del usuario</label>
-            <input
-              type="number"
-              placeholder="Ej: 5"
-              value={idUsuario}
-              onChange={(e) => setIdUsuario(e.target.value)}
-              required
-            />
-          </div>
-
           <div className="form-buttons">
             <button type="submit" className="btn-create">Crear</button>
             <button type="button" className="btn-cancel" onClick={onClose}>
@@ -123,6 +131,3 @@ export default function CreateOfferForm({ onClose }) {
     </div>
   );
 }
-
-
-

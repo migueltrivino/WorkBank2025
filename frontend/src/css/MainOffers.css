@@ -1,5 +1,6 @@
-
-
+/* =========================
+  Main Offers - Contenedor principal
+========================= */
 .main-offers {
   flex: 1;
   padding: 40px;
@@ -7,9 +8,75 @@
   flex-direction: column;
   align-items: center;
   background: linear-gradient(135deg, #f9f9f9, #f0f4f8);
-  min-height: calc(100vh - 60px); /* Ajusta según la altura del navbar */
+  min-height: calc(100vh - 60px);
 }
 
+/* Loader con lápiz saltando */
+.loader-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  
+  align-items: center;      
+  height: 100vh;
+  width: 100%;
+  text-align: center;
+}
+
+.pencil-loader {
+  width: 20px;
+  height: 70px;
+  background: linear-gradient(180deg, #cfd8dc 0%, #90a4ae 100%); /* gris metálico */
+  position: relative;
+  border-radius: 4px;
+  animation: jump 0.8s infinite ease-in-out;
+  transform-origin: bottom center;
+}
+
+/* punta */
+.pencil-loader::before {
+  content: "";
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 17px solid #212121; /* negro */
+}
+
+/* parte superior  */
+.pencil-loader::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 0;
+  width: 100%;
+  height: 10px;
+  background: #263238;
+  border-radius: 3px 3px 0 0;
+}
+
+
+
+/* Animación de salto */
+@keyframes jump {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(-10deg); }
+}
+
+/* Texto debajo del lápiz */
+.loader-page p {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #000000;
+  margin-top: 12px;
+}
+
+/* =========================
+  Header de ofertas
+========================= */
 .offers-header {
   font-size: 2rem;
   font-weight: 700;
@@ -29,6 +96,9 @@
   border-radius: 2px;
 }
 
+/* =========================
+  Contenedor de tarjetas
+========================= */
 .offers-container {
   width: 100%;
   max-width: 1200px;
@@ -37,6 +107,9 @@
   gap: 24px;
 }
 
+/* =========================
+  Tarjetas de oferta
+========================= */
 .offer-card {
   background: #fff;
   border-radius: 14px;
@@ -56,7 +129,6 @@
 .offer-title {
   font-size: 1.2rem;
   font-weight: 600;
-  color: #e91e63;
   margin-bottom: 10px;
 }
 
@@ -77,22 +149,21 @@
   padding-top: 8px;
 }
 
-.offer-btn {
+.main-offer-btn {
   margin-top: 14px;
   padding: 10px 16px;
   border: none;
   border-radius: 8px;
-  background-color: #e91e63;
+  background-color: #000000;
   color: white;
   font-weight: 500;
   cursor: pointer;
   transition: background 0.25s ease;
 }
 
-.offer-btn:hover {
-  background-color: #c2185b;
+.main-offer-btn:hover {
+  background-color: #5e68b9;
 }
-
 
 .no-offers {
   text-align: center;
@@ -103,4 +174,18 @@
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
+
+.main-scroll {
+  flex: 1;
+  overflow-y: auto; /* scroll solo aquí */
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(135deg, #f9f9f9, #f0f4f8);
+}
+
+
+
+
 

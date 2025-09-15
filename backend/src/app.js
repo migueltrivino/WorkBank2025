@@ -8,9 +8,12 @@ app.use(express.json());
 const usuariosRoutes = require("./routes/usuarios");
 app.use("/api/usuarios", usuariosRoutes);
 
+const offersRoutes = require("./routes/offers");
+app.use("/api/ofertas", offersRoutes);
+
 // Ruta de prueba
 app.get("/", (req, res) => {
-    res.send("Bienvenido a WorkBank Backend ");
+    res.send("Bienvenido a WorkBank Backend");
 });
 
 module.exports = app;

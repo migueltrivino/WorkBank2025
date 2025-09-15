@@ -1,5 +1,5 @@
 import { Home, FileText, Star, History, Bell } from "lucide-react";
-import { Link } from "react-router-dom";   // 👈 Importa Link
+import { Link } from "react-router-dom"; 
 import "../css/SidebarEmplo.css";
 
 export default function Sidebar() {

@@ -4,6 +4,24 @@ const Offer = require("../models/offerModel");
 exports.createOffer = async (req, res) => {
   try {
     const newOffer = req.body;
+
+    // Validaciones básicas
+    if (
+      !newOffer.titulo_oferta ||
+      !newOffer.descripcion_oferta ||
+      !newOffer.fecha_vencimiento ||
+      !newOffer.id_servicio ||
+      !newOffer.id_categoria ||
+      !newOffer.id_usuario
+    ) {
+      return res
+        .status(400)
+        .json({ message: "Todos los campos son obligatorios" });
+    }
+
+    // Fecha de publicación si no viene del frontend
+    if (!newOffer.fecha_publicacion) newOffer.fecha_publicacion = new Date();
+
     const id = await Offer.create(newOffer);
     res.status(201).json({ message: "Oferta creada con éxito", id });
   } catch (error) {
@@ -23,32 +41,38 @@ exports.getOffers = async (req, res) => {
   }
 };
 
-// Obtener una oferta por ID
+// Obtener oferta por ID
 exports.getOfferById = async (req, res) => {
   try {
     const { id } = req.params;
     const offer = await Offer.getById(id);
 
-    if (!offer) {
-      return res.status(404).json({ message: "Oferta no encontrada" });
-    }
+    if (!offer)
+      return res.status(404).json({ message: "No se encontró la oferta" });
 
     res.status(200).json(offer);
   } catch (error) {
-    console.error("Error al obtener oferta:", error);
+    console.error("Error al obtener la oferta:", error);
     res.status(500).json({ message: "Error al obtener la oferta" });
   }
 };
 
-// Obtener ofertas por usuario
+// Obtener todas las ofertas de un usuario
 exports.getOffersByUser = async (req, res) => {
   try {
     const { id_usuario } = req.params;
-    const offers = await Offer.getByUser(id_usuario);
+    if (!id_usuario) {
+      return res.status(400).json({ message: "ID de usuario requerido" });
+    }
 
+    const offers = await Offer.getByUser(id_usuario);
     res.status(200).json(offers);
   } catch (error) {
     console.error("Error al obtener ofertas del usuario:", error);
-    res.status(500).json({ message: "Error al obtener las ofertas del usuario" });
+    res
+      .status(500)
+      .json({ message: "Error al obtener las ofertas del usuario" });
   }
 };
+
+

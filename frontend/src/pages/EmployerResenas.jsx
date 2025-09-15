@@ -1,14 +1,13 @@
 import { useState, useContext } from "react";
 import Navbar from "../components/NavbarEmplo";
 import Sidebar from "../components/SidebarEmplo";
-import MainOffers from "../components/MainOffers";
-import { AuthContext } from "../context/AuthContext"; // ruta ajustable
+import MainResenas from "../components/MainResenas"; 
+import { AuthContext } from "../context/AuthContext"; 
 
-function EmployerOffers() {
+function EmployerResenas() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
 
-  // Obtener usuario del contexto
   const { user } = useContext(AuthContext);
 
   return (
@@ -22,12 +21,11 @@ function EmployerOffers() {
       <div className="layout">
         <Sidebar />
         <div className="main-scroll">
-          {user ? <MainOffers idUsuario={user.id} /> : <p>Cargando usuario...</p>}
+           <MainResenas />
         </div>
       </div>
     </div>
   );
 }
 
-export default EmployerOffers;
-
+export default EmployerResenas;
