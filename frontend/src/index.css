@@ -22,3 +22,24 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+html, body, #root {
+  min-height: 100%;
+  overflow-x: hidden;   /* solo bloqueamos scroll horizontal */
+  overflow-y: auto; 
+  height: 100%;
+  margin: 0;
+  padding: 0;  
+  
+}
+
+#about,
+#oportunidades,
+#contacto,
+#conocer-mas {
+scroll-margin-top: 80px;
+}

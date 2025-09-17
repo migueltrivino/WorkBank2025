@@ -1,5 +1,6 @@
 import { FaWhatsapp } from "react-icons/fa";
 import { SiGmail } from "react-icons/si";
+import logo from "../assets/logos.png";
 import "../css/Contactanos.css";
 
 export default function Contactanos() {
@@ -30,7 +31,7 @@ export default function Contactanos() {
         <footer className="footer">
         <div className="footer-container">
             <div className="footer-logo">
-            <img src="../assets/logos.png" alt="WorkBank Logo" />
+            <img src={logo} alt="WorkBank Logo" />
             </div>
 
             <div className="footer-column">

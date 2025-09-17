@@ -1,0 +1,151 @@
+/* Fondo oscuro semi-transparente */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(4px); /* 🔹 Efecto vidrio */
+}
+
+/* Contenedor del modal */
+.modal {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 16px;
+  width: 420px;
+  max-width: 500px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+  animation: fadeIn 0.4s ease;
+  font-family: "Playfair Display";
+  max-height: 90vh;
+  overflow-y: auto;  
+  box-sizing: border-box;
+  margin: 0 auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+}
+
+.modal::-webkit-scrollbar {
+  display: none; 
+}
+/* Título */
+.modal h2 {
+  font-size: 1.6rem;
+  margin-bottom: 1.5rem;
+  color: #1e3a8a;
+  font-weight: bold;
+  border-bottom: 2px solid #2563eb;
+  padding-bottom: 8px;
+}
+
+/* Formulario */
+.modal form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Grupo de campos */
+.modal .form-group {
+  width: 100%;
+  margin-bottom: 1.2rem;
+  text-align: left;
+}
+
+/* Label */
+.modal .form-group label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+  color: #1e40af;
+}
+
+/* Inputs, select y textarea */
+.modal input,
+.modal textarea,
+.modal select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1.5px solid #2563eb;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  background: #f9fafb;
+  color: #111827;
+  transition: all 0.3s ease-in-out;
+}
+
+.modal input:focus,
+.modal textarea:focus,
+.modal select:focus {
+  border-color: #1d4ed8;
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.4);
+  outline: none;
+  background: #ffffff;
+}
+
+/* Placeholder */
+.modal input::placeholder,
+.modal textarea::placeholder {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+/* Botones */
+.form-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 1.5rem;
+}
+
+.btn-create,
+.btn-cancel {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Botón Crear */
+.btn-create {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  color: #fff;
+}
+
+.btn-create:hover {
+  background: linear-gradient(135deg, #1e40af, #1d4ed8);
+  transform: translateY(-2px);
+}
+
+/* Botón Cancelar */
+.btn-cancel {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.btn-cancel:hover {
+  background: #d1d5db;
+  transform: translateY(-2px);
+}
+
+/* Animación modal */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

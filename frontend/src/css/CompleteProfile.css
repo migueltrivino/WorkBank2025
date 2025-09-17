@@ -1,0 +1,116 @@
+/* Contenedor que centra */
+.profile-wrapper {
+  height: 100vh;                 
+  display: flex;
+  justify-content: center;       
+  align-items: center;           
+  background: #1a4d7b;           
+}
+
+/* Tarjeta */
+.profile-card {
+  background: #0b355b;
+  color: white;
+  padding: 40px 30px;
+  border-radius: 20px;
+  width: 400px;
+  text-align: center;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 
+              0 0 10px rgba(0, 180, 216, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+
+
+/* Títulos */
+.title {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: #d1e8ff;
+}
+
+/* Contenedor de la foto */
+.photo-container {
+  margin-bottom: 20px;
+}
+
+.photo-placeholder {
+  width: 120px;
+  height: 120px;
+  border: 2px dashed #d1e8ff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 15px;
+  background: #0f4470;
+}
+
+.camera-icon {
+  font-size: 40px;
+}
+
+/* Botones */
+.button-group {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.btn {
+  background: #0077b6;
+  border: none;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: #0096c7;
+}
+
+.finalize {
+  width: 100%;
+  margin-top: 15px;
+  background: #00b4d8;
+}
+
+.finalize:hover {
+  background: #48cae4;
+}
+
+/* Caja de descripción */
+.description-box {
+  text-align: left;
+  margin-bottom: 15px;
+}
+
+.description-box label {
+  font-size: 13px;
+  color: #cce5ff;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+
+
+
+

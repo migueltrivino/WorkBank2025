@@ -14,6 +14,9 @@ app.use(express.urlencoded({ extended: true }));
 // Carpeta para archivos subidos
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+const offersRoutes = require("./routes/offers");
+app.use("/api/ofertas", offersRoutes);
+
 // Rutas
 app.use("/api/auth", authRoutes);
 
