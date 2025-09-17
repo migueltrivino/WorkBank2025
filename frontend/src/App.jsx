@@ -14,6 +14,10 @@ import Registro from "./pages/Registro";
 import EmployerDashboard from "./pages/Employer";
 import EmployerOffers from "./pages/EmployerOffers";
 
+// 🔹 Nuevas páginas
+import Reviews from "./pages/Reviews";
+import History from "./pages/History";
+
 function App() {
   return (
     <Routes>
@@ -33,6 +37,10 @@ function App() {
       <Route path="/employer" element={<EmployerDashboard />} />
       <Route path="/misofertas" element={<EmployerOffers />} />
 
+      {/* 🔹 Nuevas rutas */}
+      <Route path="/reviews" element={<Reviews />} />
+      <Route path="/history" element={<History />} />
+
       {/* Registro */}
       <Route path="/registro" element={<Registro />} />
     </Routes>
@@ -40,4 +48,5 @@ function App() {
 }
 
 export default App;
+
 

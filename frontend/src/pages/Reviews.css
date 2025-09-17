@@ -1,0 +1,177 @@
+/* Contenedor general: sidebar + contenido */
+.reviews-page {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Contenido principal de la página */
+.reviews-container {
+  flex: 1;
+  padding: 2rem;
+  background: linear-gradient(to bottom, #f0f4f8, #d9e2ec);
+  min-height: 100vh;
+  transition: margin-left 0.3s ease;
+  margin-left: 90px; /* espacio del sidebar cerrado */
+  padding-top: 7.5rem; /* aún más espacio debajo del header */
+}
+
+/* Título */
+.reviews-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #2d3748;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #cbd5e0;
+  padding-bottom: 0.5rem;
+}:xr-overlay
+
+/* Nueva clase para el título del header */
+.reviews-header-title {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2.5rem;
+}
+
+.reviews-header-title h2 {
+  font-family: var(--font-title, 'Playfair Display', serif);
+  font-size: 2.3rem;
+  color: #253941;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 0.3rem;
+}
+
+/* Línea decorativa del header */
+.reviews-header-underline {
+  width: 70px;
+  height: 5px;
+  background: linear-gradient(90deg, #62a3a6 0%, #1a2d34 100%);
+  border-radius: 3px;
+  margin-bottom: 0.5rem;
+}
+
+/* Filtros de reseñas */
+.reviews-filter {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.reviews-filter select {
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  border: 1px solid #62a3a6;
+  background: #fff;
+  color: #253941;
+  font-size: 1rem;
+  font-family: var(--font-body, sans-serif);
+  outline: none;
+  transition: border 0.2s;
+}
+
+.reviews-filter select:focus {
+  border-color: #1a2d34;
+}
+
+/* Grid de reseñas */
+.reviews-grid {
+  display: flex;
+  justify-content: flex-start; /* Cambia de center a flex-start */
+  align-items: flex-start;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  min-height: 300px;
+  margin-top: 2.5rem; /* separa la tarjeta del header */
+}
+
+/* Tarjeta de reseña */
+.review-card {
+  background: #fff;
+  border-radius: 1.2rem;
+  padding: 2rem 1.7rem;
+  box-shadow: 0 4px 16px rgba(98,163,166,0.10), 0 1.5px 6px rgba(26,45,52,0.08);
+  transition: box-shadow 0.3s, transform 0.3s;
+  max-width: 340px;
+  min-width: 260px;
+  border: 1px solid #e2e8f0;
+  position: relative;
+  overflow: hidden;
+}
+
+.review-card::before {
+  content: "";
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #62a3a6 0%, #1a2d34 100%);
+  opacity: 0.08;
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.review-card:hover {
+  box-shadow: 0 8px 24px rgba(98,163,166,0.18), 0 3px 12px rgba(26,45,52,0.12);
+  transform: translateY(-5px) scale(1.03);
+  border-color: #62a3a6;
+}
+
+/* Estrellas */
+.review-stars {
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+  z-index: 1;
+  position: relative;
+}
+
+.review-stars i {
+  color: #cbd5e0;
+  margin-right: 4px;
+  transition: color 0.2s;
+}
+
+.review-stars i.filled {
+  color: #f6c700;
+  text-shadow: 0 1px 4px #f6c70044;
+}
+
+/* Texto */
+.review-comment {
+  font-style: italic;
+  color: #3b4d5c;
+  margin-bottom: 0.8rem;
+  font-size: 1.08rem;
+  z-index: 1;
+  position: relative;
+}
+
+.review-author {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #62a3a6;
+  letter-spacing: 0.5px;
+  z-index: 1;
+  position: relative;
+  margin-top: 0.5rem;
+}
+
+/* Opcional: animación de entrada */
+.review-card {
+  animation: fadeInUp 0.7s cubic-bezier(.39,.575,.565,1) both;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,8 +1,9 @@
 import { Home, FileText, Star, History, Bell } from "lucide-react";
 import { Link } from "react-router-dom";   // 👈 Importa Link
-import "../css/SidebarEmplo.css";
 
-export default function Sidebar() {
+
+
+export default function SidebarEmplo() {
   return (
     <aside className="sidebar">
       <ul>
@@ -22,7 +23,7 @@ export default function Sidebar() {
           </Link>
         </li>
         <li>
-          <Link to="/resenas" className="sidebar-link">
+          <Link to="/reviews" className="sidebar-link">
             <History size={18} /> <span className="item-label">Reseñas</span>
           </Link>
         </li>
