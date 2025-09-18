@@ -12,7 +12,7 @@
   min-height: 100vh;
   transition: margin-left 0.3s ease;
   margin-left: 90px; /* espacio del sidebar cerrado */
-  padding-top: 7.5rem; /* aún más espacio debajo del header */
+  padding-top: 2rem; /* aún más espacio debajo del header */
 }
 
 /* Título */
@@ -96,7 +96,7 @@
   box-shadow: 0 4px 16px rgba(98,163,166,0.10), 0 1.5px 6px rgba(26,45,52,0.08);
   transition: box-shadow 0.3s, transform 0.3s;
   max-width: 340px;
-  min-width: 260px;
+  min-width: 260px; /* <-- corregido, faltaba el punto y coma */
   border: 1px solid #e2e8f0;
   position: relative;
   overflow: hidden;
@@ -174,4 +174,28 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+  width: 100%;
+  font-size: 1rem;
+  color: #253941;
+  margin-top: 6.6rem; /* aumenta el espacio debajo del header */
+  margin-bottom: 0.8rem;
+  padding-left: 10px;
+  font-family: var(--font-body, sans-serif);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.breadcrumbs a {
+  color: #62a3a6;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.breadcrumbs a:hover {
+  text-decoration: underline;
 }

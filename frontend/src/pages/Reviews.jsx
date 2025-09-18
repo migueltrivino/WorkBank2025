@@ -49,15 +49,23 @@ export default function Reviews() {
         setMenuOpen={setMenuOpen}
       />
 
+      {/* Breadcrumbs */}
+      <nav className="breadcrumbs">
+        <a href="/employer">Inicio</a>
+        <span> &gt; </span>
+        <span>Reseñas</span>
+      </nav>
+
       <div className="reviews-page">
         <SidebarEmplo />
         <main className="reviews-container">
-          {/* Mueve el título aquí */}
           <div
             className="reviews-header-title"
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
+              display: "flex",
+              alignItems: "center",
             }}
           >
             <div
@@ -71,10 +79,7 @@ export default function Reviews() {
               <div className="reviews-header-underline"></div>
             </div>
             <div className="reviews-filter">
-              <label
-                htmlFor="starFilter"
-                style={{ marginRight: "8px" }}
-              >
+              <label htmlFor="starFilter" style={{ marginRight: "8px" }}>
                 Filtrar por estrellas:
               </label>
               <select
@@ -96,10 +101,7 @@ export default function Reviews() {
               <div className="review-card" key={idx}>
                 <div className="review-stars">
                   {[...Array(5)].map((_, i) => (
-                    <i
-                      key={i}
-                      className={i < review.stars ? "filled" : ""}
-                    >
+                    <i key={i} className={i < review.stars ? "filled" : ""}>
                       ★
                     </i>
                   ))}
