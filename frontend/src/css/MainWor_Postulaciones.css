@@ -1,0 +1,59 @@
+.postulaciones-container {
+  flex: 1; /* ocupa todo el espacio restante */
+  padding: 2rem;
+  background-color: #f8f9fa;
+  min-height: 100vh; /* asegura que cubra toda la pantalla */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.titulo {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2d3436;
+  margin-bottom: 0.5rem;
+}
+
+.subtitulo {
+  font-size: 1rem;
+  color: #636e72;
+  margin-bottom: 2rem;
+}
+
+.postulaciones-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.postulacion-card {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-left: 6px solid #6c5ce7;
+}
+
+.postulacion-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+}
+
+.postulacion-card h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.8rem;
+  color: #2d3436;
+}
+
+.postulacion-card p {
+  font-size: 0.95rem;
+  margin: 0.4rem 0;
+  color: #2f3542;
+}
+
+.postulacion-card strong {
+  color: #0984e3;
+}

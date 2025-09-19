@@ -1,0 +1,143 @@
+.right-panel {
+    flex: 1.2;
+    background: var(--fondo-principal);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.right-panel h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--principal-oscuro);
+    margin-bottom: 25px;
+}
+
+.form {
+    width: 100%;
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.label {
+    font-size: 0.9rem;
+    color: var(--texto-secundario);
+    margin-bottom: 2px;
+}
+
+.input {
+    height: 46px;
+    padding: 3px 12px;
+    border: 1px solid var(--fondo-secundario);
+    border-radius: 10px;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    outline: none;
+    transition: 0.3s ease;
+}
+
+.input:focus {
+    border-color: var(--resaltar);
+    box-shadow: 0 0 6px rgba(30, 136, 229, 0.4);
+}
+
+.input::placeholder{
+    color: var(--extra);
+    opacity: 0.6;
+}
+
+.forgot {
+    font-size: 0.85rem;
+    text-align: center; 
+    margin: 5px 0;
+}
+
+.forgot a, .register a {
+    color: var(--resaltar);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.forgot a:hover {
+    color: var(--contraste);
+}
+
+.btn {
+    background: var(--resaltar);
+    border: none;
+    padding: 11px;
+    border-radius: 6px;
+    color: white;
+    font-size: 0.95rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn:hover {
+    background: linear-gradient(90deg, var(--resaltar), var(--contraste));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(30, 136, 229, 0.4);
+}
+
+.google-btn {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    justify-content: center;
+    gap: 12px;
+    background: #fff;
+    border: 1px solid var(--fondo-secundario);
+    color: var(--texto-secundario);
+}
+
+.google-btn img {
+    width: 28px;
+    height: 28px;
+}
+
+.google-btn:hover {
+    background: var(--extra);
+    color: white;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .right-panel {
+        flex: none;
+        width: 100%;
+        height: auto;
+        padding: 25px;
+    }
+}
+
+.mensaje {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 2px 20px;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 20px;
+    transition: all 0.3s ease-in-out;
+}
+
+.mensaje.exito {
+    background-color: #d4edda;  
+    color: #155724;             
+    border: 1px solid #c3e6cb;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.mensaje.error {
+    background-color: #f8d7da;  
+    color: #721c24;             
+    border: 1px solid #f5c6cb;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}

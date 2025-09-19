@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Raleway:wght@400;600&display=swap');
+
+
+
+:global(html, body) {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+:global(body) {
+  font-family: 'Raleway', sans-serif;
+  background: linear-gradient(135deg, #adbed3, #5274a1, #a9caf4);
+}
+
+.layout {
+  display: flex;
+  margin-top: 105px;
+  height: calc(100vh - 105px);
+  width: 100vw;
+}

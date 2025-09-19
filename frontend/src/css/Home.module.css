@@ -1,0 +1,12 @@
+/* Contenedor principal del Home */
+.container {
+  height: 100vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Clase reutilizable para secciones con anclas */
+.section {
+  scroll-margin-top: 80px;
+}

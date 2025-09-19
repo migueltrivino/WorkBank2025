@@ -1,0 +1,105 @@
+/* === SIDEBAR === */
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: inherit;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.sidebar-link:hover {
+  background: rgba(0,0,0,0.05);
+  cursor: pointer;
+}
+
+.sidebar {
+  width: 90px;
+  background: var(--secondary);
+  color: var(--white);
+  padding: 20px 12px;
+  overflow: hidden;
+  transition: width 0.3s ease;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  height: calc(100vh - 105px);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sidebar:hover { width: 230px; }
+
+/* Secciones */
+.sidebar small {
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #cfd8dc;
+  margin: 15px 0 8px 12px;
+  opacity: 0.8;
+  transition: opacity 0.3s;
+}
+
+.sidebar ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 10px 12px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+/* Hover efecto */
+.sidebar li:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(4px);
+}
+
+/* Icono activo */
+.sidebar li.active {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.sidebar li.active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10%;
+  bottom: 10%;
+  width: 4px;
+  border-radius: 4px;
+  background: #4fc3f7; /* barra azul brillante */
+}
+
+/* Label de ítems */
+.sidebar .item-label {
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-width 0.3s ease, opacity 0.25s ease, margin-left 0.3s;
+  margin-left: 0;
+}
+
+.sidebar:hover .item-label {
+  max-width: 180px;
+  opacity: 1;
+  margin-left: 4px;
+}

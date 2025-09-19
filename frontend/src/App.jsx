@@ -1,0 +1,55 @@
+import { Routes, Route } from "react-router-dom";
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
+
+import Home from "./pages/Home"
+import Registro from "./pages/Registro";
+import IniciarSesion from "./pages/IniciarSesion"
+
+
+import EmployerDashboard from "./pages/Employer";
+import EmployerOffers from "./pages/EmployerOffers";
+import EmployerPostulaciones from "./pages/EmployerPostulaciones";
+import EmployerResenas from "./pages/EmployerResenas";
+import CompleteProfile from "./pages/CompleteProfile";
+
+
+import WorkerInicio from "./pages/WorkerInicio";
+import WorkerOfertas from "./pages/WorkerOfertas";
+import WorkerPostulaciones from "./pages/WorkerPostulaciones";
+import WorkerResenas from "./pages/WorkerResenas";
+import WorkerHistorial from "./pages/WorkerHistorial";
+
+
+function App() {
+  return (
+    <>
+
+      <Routes>
+        <Route path="/" element={<Home/>}/>
+
+        {/*Rutas employer*/}
+        <Route path="/employer" element={<EmployerDashboard />} />
+        <Route path="/employeroffers" element={<EmployerOffers />} />
+        <Route path="/postulaciones" element={<EmployerPostulaciones />} />
+        <Route path="/resenas" element={<EmployerResenas />} />
+        <Route path="/profile" element={<CompleteProfile />} />
+
+        {/*Rutas worker*/}
+        <Route path="/worker" element={<WorkerInicio />} />
+        <Route path="/worker/ofertas" element={<WorkerOfertas />} />
+        <Route path="/worker/postulaciones" element={<WorkerPostulaciones />} />
+        <Route path="/worker/resenas" element={<WorkerResenas />} />
+        <Route path="/worker/historial" element={<WorkerHistorial />} />
+
+        {/*Rutas auth*/}
+        <Route path="/registro" element={<Registro />} />
+        <Route path="/iniciarsesion" element={<IniciarSesion />} />
+      
+
+      </Routes>
+    </>
+  );
+}
+
+export default App;

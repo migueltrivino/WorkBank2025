@@ -1,0 +1,30 @@
+:root {
+  --principal-oscuro: #212529;
+  --texto-secundario: #37474F;
+  --resaltar: #1E88E5;
+  --detalles: #607D8B;
+  --fondo-principal: #ECEFF1;
+  --fondo-secundario: #B0BEC5;
+  --contraste: #4B5D67;
+  --extra: #90A4AE;
+  
+  --primary: #1a2d34;
+  --secondary: #253941;
+  --text-light: #fff;
+  --text-muted: #ccc;
+  --accent: #62a3a6;
+  --font-title: 'Playfair Display', serif;
+  --font-body: 'Roboto', sans-serif;
+
+/* Colores provisionales */
+  --light: #f0f0f0;
+  --white: #ffffff;
+  --navbar: #37474F;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
