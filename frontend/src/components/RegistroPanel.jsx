@@ -1,9 +1,12 @@
+// src/components/RegistroPanel.jsx
 import React, { useState } from "react";
 import styles from "../css/RegistroPanel.module.css";
 import { useNavigate } from "react-router-dom";
+import useToast from "./toast/useToast";
 
 function RegistroPanel() {
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const [formData, setFormData] = useState({
     nombre: "",
@@ -17,22 +20,17 @@ function RegistroPanel() {
     documentoPdf: null,
   });
 
-  const [mensaje, setMensaje] = useState("");
-  const [tipoMensaje, setTipoMensaje] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [errors, setErrors] = useState({});
 
-  // Manejo de inputs de texto y selects
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setFormData((prev) => ({
       ...prev,
       [name]: name === "rol" ? Number(value) : value,
     }));
 
-    // si había error en ese campo, lo quitamos
     setErrors((prev) => {
       if (!prev || !prev[name]) return prev;
       const next = { ...prev };
@@ -41,66 +39,40 @@ function RegistroPanel() {
     });
   };
 
-  // Manejo del PDF
   const handleFileChange = (e) => {
     setFormData({ ...formData, documentoPdf: e.target.files[0] });
   };
 
-  // Bloquear copiar/pegar en confirmación
   const handleBlockCopyPaste = (e) => {
     e.preventDefault();
-    setMensaje("❌ No puedes copiar/pegar en este campo");
-    setTipoMensaje("error");
+    showToast("❌ No puedes copiar/pegar en este campo", "error");
   };
 
-  // Validación al enviar
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
 
-    // Validaciones básicas
-    if (!formData.nombre || !formData.nombre.trim())
-      newErrors.nombre = "El nombre es obligatorio";
-    if (!formData.apellido || !formData.apellido.trim())
-      newErrors.apellido = "El apellido es obligatorio";
-    if (!formData.email || !formData.email.trim())
-      newErrors.email = "El correo es obligatorio";
-    if (!formData.numeroDocumento || !formData.numeroDocumento.trim())
+    // Validaciones locales
+    if (!formData.nombre.trim()) newErrors.nombre = "El nombre es obligatorio";
+    if (!formData.apellido.trim()) newErrors.apellido = "El apellido es obligatorio";
+    if (!formData.email.trim()) newErrors.email = "El correo es obligatorio";
+    if (!formData.numeroDocumento.trim())
       newErrors.numeroDocumento = "El número de documento es obligatorio";
-    if (!formData.user_password)
-      newErrors.user_password = "La contraseña es obligatoria";
-    if (!formData.confirmarPassword)
-      newErrors.confirmarPassword = "Debes confirmar la contraseña";
+    if (!formData.user_password) newErrors.user_password = "La contraseña es obligatoria";
+    if (!formData.confirmarPassword) newErrors.confirmarPassword = "Debes confirmar la contraseña";
 
-    // Longitud contraseña
     if (
-      formData.user_password &&
-      (formData.user_password.length < 8 ||
-        formData.user_password.length > 20)
+      formData.user_password.length < 8 ||
+      formData.user_password.length > 20
     ) {
-      newErrors.user_password =
-        "La contraseña debe tener entre 8 y 20 caracteres";
+      newErrors.user_password = "La contraseña debe tener entre 8 y 20 caracteres";
     }
-
-    // carácter especial
-    if (
-      formData.user_password &&
-      !/[!@#$%^&*(),.?":{}|<>]/.test(formData.user_password)
-    ) {
-      newErrors.user_password =
-        "La contraseña debe incluir al menos 1 carácter especial";
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.user_password)) {
+      newErrors.user_password = "La contraseña debe incluir al menos 1 carácter especial";
     }
-
-    // Coincidencia de contraseñas
-    if (
-      formData.user_password &&
-      formData.confirmarPassword &&
-      formData.user_password !== formData.confirmarPassword
-    ) {
+    if (formData.user_password !== formData.confirmarPassword) {
       newErrors.confirmarPassword = "Las contraseñas no coinciden";
     }
-
-    // Validación de archivo
     if (formData.documentoPdf) {
       const allowed = ["application/pdf", "image/png"];
       if (!allowed.includes(formData.documentoPdf.type)) {
@@ -108,20 +80,17 @@ function RegistroPanel() {
       }
     }
 
-    // Si hay errores
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-
-      // enfocar primer campo con error
       const firstErrorField = Object.keys(newErrors)[0];
       const el = document.getElementsByName(firstErrorField)[0];
       if (el && el.focus) el.focus();
       return;
     }
 
-    // limpiar errores si todo ok
     setErrors({});
 
+    // Enviar datos al backend
     try {
       const data = new FormData();
       for (let key in formData) {
@@ -136,19 +105,14 @@ function RegistroPanel() {
       const result = await res.json();
 
       if (res.ok) {
-        setMensaje(result.message);
-        setTipoMensaje("exito");
-        setTimeout(() => {
-          navigate("/iniciarsesion");
-        }, 1500);
+        showToast(result.message, "success"); // ✅ Mensaje de éxito
+        setTimeout(() => navigate("/iniciarsesion"), 1500);
       } else {
-        setMensaje(`❌ Error: ${result.message}`);
-        setTipoMensaje("error");
+        showToast(`❌ Error: ${result.message}`, "error"); // ✅ Mostrar error del backend
       }
     } catch (error) {
       console.error("Error:", error);
-      setMensaje("❌ Error de conexión con el servidor");
-      setTipoMensaje("error");
+      showToast("❌ Error de conexión con el servidor", "error"); // ✅ Error de conexión
     }
   };
 
@@ -207,11 +171,7 @@ function RegistroPanel() {
             onChange={handleChange}
             placeholder="****"
           />
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className={styles.showBtn}
-          >
+          <button type="button" onClick={() => setShowPassword(!showPassword)} className={styles.showBtn}>
             {showPassword ? "🙈" : "👁️"}
           </button>
         </div>
@@ -231,11 +191,7 @@ function RegistroPanel() {
             onCopy={handleBlockCopyPaste}
             onPaste={handleBlockCopyPaste}
           />
-          <button
-            type="button"
-            onClick={() => setShowConfirm(!showConfirm)}
-            className={styles.showBtn}
-          >
+          <button type="button" onClick={() => setShowConfirm(!showConfirm)} className={styles.showBtn}>
             {showConfirm ? "🙈" : "👁️"}
           </button>
         </div>
@@ -303,10 +259,6 @@ function RegistroPanel() {
       <div className={styles.login}>
         ¿Ya tienes cuenta? <a href="/iniciarsesion">Inicia sesión</a>
       </div>
-
-      {mensaje && (
-        <p className={`${styles.mensaje} ${styles[tipoMensaje]}`}>{mensaje}</p>
-      )}
     </div>
   );
 }

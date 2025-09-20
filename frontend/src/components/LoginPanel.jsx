@@ -3,25 +3,24 @@ import styles from "../css/LoginPanel.module.css";
 import googleLogo from '../assets/google.png';
 import { useNavigate } from 'react-router-dom';
 import { saveToken, saveUser } from '../utils/auth';
+import useToast from "../components/toast/useToast"; // <-- importamos hook de Toast
 
 function LoginPanel() {
   const navigate = useNavigate();
+  const { showToast } = useToast(); // <-- usamos showToast
 
   const [formData, setFormData] = useState({
     email: "",
     user_password: ""
   });
 
-  const [mensaje, setMensaje] = useState("");
-  const [tipoMensaje, setTipoMensaje] = useState("");
   const [errors, setErrors] = useState({});
 
-  // Manejo de cambios en inputs y limpieza de errores previos
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
 
-    // Si había error en ese campo, lo quitamos
+    // Limpiar error si existe
     setErrors((prev) => {
       if (!prev || !prev[name]) return prev;
       const next = { ...prev };
@@ -30,10 +29,7 @@ function LoginPanel() {
     });
   };
 
-  // Validación de email con regex simple
-  const isValidEmail = (email) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  };
+  const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,7 +41,6 @@ function LoginPanel() {
 
     if (!formData.user_password.trim()) newErrors.user_password = "La contraseña es obligatoria";
 
-    // Si hay errores, mostramos y enfocamos el primer campo con error
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       const firstErrorField = Object.keys(newErrors)[0];
@@ -54,10 +49,8 @@ function LoginPanel() {
       return;
     }
 
-    // Limpiar errores si todo ok
     setErrors({});
 
-    // Mantener la funcionalidad básica existente
     try {
       const res = await fetch("http://localhost:4000/api/auth/login", {
         method: "POST",
@@ -68,14 +61,11 @@ function LoginPanel() {
       const result = await res.json();
 
       if (res.ok) {
-        // Guardar token y usuario
         saveToken(result.accessToken);
-        saveUser(result.user);  
+        saveUser(result.user);
 
-        setMensaje(result.message);
-        setTipoMensaje("exito");
+        showToast(result.message, "success"); // <-- mostramos alerta de éxito
 
-        // Redirección según rol
         setTimeout(() => {
           switch(result.user.rol) {
             case 1:
@@ -88,16 +78,13 @@ function LoginPanel() {
               navigate("/");
           }
         }, 1500);
-
       } else {
-        setMensaje(`❌ ${result.message}`);
-        setTipoMensaje("error");
+        showToast(`❌ ${result.message}`, "error"); // <-- alerta de error
       }
 
     } catch (error) {
       console.error(error);
-      setMensaje("❌ Error de conexión con el servidor");
-      setTipoMensaje("error");
+      showToast("❌ Error de conexión con el servidor", "error"); // <-- alerta de conexión
     }
   };
 
@@ -135,9 +122,7 @@ function LoginPanel() {
           <a href="#">¿Olvidó su contraseña?</a>
         </div>
 
-        <button type="submit" className={styles.btn}>
-          Ingresar
-        </button>
+        <button type="submit" className={styles.btn}>Ingresar</button>
 
         <button type="button" className={`${styles.btn} ${styles['google-btn']}`}>
           <img src={googleLogo} alt="Google" /> Continuar con Google
@@ -146,7 +131,6 @@ function LoginPanel() {
 
       <div className={styles.register}>
         ¿Nuevo en Workbank? <a href="/registro">Crea tu cuenta</a>
-        {mensaje && <p className={`${styles.mensaje} ${styles[tipoMensaje]}`}>{mensaje}</p>}
       </div>
     </div>
   );
