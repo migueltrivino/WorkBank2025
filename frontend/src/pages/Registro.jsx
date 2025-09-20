@@ -1,13 +1,17 @@
+// src/pages/Registro.jsx
 import React from "react";
-import RegistroPanel from "../components/RegistroPanel";
+import RegistroFlow from "../components/RegistroFlow";
 import InformacionFormularios from "../components/InformacionFormularios";
-import styles from '../css/Container.module.css'
+import styles from "../css/Container.module.css";
 
 function Registro() {
   return (
     <div className={styles.container}>
-      <RegistroPanel/>
-      <InformacionFormularios/>
+      {/* Flujo completo de registro */}
+      <RegistroFlow />
+
+      {/* Sección informativa */}
+      <InformacionFormularios />
     </div>
   );
 }

@@ -3,14 +3,14 @@ const { hashPassword, comparePassword } = require("../utils/hashPassword");
 const { createAccessToken } = require("../utils/security");
 
 // =======================
-// Función que registra al usuario
+// Función que registra al usuario (Paso 1 - básicos)
 // =======================
-async function registerUser(userData, documentoPdf) {
-  const { nombre, apellido, email, user_password, tipoDocumento, numeroDocumento, rol } = userData;
+async function registerUser(userData) {
+  const { nombre, apellido, email, user_password } = userData;
 
-  // Validación de campos
-  if (!nombre || !apellido || !email || !user_password || !tipoDocumento || !numeroDocumento || !rol || !documentoPdf) {
-    throw new Error("Todos los campos son obligatorios");
+  // Validación SOLO de lo esencial en el primer paso
+  if (!nombre || !apellido || !email || !user_password) {
+    throw new Error("Nombre, apellido, email y contraseña son obligatorios");
   }
 
   // Verificar si el usuario ya existe
@@ -22,37 +22,36 @@ async function registerUser(userData, documentoPdf) {
   // Encriptar contraseña
   const hashedPassword = await hashPassword(user_password);
 
-  // Crear usuario
+  // Crear usuario con lo básico, los demás campos quedan NULL/DEFAULT
   const newUser = await User.create({
     nombre,
     apellido,
-    email, // 👈 viene del frontend
+    correo: email, // 👈 asegúrate de que tu tabla use "correo"
     user_password: hashedPassword,
-    tipoDocumento,
-    numeroDocumento,
-    rol,
-    documentoPdf,
+    tipoDocumento: null,
+    numeroDocumento: null,
+    rol: null,
+    documentoPdf: null,
+    confirmado: false, // 👈 para confirmación por email
   });
 
   return newUser;
 }
 
 // =======================
-// Controller: Registro
+// Controller: Registro (Paso 1)
 // =======================
 async function register(req, res) {
   try {
-    const newUser = await registerUser(req.body, req.file?.filename);
+    const newUser = await registerUser(req.body);
 
     return res.status(201).json({
-      message: "Usuario registrado con éxito",
+      message: "Usuario registrado con éxito (Paso 1)",
       user: {
         id_usuario: newUser.id_usuario,
         nombre: newUser.nombre,
         apellido: newUser.apellido,
-        correo: newUser.correo, // ⚡ siempre será el email, pero en la columna correo
-        rol: newUser.rol,
-        documentoPdf: newUser.documentoPdf,
+        correo: newUser.correo,
       },
     });
   } catch (error) {

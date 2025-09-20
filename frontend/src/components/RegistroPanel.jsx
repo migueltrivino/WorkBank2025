@@ -4,7 +4,7 @@ import styles from "../css/RegistroPanel.module.css";
 import { useNavigate } from "react-router-dom";
 import useToast from "./toast/useToast";
 
-function RegistroPanel() {
+function RegistroPanel({ onNext }) {
   const navigate = useNavigate();
   const { showToast } = useToast();
 
@@ -24,6 +24,7 @@ function RegistroPanel() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [errors, setErrors] = useState({});
 
+  // 🔹 Manejo de cambios
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -31,6 +32,7 @@ function RegistroPanel() {
       [name]: name === "rol" ? Number(value) : value,
     }));
 
+    // Limpia error de ese campo si el user lo corrige
     setErrors((prev) => {
       if (!prev || !prev[name]) return prev;
       const next = { ...prev };
@@ -48,77 +50,75 @@ function RegistroPanel() {
     showToast("❌ No puedes copiar/pegar en este campo", "error");
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const newErrors = {};
+  // 🔹 Validaciones + Envío al backend
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const newErrors = {};
 
-    // Validaciones locales
-    if (!formData.nombre.trim()) newErrors.nombre = "El nombre es obligatorio";
-    if (!formData.apellido.trim()) newErrors.apellido = "El apellido es obligatorio";
-    if (!formData.email.trim()) newErrors.email = "El correo es obligatorio";
-    if (!formData.numeroDocumento.trim())
-      newErrors.numeroDocumento = "El número de documento es obligatorio";
-    if (!formData.user_password) newErrors.user_password = "La contraseña es obligatoria";
-    if (!formData.confirmarPassword) newErrors.confirmarPassword = "Debes confirmar la contraseña";
+  // 🔹 Validaciones locales (igual que antes)
+  if (!formData.nombre.trim()) newErrors.nombre = "El nombre es obligatorio";
+  if (!formData.apellido.trim()) newErrors.apellido = "El apellido es obligatorio";
+  if (!formData.email.trim()) newErrors.email = "El correo es obligatorio";
+  if (!formData.numeroDocumento.trim()) newErrors.numeroDocumento = "El número de documento es obligatorio";
+  if (!formData.user_password) newErrors.user_password = "La contraseña es obligatoria";
+  if (!formData.confirmarPassword) newErrors.confirmarPassword = "Debes confirmar la contraseña";
 
-    if (
-      formData.user_password.length < 8 ||
-      formData.user_password.length > 20
-    ) {
-      newErrors.user_password = "La contraseña debe tener entre 8 y 20 caracteres";
+  if (formData.user_password.length < 8 || formData.user_password.length > 20)
+    newErrors.user_password = "La contraseña debe tener entre 8 y 20 caracteres";
+  if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.user_password))
+    newErrors.user_password = "La contraseña debe incluir al menos 1 carácter especial";
+  if (formData.user_password !== formData.confirmarPassword)
+    newErrors.confirmarPassword = "Las contraseñas no coinciden";
+
+  if (formData.documentoPdf) {
+    const allowed = ["application/pdf", "image/png"];
+    if (!allowed.includes(formData.documentoPdf.type)) newErrors.documentoPdf = "Solo se permiten archivos PDF o PNG";
+  }
+
+  if (Object.keys(newErrors).length > 0) {
+    setErrors(newErrors);
+    const firstErrorField = Object.keys(newErrors)[0];
+    const el = document.getElementsByName(firstErrorField)[0];
+    if (el && el.focus) el.focus();
+    return;
+  }
+
+  setErrors({});
+
+  try {
+    const data = new FormData();
+    for (let key in formData) data.append(key, formData[key]);
+
+    const res = await fetch("http://localhost:4000/api/auth/register", {
+      method: "POST",
+      body: data,
+    });
+
+    const result = await res.json();
+
+  if (res.ok) {
+    // 🔹 Mostramos el toast de éxito
+    showToast(result.message || "Usuario registrado correctamente", "success");
+
+    const idUsuario = result.user?.id_usuario ?? null;
+
+    // 🔹 Espera un pequeño momento antes de avanzar (opcional)
+    setTimeout(() => {
+      if (onNext) onNext(idUsuario);
+    }, 300); // 0.3s de retraso para que el usuario vea el toast
+  } else {
+      showToast(`❌ Error: ${result.message}`, "error");
     }
-    if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.user_password)) {
-      newErrors.user_password = "La contraseña debe incluir al menos 1 carácter especial";
-    }
-    if (formData.user_password !== formData.confirmarPassword) {
-      newErrors.confirmarPassword = "Las contraseñas no coinciden";
-    }
-    if (formData.documentoPdf) {
-      const allowed = ["application/pdf", "image/png"];
-      if (!allowed.includes(formData.documentoPdf.type)) {
-        newErrors.documentoPdf = "Solo se permiten archivos PDF o PNG";
-      }
-    }
+  } catch (error) {
+    console.error("Error:", error);
+    showToast("❌ Error de conexión con el servidor", "error");
+  }
+};
 
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      const firstErrorField = Object.keys(newErrors)[0];
-      const el = document.getElementsByName(firstErrorField)[0];
-      if (el && el.focus) el.focus();
-      return;
-    }
-
-    setErrors({});
-
-    // Enviar datos al backend
-    try {
-      const data = new FormData();
-      for (let key in formData) {
-        data.append(key, formData[key]);
-      }
-
-      const res = await fetch("http://localhost:4000/api/auth/register", {
-        method: "POST",
-        body: data,
-      });
-
-      const result = await res.json();
-
-      if (res.ok) {
-        showToast(result.message, "success"); // ✅ Mensaje de éxito
-        setTimeout(() => navigate("/iniciarsesion"), 1500);
-      } else {
-        showToast(`❌ Error: ${result.message}`, "error"); // ✅ Mostrar error del backend
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      showToast("❌ Error de conexión con el servidor", "error"); // ✅ Error de conexión
-    }
-  };
-
+  // 🔹 Render del formulario inicial
   return (
     <div className={styles["left-panel"]}>
-      <h2>Registro</h2>
+      <h2>Registro – Paso 1: Datos Básicos</h2>
       <form className={styles.form} onSubmit={handleSubmit}>
         {/* Nombre */}
         <label className={styles.label} htmlFor="nombre">Nombre</label>
@@ -253,7 +253,7 @@ function RegistroPanel() {
         />
         {errors.documentoPdf && <span className={styles.errorField}>{errors.documentoPdf}</span>}
 
-        <button type="submit" className={styles.btn}>Ingresar</button>
+        <button type="submit" className={styles.btn}>Continuar</button>
       </form>
 
       <div className={styles.login}>
