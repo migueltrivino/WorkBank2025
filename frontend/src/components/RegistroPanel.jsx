@@ -11,28 +11,36 @@ function RegistroPanel({ onNext }) {
   const [formData, setFormData] = useState({
     nombre: "",
     apellido: "",
-    email: "",
+    correo: "",          // ✅ coincide con la BD
     user_password: "",
     confirmarPassword: "",
-    tipoDocumento: "C.C",
-    numeroDocumento: "",
-    rol: "2",
-    documentoPdf: null,
+    tipo_documento: "C.C", // ✅ coincide con la BD
+    numero_documento: "",  // ✅ coincide con la BD
+    id_rol: 2,             // ✅ coincide con la BD (2 = trabajador)
+    documento_pdf: null,   // ✅ coincide con la BD
+    imagen_perfil: null,   // opcional en la BD
+    descripcion: "",
+    aceptarTerminos: false
   });
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [errors, setErrors] = useState({});
 
-  // 🔹 Manejo de cambios
+  // Manejo de cambios
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "rol" ? Number(value) : value,
+      [name]:
+        name === "id_rol"
+          ? Number(value)
+          : type === "checkbox"
+          ? checked
+          : value,
     }));
 
-    // Limpia error de ese campo si el user lo corrige
+    // limpiar error si lo corrige
     setErrors((prev) => {
       if (!prev || !prev[name]) return prev;
       const next = { ...prev };
@@ -42,7 +50,7 @@ function RegistroPanel({ onNext }) {
   };
 
   const handleFileChange = (e) => {
-    setFormData({ ...formData, documentoPdf: e.target.files[0] });
+    setFormData({ ...formData, documento_pdf: e.target.files[0] });
   };
 
   const handleBlockCopyPaste = (e) => {
@@ -50,72 +58,84 @@ function RegistroPanel({ onNext }) {
     showToast("❌ No puedes copiar/pegar en este campo", "error");
   };
 
-  // 🔹 Validaciones + Envío al backend
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  const newErrors = {};
+  // Validaciones + envío
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newErrors = {};
 
-  // 🔹 Validaciones locales (igual que antes)
-  if (!formData.nombre.trim()) newErrors.nombre = "El nombre es obligatorio";
-  if (!formData.apellido.trim()) newErrors.apellido = "El apellido es obligatorio";
-  if (!formData.email.trim()) newErrors.email = "El correo es obligatorio";
-  if (!formData.numeroDocumento.trim()) newErrors.numeroDocumento = "El número de documento es obligatorio";
-  if (!formData.user_password) newErrors.user_password = "La contraseña es obligatoria";
-  if (!formData.confirmarPassword) newErrors.confirmarPassword = "Debes confirmar la contraseña";
+    // validaciones (usando los nombres actuales del state)
+    if (!formData.nombre.trim()) newErrors.nombre = "El nombre es obligatorio";
+    if (!formData.apellido.trim()) newErrors.apellido = "El apellido es obligatorio";
+    if (!formData.correo.trim()) newErrors.correo = "El correo es obligatorio";
+    if (!formData.numero_documento.trim()) newErrors.numero_documento = "El número de documento es obligatorio";
+    if (!formData.user_password) newErrors.user_password = "La contraseña es obligatoria";
+    if (!formData.confirmarPassword) newErrors.confirmarPassword = "Debes confirmar la contraseña";
 
-  if (formData.user_password.length < 8 || formData.user_password.length > 20)
-    newErrors.user_password = "La contraseña debe tener entre 8 y 20 caracteres";
-  if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.user_password))
-    newErrors.user_password = "La contraseña debe incluir al menos 1 carácter especial";
-  if (formData.user_password !== formData.confirmarPassword)
-    newErrors.confirmarPassword = "Las contraseñas no coinciden";
+    if (formData.user_password && (formData.user_password.length < 8 || formData.user_password.length > 20))
+      newErrors.user_password = "La contraseña debe tener entre 8 y 20 caracteres";
+    if (formData.user_password && !/[!@#$%^&*(),.?\":{}|<>]/.test(formData.user_password))
+      newErrors.user_password = "La contraseña debe incluir al menos 1 carácter especial";
+    if (formData.user_password !== formData.confirmarPassword)
+      newErrors.confirmarPassword = "Las contraseñas no coinciden";
 
-  if (formData.documentoPdf) {
-    const allowed = ["application/pdf", "image/png"];
-    if (!allowed.includes(formData.documentoPdf.type)) newErrors.documentoPdf = "Solo se permiten archivos PDF o PNG";
-  }
-
-  if (Object.keys(newErrors).length > 0) {
-    setErrors(newErrors);
-    const firstErrorField = Object.keys(newErrors)[0];
-    const el = document.getElementsByName(firstErrorField)[0];
-    if (el && el.focus) el.focus();
-    return;
-  }
-
-  setErrors({});
-
-  try {
-    const data = new FormData();
-    for (let key in formData) data.append(key, formData[key]);
-
-    const res = await fetch("http://localhost:4000/api/auth/register", {
-      method: "POST",
-      body: data,
-    });
-
-    const result = await res.json();
-
-  if (res.ok) {
-    // 🔹 Mostramos el toast de éxito
-    showToast(result.message || "Usuario registrado correctamente", "success");
-
-    const idUsuario = result.user?.id_usuario ?? null;
-
-    // 🔹 Espera un pequeño momento antes de avanzar (opcional)
-    setTimeout(() => {
-      if (onNext) onNext(idUsuario);
-    }, 300); // 0.3s de retraso para que el usuario vea el toast
-  } else {
-      showToast(`❌ Error: ${result.message}`, "error");
+    // Validación de PDF obligatorio
+    if (!formData.documento_pdf) {
+      newErrors.documento_pdf = "El documento PDF es obligatorio";
+    } else {
+      const allowed = ["application/pdf", "image/png"];
+      if (!allowed.includes(formData.documento_pdf.type))
+        newErrors.documento_pdf = "Solo se permiten archivos PDF o PNG";
     }
-  } catch (error) {
-    console.error("Error:", error);
-    showToast("❌ Error de conexión con el servidor", "error");
-  }
-};
 
-  // 🔹 Render del formulario inicial
+
+    if (!formData.aceptarTerminos)
+      newErrors.aceptarTerminos = "Debes aceptar los términos y condiciones";
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      const first = Object.keys(newErrors)[0];
+      const el = document.getElementsByName(first)[0];
+      if (el && el.focus) el.focus();
+      return;
+    }
+
+    setErrors({});
+
+    try {
+      const data = new FormData();
+      // append solo los campos que debe recibir el backend (evitar undefined)
+      data.append("nombre", formData.nombre);
+      data.append("apellido", formData.apellido);
+      data.append("correo", formData.correo);
+      data.append("user_password", formData.user_password);
+      data.append("tipo_documento", formData.tipo_documento);
+      data.append("numero_documento", formData.numero_documento);
+      data.append("id_rol", formData.id_rol);
+
+      if (formData.documento_pdf) {
+        data.append("documento_pdf", formData.documento_pdf);
+      }
+
+      const res = await fetch("http://localhost:4000/api/auth/register", {
+        method: "POST",
+        body: data,
+      });
+
+      const result = await res.json();
+
+      if (res.ok) {
+        showToast(result.message || "Usuario registrado correctamente", "success");
+        const idUsuario = result.user?.id_usuario ?? null;
+        setTimeout(() => { if (onNext) onNext(idUsuario); }, 300);
+      } else {
+        showToast(`❌ Error: ${result.message}`, "error");
+      }
+    } catch (err) {
+      console.error("Error:", err);
+      showToast("❌ Error de conexión con el servidor", "error");
+    }
+  };
+
   return (
     <div className={styles["left-panel"]}>
       <h2>Registro – Paso 1: Datos Básicos</h2>
@@ -147,17 +167,17 @@ const handleSubmit = async (e) => {
         {errors.apellido && <span className={styles.errorField}>{errors.apellido}</span>}
 
         {/* Correo */}
-        <label className={styles.label} htmlFor="email">Correo electrónico</label>
+        <label className={styles.label} htmlFor="correo">Correo electrónico</label>
         <input
-          className={`${styles.input} ${errors.email ? styles.inputError : ""}`}
+          className={`${styles.input} ${errors.correo ? styles.inputError : ""}`}
           type="email"
-          id="email"
-          name="email"
-          value={formData.email}
+          id="correo"
+          name="correo"
+          value={formData.correo}
           onChange={handleChange}
           placeholder="ejemplo@gmail.com"
         />
-        {errors.email && <span className={styles.errorField}>{errors.email}</span>}
+        {errors.correo && <span className={styles.errorField}>{errors.correo}</span>}
 
         {/* Contraseña */}
         <label className={styles.label} htmlFor="user_password">Contraseña</label>
@@ -202,10 +222,10 @@ const handleSubmit = async (e) => {
           <legend>Documento</legend>
           <div className={styles.documento}>
             <select
-              className={`${styles.select} ${errors.tipoDocumento ? styles.selectError : ""}`}
-              id="tipoDocumento"
-              name="tipoDocumento"
-              value={formData.tipoDocumento}
+              className={`${styles.select} ${errors.tipo_documento ? styles.selectError : ""}`}
+              id="tipo_documento"
+              name="tipo_documento"
+              value={formData.tipo_documento}
               onChange={handleChange}
             >
               <option value="C.C">C.C</option>
@@ -217,25 +237,25 @@ const handleSubmit = async (e) => {
             </select>
 
             <input
-              className={`${styles.input} ${errors.numeroDocumento ? styles.inputError : ""}`}
+              className={`${styles.input} ${errors.numero_documento ? styles.inputError : ""}`}
               type="text"
-              id="numeroDocumento"
-              name="numeroDocumento"
-              value={formData.numeroDocumento}
+              id="numero_documento"
+              name="numero_documento"
+              value={formData.numero_documento}
               onChange={handleChange}
               placeholder="Ejemplo: 123456789"
             />
           </div>
         </fieldset>
-        {errors.numeroDocumento && <span className={styles.errorField}>{errors.numeroDocumento}</span>}
+        {errors.numero_documento && <span className={styles.errorField}>{errors.numero_documento}</span>}
 
         {/* Rol */}
-        <label className={styles.label} htmlFor="rol">Soy...</label>
+        <label className={styles.label} htmlFor="id_rol">Soy...</label>
         <select
-          className={`${styles.select} ${errors.rol ? styles.selectError : ""}`}
-          id="rol"
-          name="rol"
-          value={formData.rol}
+          className={`${styles.select} ${errors.id_rol ? styles.selectError : ""}`}
+          id="id_rol"
+          name="id_rol"
+          value={formData.id_rol}
           onChange={handleChange}
         >
           <option value={2}>Trabajador</option>
@@ -243,15 +263,28 @@ const handleSubmit = async (e) => {
         </select>
 
         {/* PDF */}
-        <label className={styles.label} htmlFor="documentoPdf">Documento en PDF</label>
+        <label className={styles.label} htmlFor="documento_pdf">Documento en PDF</label>
         <input
-          className={`${styles.input} ${errors.documentoPdf ? styles.inputError : ""}`}
+          className={`${styles.input} ${errors.documento_pdf ? styles.inputError : ""}`}
           type="file"
-          id="documentoPdf"
-          name="documentoPdf"
+          id="documento_pdf"
+          name="documento_pdf"
           onChange={handleFileChange}
         />
-        {errors.documentoPdf && <span className={styles.errorField}>{errors.documentoPdf}</span>}
+        {errors.documento_pdf && <span className={styles.errorField}>{errors.documento_pdf}</span>}
+
+        {/* Aceptar términos */}
+        <label className={styles.checkboxLabel}>
+          <input
+            type="checkbox"
+            id="aceptarTerminos"
+            name="aceptarTerminos"
+            checked={formData.aceptarTerminos}
+            onChange={handleChange}
+          />
+          Acepto los términos y condiciones
+        </label>
+        {errors.aceptarTerminos && <span className={styles.errorField}>{errors.aceptarTerminos}</span>}
 
         <button type="submit" className={styles.btn}>Continuar</button>
       </form>

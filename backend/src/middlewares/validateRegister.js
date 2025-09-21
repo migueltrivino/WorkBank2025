@@ -1,8 +1,7 @@
-// middlewares/validateRegister.js
 module.exports = (req, res, next) => {
-  const { nombre, apellido, email, password, tipoDocumento, numeroDocumento, rol } = req.body;
+  const { nombre, apellido, correo, user_password, tipo_documento, numero_documento, rol } = req.body;
 
-  if (!nombre || !apellido || !email || !password || !tipoDocumento || !numeroDocumento || !rol) {
+  if (!nombre || !apellido || !correo || !user_password || !tipo_documento || !numero_documento || !rol) {
     return res.status(400).json({ message: "Todos los campos son obligatorios" });
   }
 

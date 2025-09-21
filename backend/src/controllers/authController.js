@@ -1,49 +1,60 @@
+// backend/src/controllers/authController.js
 const User = require("../models/user");
 const { hashPassword, comparePassword } = require("../utils/hashPassword");
 const { createAccessToken } = require("../utils/security");
 
-// =======================
-// Función que registra al usuario (Paso 1 - básicos)
-// =======================
+// Normaliza parámetros y registra:
 async function registerUser(userData) {
-  const { nombre, apellido, email, user_password } = userData;
+  const nombre = userData.nombre;
+  const apellido = userData.apellido;
+  const correo = userData.correo ?? userData.email;
+  const user_password_raw = userData.user_password ?? userData.password;
 
-  // Validación SOLO de lo esencial en el primer paso
-  if (!nombre || !apellido || !email || !user_password) {
-    throw new Error("Nombre, apellido, email y contraseña son obligatorios");
+  if (!nombre || !apellido || !correo || !user_password_raw) {
+    throw new Error("Nombre, apellido, correo y contraseña son obligatorios");
   }
 
-  // Verificar si el usuario ya existe
-  const userExists = await User.findByEmail(email);
+  // Verificar existencia
+  const userExists = await User.findByEmail(correo);
   if (userExists) {
     throw new Error("El correo ya está registrado");
   }
 
-  // Encriptar contraseña
-  const hashedPassword = await hashPassword(user_password);
+  // Encriptar
+  const hashedPassword = await hashPassword(user_password_raw);
 
-  // Crear usuario con lo básico, los demás campos quedan NULL/DEFAULT
+  // Llamamos a create con nombres que coinciden con la BD
   const newUser = await User.create({
     nombre,
     apellido,
-    correo: email, // 👈 asegúrate de que tu tabla use "correo"
+    correo,
     user_password: hashedPassword,
-    tipoDocumento: null,
-    numeroDocumento: null,
-    rol: null,
-    documentoPdf: null,
-    confirmado: false, // 👈 para confirmación por email
+    tipo_documento: userData.tipo_documento ?? userData.tipoDocumento ?? null,
+    numero_documento: userData.numero_documento ?? userData.numeroDocumento ?? null,
+    id_rol: userData.id_rol ?? userData.rol ?? null,
+    documento_pdf: userData.documento_pdf ?? userData.documentoPdf ?? null,
   });
 
   return newUser;
 }
 
-// =======================
-// Controller: Registro (Paso 1)
-// =======================
 async function register(req, res) {
   try {
-    const newUser = await registerUser(req.body);
+    const payload = { ...req.body };
+
+    // Si hay archivo PDF
+    if (req.file) {
+      payload.documento_pdf = req.file.filename;
+    }
+
+    // Forzar id_rol a número
+    if (payload.id_rol) {
+      payload.id_rol = Number(payload.id_rol);
+    }
+
+    console.log("Payload recibido en registro:", payload);
+
+    const newUser = await registerUser(payload);
 
     return res.status(201).json({
       message: "Usuario registrado con éxito (Paso 1)",
@@ -60,14 +71,12 @@ async function register(req, res) {
   }
 }
 
-// =======================
-// Controller: Login
-// =======================
 async function login(req, res) {
-  const { email, user_password } = req.body;
+  const { email, correo, user_password } = req.body;
+  const loginCorreo = correo ?? email;
 
   try {
-    const user = await User.findByEmail(email);
+    const user = await User.findByEmail(loginCorreo);
     if (!user) return res.status(400).json({ message: "Correo o contraseña incorrectos" });
 
     const isMatch = await comparePassword(user_password, user.user_password);

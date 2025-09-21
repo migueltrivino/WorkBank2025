@@ -1,34 +1,45 @@
+// backend/src/routes/authRoutes.js
 const express = require("express");
-const router = express.Router();
-const { register, login } = require("../controllers/authController");
 const multer = require("multer");
 const path = require("path");
+const { register, login } = require("../controllers/authController");
+const db = require("../config/db");
 
-// Configuración multer para PDFs y fotos
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, "uploads/"),
-  filename: (req, file, cb) => cb(null, Date.now() + "-" + file.originalname),
-});
-const upload = multer({ storage });
+const router = express.Router();
 
-// Ruta de registro con PDF
-router.post("/register", upload.single("documentoPdf"), register);
+// Multer: guardamos en src/uploads (app.js sirve esa carpeta)
+  const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, "src/uploads/"); // asegúrate que exista esta carpeta
+    },
+    filename: (req, file, cb) => {
+      cb(null, Date.now() + "-" + file.originalname);
+    },
+  });
+  const upload = multer({ storage });
+
+  router.post("/register", upload.single("documento_pdf"), register);
+
+
+// Login
 router.post("/login", login);
 
-// 🔹 Nueva ruta para subir foto + descripción
+// Subir foto + descripción (campo de archivo esperado: "foto")
 router.post("/upload-photo", upload.single("foto"), async (req, res) => {
   try {
     const { id_usuario, descripcion } = req.body;
-    const foto = req.file ? req.file.filename : null;
+    const fotoFilename = req.file ? req.file.filename : null;
 
-    // Aquí debes guardar en la DB la foto y descripción para el usuario
-    // Ejemplo con MySQL:
-    // await db.query("UPDATE usuarios SET foto = ?, descripcion = ? WHERE id_usuario = ?", [foto, descripcion, id_usuario]);
+    // Guardar en DB: columna que existe es "imagen_perfil" y "descripcion"
+    await db.execute(
+      "UPDATE usuarios SET imagen_perfil = ?, descripcion = ? WHERE id_usuario = ?",
+      [fotoFilename, descripcion ?? null, id_usuario]
+    );
 
-    res.json({ message: "Foto y descripción guardadas con éxito" });
+    return res.json({ message: "Foto y descripción guardadas con éxito" });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Error al guardar la foto" });
+    console.error("Error en /upload-photo:", err);
+    return res.status(500).json({ message: "Error al guardar la foto" });
   }
 });
 

@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import styles from "../css/RegistroFoto.module.css";
+// import styles from "../css/RegistroPanel.module.css";
 import useToast from "./toast/useToast";
 
 function RegistroFoto({ userId, onNext }) {
