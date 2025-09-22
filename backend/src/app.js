@@ -11,9 +11,6 @@ const postulacionRoutes = require("./routes/postulacionRoutes");
 const resenasRoutes = require("./routes/resenasRoutes");
 const historialRoutes = require("./routes/historialRoutes");
 
-// NUEVO: ruta dedicada para subir fotos
-const uploadPhotoRouter = require("./routes/upload-photo");
-
 const app = express();
 
 // Configuración de CORS
@@ -39,9 +36,6 @@ app.use("/api/ofertas", offersRoutes);
 app.use("/api/postulaciones", postulacionRoutes);
 app.use("/api/resenas", resenasRoutes);
 app.use("/api/historial", historialRoutes);
-
-// 🔹 NUEVO: montar la ruta dedicada para upload-photo
-app.use("/api/auth/upload-photo", uploadPhotoRouter);
 
 // Crear carpeta uploads si no existe
 const uploadsDir = path.join(__dirname, "uploads");

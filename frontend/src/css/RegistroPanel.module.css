@@ -112,6 +112,15 @@
   flex-wrap: wrap; /* que no se salga en pantallas pequeñas */
 }
 
+.input[type="file"] {
+  display: block;       /* asegurar que se vea */
+  width: 100%;          /* ocupa todo el ancho del formulario */
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 /* Botón */
 .btn {
   background: var(--resaltar);

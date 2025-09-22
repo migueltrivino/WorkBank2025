@@ -1,20 +1,22 @@
 import React, { useState } from "react";
 import RegistroPanel from "./RegistroPanel";
 import RegistroFoto from "./RegistroFoto";
-import ConfirmacionCorreo from "./ConfirmacionEmail";
+import ConfirmacionEmail from "./ConfirmacionEmail";
 
 function RegistroFlow() {
   const [step, setStep] = useState(1);       // Paso actual
   const [userId, setUserId] = useState(null); // Guardamos id_usuario del backend
+  const [userEmail, setUserEmail] = useState("");
 
   return (
     <div>
       {/* Paso 1: Registro básico */}
       {step === 1 && (
         <RegistroPanel
-          onNext={(id) => {
-            setUserId(id);  // ⚡ Guardamos userId
-            setStep(2);     // Avanzamos al Paso 2
+          onNext={(id, email) => {
+            setUserId(id);
+            setUserEmail(email);
+            setStep(2);
           }}
         />
       )}
@@ -28,7 +30,7 @@ function RegistroFlow() {
       )}
 
       {/* Paso 3: Confirmación de correo */}
-      {step === 3 && <ConfirmacionCorreo />}
+      {step === 3 && <ConfirmacionEmail email={userEmail} />}
     </div>
   );
 }

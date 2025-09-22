@@ -2,8 +2,31 @@
 const User = require("../models/user");
 const { hashPassword, comparePassword } = require("../utils/hashPassword");
 const { createAccessToken } = require("../utils/security");
+const sendEmail = require("../utils/sendEmail");
 
-// Normaliza parámetros y registra:
+// ------------------------
+// Generar código aleatorio 6 dígitos/alfanumérico
+function generateCode(length = 6) {
+  const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let code = "";
+  for (let i = 0; i < length; i++) {
+    code += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return code;
+}
+
+// ------------------------
+// Enviar correo de verificación
+async function sendVerificationEmail(user) {
+  const code = generateCode();
+  user.token_confirmacion = code;
+  await user.save(); // ⚡ debe existir método .save() en User
+  const body = `Tu código de verificación es: ${code}`;
+  await sendEmail(user.correo, "Verificación de correo Work Bank", body);
+}
+
+// ------------------------
+// Registro de usuario (fusionando todo)
 async function registerUser(userData) {
   const nombre = userData.nombre;
   const apellido = userData.apellido;
@@ -14,16 +37,22 @@ async function registerUser(userData) {
     throw new Error("Nombre, apellido, correo y contraseña son obligatorios");
   }
 
-  // Verificar existencia
+  // Revisar existencia
   const userExists = await User.findByEmail(correo);
+
   if (userExists) {
+    if (!userExists.correo_confirmado) {
+      // Reenvío de código si no ha confirmado
+      await sendVerificationEmail(userExists);
+      return userExists; // ⚡ permite que RegistroPanel avance con id_usuario
+    }
     throw new Error("El correo ya está registrado");
   }
 
-  // Encriptar
+  // Encriptar contraseña
   const hashedPassword = await hashPassword(user_password_raw);
 
-  // Llamamos a create con nombres que coinciden con la BD
+  // Crear usuario
   const newUser = await User.create({
     nombre,
     apellido,
@@ -35,29 +64,30 @@ async function registerUser(userData) {
     documento_pdf: userData.documento_pdf ?? userData.documentoPdf ?? null,
   });
 
-  return newUser;
+  // Recargar desde DB para tener métodos tipo .save()
+  const createdUser = await User.findByEmail(newUser.correo);
+
+  // Enviar correo de verificación
+  await sendVerificationEmail(createdUser);
+
+  return createdUser;
 }
 
+// ------------------------
+// Endpoint de registro
 async function register(req, res) {
   try {
     const payload = { ...req.body };
 
-    // Si hay archivo PDF
-    if (req.file) {
+    if (req.file && !payload.documento_pdf) {
       payload.documento_pdf = req.file.filename;
     }
 
-    // Forzar id_rol a número
-    if (payload.id_rol) {
-      payload.id_rol = Number(payload.id_rol);
-    }
-
-    console.log("Payload recibido en registro:", payload);
-
     const newUser = await registerUser(payload);
 
+    // ⚡ DEVUELVE siempre id_usuario correcto para RegistroPanel
     return res.status(201).json({
-      message: "Usuario registrado con éxito (Paso 1)",
+      message: "Usuario registrado con éxito (Paso 1). Se ha enviado un correo de verificación",
       user: {
         id_usuario: newUser.id_usuario,
         nombre: newUser.nombre,
@@ -71,16 +101,20 @@ async function register(req, res) {
   }
 }
 
+// ------------------------
+// Login
 async function login(req, res) {
   const { email, correo, user_password } = req.body;
   const loginCorreo = correo ?? email;
 
   try {
     const user = await User.findByEmail(loginCorreo);
-    if (!user) return res.status(400).json({ message: "Correo o contraseña incorrectos" });
+    if (!user)
+      return res.status(400).json({ message: "Correo o contraseña incorrectos" });
 
     const isMatch = await comparePassword(user_password, user.user_password);
-    if (!isMatch) return res.status(400).json({ message: "Correo o contraseña incorrectos" });
+    if (!isMatch)
+      return res.status(400).json({ message: "Correo o contraseña incorrectos" });
 
     const token = createAccessToken({
       id_usuario: user.id_usuario,
@@ -104,4 +138,55 @@ async function login(req, res) {
   }
 }
 
-module.exports = { register, registerUser, login };
+// ------------------------
+// Confirmación de correo
+async function confirmEmail(req, res) {
+  const { email, codigo } = req.body;
+  try {
+    const user = await User.findByEmail(email);
+    if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
+
+    if (user.correo_confirmado)
+      return res.status(400).json({ message: "Correo ya confirmado" });
+
+    if (user.token_confirmacion !== codigo)
+      return res.status(400).json({ message: "Código incorrecto" });
+
+    user.correo_confirmado = 1;
+    user.token_confirmacion = null;
+    await user.save();
+
+    res.json({ message: "Correo confirmado correctamente" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error al confirmar correo" });
+  }
+}
+
+// ------------------------
+// Reenviar código
+async function resendCode(req, res) {
+  const { email } = req.body;
+  try {
+    const user = await User.findByEmail(email);
+    if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
+
+    if (user.correo_confirmado)
+      return res.status(400).json({ message: "Correo ya confirmado" });
+
+    await sendVerificationEmail(user);
+    res.json({ message: "Código reenviado correctamente" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error al reenviar el código" });
+  }
+}
+
+module.exports = {
+  register,
+  registerUser,
+  login,
+  sendVerificationEmail,
+  confirmEmail,
+  resendCode,
+};
