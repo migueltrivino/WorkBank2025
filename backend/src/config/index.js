@@ -11,7 +11,7 @@ const DB_NAME = process.env.DB_NAME || "Work_Bank";
 
 const EMAIL_USER = process.env.EMAIL_USER;
 const EMAIL_PASS = process.env.EMAIL_PASS;
-
+ 
 module.exports = {
   JWT_SECRET,
   JWT_ALGORITHM,

@@ -12,7 +12,7 @@ const {
 const db = require("../config/db");
 
 const router = express.Router();
-
+ 
 // ------------------------
 // Crear carpeta uploads si no existe
 const uploadDir = "src/uploads";

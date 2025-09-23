@@ -65,7 +65,7 @@ function RegistroFoto({ userId, onNext }) {
     if (!foto) {
       showToast("❌ Debes subir o tomar una foto", "error");
       return;
-    }
+    } 
 
     try {
       setLoading(true);

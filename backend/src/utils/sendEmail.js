@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
     rejectUnauthorized: false, // ⚠️ Ignora errores de certificado en desarrollo
   },
 });
-
+ 
 // Función para enviar correo (manteniendo logs y manejo de errores)
 async function sendEmail(to, subject, text) {
   const mailOptions = {

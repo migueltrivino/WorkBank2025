@@ -15,7 +15,7 @@ function generateCode(length = 6) {
   }
   return code;
 }
-
+ 
 // ------------------------
 // Enviar correo de verificación
 async function sendVerificationEmail(user) {

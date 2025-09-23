@@ -33,4 +33,4 @@ function verifyAccessToken(token) {
   }
 }
 
-module.exports = { createAccessToken, verifyAccessToken };
+module.exports = { createAccessToken, verifyAccessToken }; 

@@ -15,7 +15,7 @@
   max-height: 95vh;
   overflow-y: auto;
   box-sizing: border-box;
-
+ 
   /* Animación de aparición global */
   opacity: 0;
   transform: translateY(20px);

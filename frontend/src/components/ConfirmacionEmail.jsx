@@ -121,7 +121,7 @@ function ConfirmacionEmail({ email }) {
   return (
     <div className={styles["form-panel"]}>
       <h2 className={styles.title}>✅ Registro completado</h2>
-      <p className={styles.text}>
+      <p className={styles.text}> 
         Hemos enviado un correo de confirmación a tu bandeja de entrada.
         Por favor, ingresa el código de verificación de 6 caracteres.
       </p>

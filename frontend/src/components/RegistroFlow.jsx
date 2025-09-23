@@ -31,7 +31,7 @@ function RegistroFlow() {
 
       {/* Paso 3: Confirmación de correo */}
       {step === 3 && userEmail ? ( // ⚡ Solo renderiza si email está definido
-        <ConfirmacionEmail email={userEmail} />
+        <ConfirmacionEmail email={userEmail} /> 
       ) : (
         <p>❌ No se pudo cargar la confirmación de correo.</p>
       )}

@@ -130,7 +130,7 @@ function RegistroPanel({ onNext }) {
         setTimeout(() => { if (onNext) onNext(idUsuario,  correoUsuario); }, 300);
       } else {
         showToast(`❌ Error: ${result.message}`, "error");
-      }
+      } 
     } catch (err) {
       console.error("Error:", err);
       showToast("❌ Error de conexión con el servidor", "error");
