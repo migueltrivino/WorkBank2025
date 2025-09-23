@@ -84,9 +84,9 @@ function ConfirmacionEmail({ email }) {
 
     try {
       setLoading(true);
-      await axios.post("http://localhost:4000/api/auth/confirm-email", { email, codigo: codeStr });
+      await axios.post("http://localhost:4000/api/auth/confirm-email", { correo: email, token: codeStr });
       showToast("✅ Correo confirmado correctamente!", "success");
-      navigate("/login");
+      navigate("/iniciarsesion", { replace: true });
     } catch (error) {
       showToast(
         `❌ ${error.response?.data?.message || "Código incorrecto"}`,

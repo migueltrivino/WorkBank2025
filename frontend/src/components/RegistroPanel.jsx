@@ -126,7 +126,8 @@ function RegistroPanel({ onNext }) {
       if (res.ok) {
         showToast(result.message || "Usuario registrado correctamente", "success");
         const idUsuario = result.user?.id_usuario ?? null;
-        setTimeout(() => { if (onNext) onNext(idUsuario); }, 300);
+        const correoUsuario = result.user?.correo ?? formData.correo; // <-- agregado
+        setTimeout(() => { if (onNext) onNext(idUsuario,  correoUsuario); }, 300);
       } else {
         showToast(`❌ Error: ${result.message}`, "error");
       }
