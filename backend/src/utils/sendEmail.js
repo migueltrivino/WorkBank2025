@@ -6,6 +6,7 @@ const nodemailer = require("nodemailer");
 console.log("EMAIL_USER:", process.env.EMAIL_USER);
 console.log("EMAIL_PASS:", process.env.EMAIL_PASS);
 
+// Crear transporter reutilizable
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -17,6 +18,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+// Función para enviar correo (manteniendo logs y manejo de errores)
 async function sendEmail(to, subject, text) {
   const mailOptions = {
     from: process.env.EMAIL_USER,
