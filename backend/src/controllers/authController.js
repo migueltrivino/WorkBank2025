@@ -42,7 +42,7 @@ async function registerUser(userData) {
   const existing = await User.findByEmail(correo);
   if (existing) {
     if (!existing.correo_confirmado) {
-      await sendVerificationEmail(existing);
+      // await sendVerificationEmail(existing);
       return existing;
     }
     throw new Error("El correo ya está registrado");
@@ -64,7 +64,7 @@ async function registerUser(userData) {
   });
 
   const createdUser = await User.findByEmail(newUser.correo);
-  await sendVerificationEmail(createdUser);
+  // await sendVerificationEmail(createdUser);
 
   return createdUser;
 }
@@ -82,7 +82,7 @@ async function register(req, res) {
     const newUser = await registerUser(payload);
 
     return res.status(201).json({
-      message: "Usuario registrado con éxito. Se ha enviado un correo de verificación",
+      message: "Usuario registrado con éxito. ",
       user: {
         id_usuario: newUser.id_usuario,
         nombre: newUser.nombre,
@@ -175,6 +175,30 @@ async function resendCode(req, res) {
   }
 }
 
+
+// ------------------------
+// Cancelar registro y eliminar usuario
+async function cancelRegistration(req, res) {
+  const { id_usuario } = req.body;
+  if (!id_usuario) return res.status(400).json({ message: "ID de usuario requerido" });
+
+  try {
+    const user = await User.findById(id_usuario);
+    if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
+
+    // ⚡ Solo borrar si no está confirmado
+    if (!user.correo_confirmado) {
+      await user.destroy(); // elimina el registro completo
+      return res.json({ message: "Registro cancelado y usuario eliminado" });
+    } else {
+      return res.status(400).json({ message: "Correo ya confirmado, no se puede eliminar" });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Error al cancelar registro" });
+  }
+}
+
 module.exports = {
   register,
   registerUser,
@@ -182,4 +206,5 @@ module.exports = {
   confirmEmail,
   resendCode,
   sendVerificationEmail,
+  cancelRegistration,
 };

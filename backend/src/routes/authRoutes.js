@@ -12,7 +12,7 @@ const {
 const db = require("../config/db");
 
 const router = express.Router();
- 
+
 // ------------------------
 // Crear carpeta uploads si no existe
 const uploadDir = "src/uploads";
@@ -37,13 +37,13 @@ router.post("/register", upload.single("documento_pdf"), async (req, res) => {
       payload.documento_pdf = req.file.filename;
     }
 
+    // ⚡ ahora registerUser maneja también generar y enviar código
     const newUser = await registerUser(payload);
 
     console.log("Nuevo usuario a crear:", newUser);
 
     return res.status(201).json({
-      message:
-        "Usuario registrado con éxito (Paso 1). Se ha enviado un correo de verificación",
+      message: "Usuario registrado con éxito (Paso 1). Revisa tu correo para el código de verificación.",
       user: {
         id_usuario: newUser.id_usuario,
         nombre: newUser.nombre,
@@ -90,5 +90,9 @@ router.post("/confirm-email", confirmEmail);
 
 // Reenviar código de verificación
 router.post("/resend-code", resendCode);
+
+// Cancelar registro y eliminar usuario  <-- nueva ruta
+const { cancelRegistration } = require("../controllers/authController");
+router.delete("/cancel-registration", cancelRegistration);
 
 module.exports = router;

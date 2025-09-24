@@ -8,29 +8,29 @@ import { useNavigate } from "react-router-dom";
 function ConfirmacionEmail({ email }) {
   const [codigo, setCodigo] = useState(["", "", "", "", "", ""]);
   const [loading, setLoading] = useState(false);
+  const [sending, setSending] = useState(false); // primer envío
+  const [sentOnce, setSentOnce] = useState(false); // controlar 1 solo uso
   const [resending, setResending] = useState(false);
-  const [resendCooldown, setResendCooldown] = useState(0); // contador cooldown
+  const [resendCooldown, setResendCooldown] = useState(0);
   const { showToast } = useToast();
   const navigate = useNavigate();
   const inputsRef = useRef([]);
 
-  // ⚡ Enviar código automáticamente al montar (usa resend-code)
   useEffect(() => {
-    const sendInitialCode = async () => {
+    const handleUnload = async (e) => {
+      if (!sentOnce) return; // solo si ya se envió código una vez
       try {
-        await axios.post("http://localhost:4000/api/auth/resend-code", { email });
-        showToast("📧 Código enviado a tu correo", "success");
-      } catch (error) {
-        showToast(
-          `❌ Error al enviar el código: ${
-            error.response?.data?.message || "Inténtalo más tarde"
-          }`,
-          "error"
-        );
+        await axios.post("http://localhost:4000/api/auth/cancel-code", { email });
+        console.log("Código cancelado por abandono de la página");
+      } catch (err) {
+        console.error("Error cancelando código:", err);
       }
     };
-    if (email) sendInitialCode();
-  }, [email]);
+
+    window.addEventListener("beforeunload", handleUnload);
+    return () => window.removeEventListener("beforeunload", handleUnload);
+  }, [email, sentOnce]);
+
 
   useEffect(() => {
     let timer;
@@ -74,6 +74,25 @@ function ConfirmacionEmail({ email }) {
     e.preventDefault();
   };
 
+  // Primer envío de código
+  const handleSendCode = async () => {
+    try {
+      setSending(true);
+      await axios.post("http://localhost:4000/api/auth/resend-code", { email });
+      showToast("📧 Código enviado a tu correo", "success");
+      setSentOnce(true); // bloquear el botón
+    } catch (error) {
+      showToast(
+        `❌ Error al enviar el código: ${
+          error.response?.data?.message || "Inténtalo más tarde"
+        }`,
+        "error"
+      );
+    } finally {
+      setSending(false);
+    }
+  };
+
   // Verificar código
   const handleVerify = async () => {
     const codeStr = codigo.join("");
@@ -84,7 +103,10 @@ function ConfirmacionEmail({ email }) {
 
     try {
       setLoading(true);
-      await axios.post("http://localhost:4000/api/auth/confirm-email", { correo: email, token: codeStr });
+      await axios.post("http://localhost:4000/api/auth/confirm-email", {
+        correo: email,
+        token: codeStr,
+      });
       showToast("✅ Correo confirmado correctamente!", "success");
       navigate("/iniciarsesion", { replace: true });
     } catch (error) {
@@ -104,7 +126,7 @@ function ConfirmacionEmail({ email }) {
       setResending(true);
       await axios.post("http://localhost:4000/api/auth/resend-code", { email });
       showToast("✅ Código reenviado correctamente!", "success");
-      setResendCooldown(30); // 30 segundos de cooldown
+      setResendCooldown(30); // cooldown 30s
     } catch (error) {
       showToast("❌ Error al reenviar el código", "error");
     } finally {
@@ -121,10 +143,20 @@ function ConfirmacionEmail({ email }) {
   return (
     <div className={styles["form-panel"]}>
       <h2 className={styles.title}>✅ Registro completado</h2>
-      <p className={styles.text}> 
-        Hemos enviado un correo de confirmación a tu bandeja de entrada.
-        Por favor, ingresa el código de verificación de 6 caracteres.
+      <p className={styles.text}>
+        Haz click en "Enviar código" para recibir tu código de verificación.
+        Luego ingrésalo a continuación.
       </p>
+
+      {/* Botón de primer envío */}
+      <button
+        className={styles.button}
+        onClick={handleSendCode}
+        disabled={sending || sentOnce}
+        style={{ backgroundColor: "#236AB9" }}
+      >
+        {sending ? "Enviando..." : sentOnce ? "Código enviado" : "Enviar código"}
+      </button>
 
       <div className={styles["code-inputs"]}>
         {codigo.map((value, index) => (

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styles from "../css/RegistroFoto.module.css";
 // import styles from "../css/RegistroPanel.module.css";
 import useToast from "./toast/useToast";
@@ -13,6 +13,28 @@ function RegistroFoto({ userId, onNext }) {
 
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+  
+  useEffect(() => {
+    const handleUnload = async (e) => {
+      if (foto) {
+        try {
+          await fetch("http://localhost:4000/api/auth/cancel-photo-upload", {
+            method: "DELETE", // ⚡ importante
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id_usuario: userId }),
+          });
+          console.log("Carga de foto cancelada por abandono");
+        } catch (err) {
+          console.error("Error cancelando carga de foto:", err);
+        }
+      }
+    };
+
+    window.addEventListener("beforeunload", handleUnload);
+
+    return () => window.removeEventListener("beforeunload", handleUnload);
+  }, [foto, userId]);
+  // -------------------------------------------------------------------
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
