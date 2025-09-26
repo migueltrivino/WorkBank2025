@@ -1,0 +1,135 @@
+CREATE DATABASE Ventas
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
+use Ventas;
+
+CREATE TABLE ciudad (
+    id_ciudad INT PRIMARY KEY AUTO_INCREMENT,
+    nombre_ciudad VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
+);
+
+CREATE TABLE region (
+    id_region INT PRIMARY KEY AUTO_INCREMENT,
+    nombre_region VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
+);
+
+CREATE TABLE pais (
+    id_pais INT PRIMARY KEY AUTO_INCREMENT,
+    nombre_pais VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
+);
+
+CREATE TABLE cliente (
+    id_cliente VARCHAR(10) PRIMARY KEY,
+    nombre_compania VARCHAR(150),
+    nombre_contacto VARCHAR(100),
+    cargo_contacto VARCHAR(50),
+    direccion VARCHAR(150),
+    id_ciudad INT,
+    id_region INT,
+    codigo_postal VARCHAR(20),
+    id_pais INT,
+    telefono VARCHAR(20),
+    fax VARCHAR(20),
+    FOREIGN KEY (id_ciudad) REFERENCES ciudad(id_ciudad),
+    FOREIGN KEY (id_region) REFERENCES region(id_region),
+    FOREIGN KEY (id_pais) REFERENCES pais(id_pais)
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE empleado (
+    id_empleado INT AUTO_INCREMENT PRIMARY KEY,
+    apellidos VARCHAR(50),
+    nombre VARCHAR(50),
+    cargo VARCHAR(50),
+    tratamiento VARCHAR(20),
+    fecha_nacimiento DATE,
+    fecha_contratacion DATE,
+    direccion VARCHAR(100),
+    id_ciudad INT,
+    id_region INT,
+    codigo_postal VARCHAR(15),
+    id_pais INT,
+    telefono_domicilio VARCHAR(20),
+    extension VARCHAR(10),
+    notas TEXT,
+    jefe VARCHAR(100),
+    FOREIGN KEY (id_ciudad) REFERENCES ciudad(id_ciudad),
+    FOREIGN KEY (id_region) REFERENCES region(id_region),
+    FOREIGN KEY (id_pais) REFERENCES pais(id_pais)
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE pedido (
+    id_pedido INT PRIMARY KEY AUTO_INCREMENT,
+    id_cliente VARCHAR(10) NOT NULL,
+    id_empleado INT NOT NULL,
+    fecha_pedido DATE,
+    fecha_entrega DATE,
+    fecha_envio DATE,
+    forma_envio INT NOT NULL,
+    cargo DECIMAL(10,2),
+    nombre_destinatario VARCHAR(100),
+    direccion_destinatario VARCHAR(150),
+    id_ciudad INT,
+    id_region INT,
+    codigo_destinatario VARCHAR(20),
+    id_pais INT,
+    FOREIGN KEY (id_cliente) REFERENCES cliente(id_cliente),
+    FOREIGN KEY (id_empleado) REFERENCES empleado(id_empleado),
+    FOREIGN KEY (id_ciudad) REFERENCES ciudad(id_ciudad),
+    FOREIGN KEY (id_region) REFERENCES region(id_region),
+    FOREIGN KEY (id_pais) REFERENCES pais(id_pais)
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE proveedor (
+    id_proveedor INT PRIMARY KEY AUTO_INCREMENT,
+    nombre_compania VARCHAR(100) NOT NULL,
+    nombre_contacto VARCHAR(100),
+    cargo_contacto VARCHAR(50),
+    direccion VARCHAR(150),
+    id_ciudad INT,
+    id_region INT,
+    codigo_postal VARCHAR(20),
+    id_pais INT,
+    telefono VARCHAR(20),
+    fax VARCHAR(20),
+    FOREIGN KEY (id_ciudad) REFERENCES ciudad(id_ciudad),
+    FOREIGN KEY (id_region) REFERENCES region(id_region),
+    FOREIGN KEY (id_pais) REFERENCES pais(id_pais)
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE categoria (
+    id_categoria INT PRIMARY KEY AUTO_INCREMENT,
+    nombre_categoria VARCHAR(50) NOT NULL,
+    descripcion TEXT
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE producto (
+    id_producto INT PRIMARY KEY AUTO_INCREMENT,
+    nombre_producto VARCHAR(100) NOT NULL,
+    id_proveedor INT NOT NULL,
+    id_categoria INT NOT NULL,
+    cantidad_por_unidad VARCHAR(50),
+    precio_por_unidad DECIMAL(10,2),
+    unidades_en_existencia INT,
+    unidades_pedidas INT,
+    nivel_de_pedido INT,
+    suspendido TEXT,
+    FOREIGN KEY (id_proveedor) REFERENCES proveedor(id_proveedor),
+    FOREIGN KEY (id_categoria) REFERENCES categoria(id_categoria)
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE detalle_pedido (
+    id_detalle_pedido INT PRIMARY KEY AUTO_INCREMENT,
+    id_pedido INT NOT NULL,
+    id_producto INT NOT NULL,
+    precio_unidad DECIMAL(10,2) NOT NULL,
+    cantidad INT NOT NULL,
+    descuento DECIMAL(4,2) DEFAULT 0,
+    FOREIGN KEY (id_pedido) REFERENCES pedido(id_pedido),
+    FOREIGN KEY (id_producto) REFERENCES producto(id_producto)
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE compania_envio (
+    id_compania_envio INT PRIMARY KEY AUTO_INCREMENT,
+    nombre_compania VARCHAR(100) NOT NULL,
+    telefono VARCHAR(20)
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

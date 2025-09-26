@@ -1,0 +1,175 @@
+/* === RegistroFoto.module.css === */
+
+/* Contenedor principal */
+.foto-panel {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 420px;
+  margin: 1rem auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+
+  max-height: 95vh;
+  /* overflow eliminado porque ya no necesitamos scroll */
+  box-sizing: border-box;
+}
+
+/* Título */
+.foto-panel h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.9rem;
+  color: var(--principal-oscuro);
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+/* Vista previa */
+.preview {
+  width: 200px;
+  height: 200px;
+  border-radius: 12px;
+  border: 2px dashed var(--fondo-secundario);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background: #f9f9f9;
+}
+
+.preview img,
+.preview video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Formulario */
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--texto-secundario);
+}
+
+textarea {
+  width: 100%;
+  min-height: 70px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--fondo-secundario);
+  font-size: 0.88rem;
+  resize: vertical;
+  outline: none;
+  font-family: 'Roboto', sans-serif;
+  transition: 0.3s ease;
+}
+
+textarea:focus {
+  border-color: var(--resaltar);
+  box-shadow: 0 0 6px rgba(30, 136, 229, 0.4);
+}
+
+input[type="file"] {
+  display: none;
+}
+
+/* Botones centrados y flexibles */
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.btn,
+.foto-panel button {
+  background: var(--resaltar);
+  border: none;
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: white;
+  font-size: 0.88rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  flex: 1 1 90px;
+  text-align: center;
+}
+
+.btn:hover,
+.foto-panel button:hover {
+  background: linear-gradient(90deg, var(--resaltar), var(--contraste));
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(30, 136, 229, 0.4);
+}
+
+.btn:active,
+.foto-panel button:active {
+  transform: translateY(0);
+}
+
+/* Botón secundario (Omitir) */
+.btn-secundario {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.btn-secundario:hover {
+  background: #d5d5d5;
+  box-shadow: none;
+}
+
+/* Mensajes */
+.mensaje {
+  font-size: 0.88rem;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+.mensaje.error {
+  color: #d9534f;
+}
+
+.mensaje.exito {
+  color: #28a745;
+}
+
+/* 🔹 Responsive */
+@media (max-width: 480px) {
+  .foto-panel {
+    padding: 1rem;
+    max-width: 95%;
+  }
+
+  .preview {
+    width: 160px;
+    height: 160px;
+  }
+
+  .btn,
+  .foto-panel button {
+    font-size: 0.8rem;
+    padding: 6px 8px;
+    min-width: 80px;
+  }
+
+  textarea {
+    font-size: 0.8rem;
+  }
+
+  .btn-group {
+    gap: 0.4rem;
+  }
+}

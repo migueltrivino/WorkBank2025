@@ -1,0 +1,178 @@
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden; 
+  font-family: "Arial", sans-serif;
+}
+
+/* Contenedor principal: ocupa la pantalla completa */
+.resenasContainer {
+   width: 100vw;         /* todo el ancho */
+  height: 100vh;/* clave: que el main tenga la altura de la ventana */
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  box-sizing: border-box;
+  background: #f5f7fb;
+  box-shadow: #243b53;
+  font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* Header fijo (no contribuye al scroll) */
+.headerTop {
+  flex: 0 0 auto;
+  margin-bottom: 12px;
+}
+
+.titulo {
+  margin: 0;
+  font-size: 1.6rem;
+  color: #102a43;
+  margin-left: 680px;
+}
+
+.subtitulo {
+  margin: 6px 0 0 0;
+  color: #52606d;
+  font-size: 0.95rem;
+  margin-left: 608px;
+}
+
+/* WRAPPER que SI scrollea: ocupa el espacio restante */
+.resenasWrapper {
+  flex: 1 1 auto; /* ocupa el espacio restante */
+  overflow-y: auto; /* aquí va el scroll */
+  -webkit-overflow-scrolling: touch;
+  padding: 10px 20px 60px 20px; /*  este bottom evita que se corte la última fila */
+  margin-left: 190px;
+  margin-right: 90px;
+}
+.resenasWrapper::after {
+  content: "";
+  display: block;
+  height: 80px; /* 👈 ajusta según la altura de tus cards */
+}
+
+/* Ocultar la barra en distintos navegadores (pero dejar scroll funcional) */
+.resenasWrapper::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+.resenasWrapper {
+  -ms-overflow-style: none; /* IE & Edge */
+  scrollbar-width: none;    /* Firefox */
+}
+
+.resenasGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas iguales */
+  gap: 20px; /* controla espacio entre filas y columnas */
+  justify-items: stretch; /* las cards se expanden al 100% de su celda */
+}
+
+
+/* Tarjeta */
+.resenaCard {
+  width: 100%;        /* ahora se adapta al ancho de su celda */
+  max-width: none;    /* quita el límite de 360px */
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 8px 20px rgba(5, 12, 19, 0.06);
+  display: flex;
+  flex-direction: column;
+  min-height: 130px;
+  box-sizing: border-box;
+}
+
+
+/* Header dentro de la card (foto + nombre + estrellas) */
+.cardHeader {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.fotoPerfil {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: 0 0 48px;
+  border: 2px solid rgba(16, 42, 67, 0.06);
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.nombreUsuario {
+  margin: 0;
+  font-weight: 600;
+  color: #102a43;
+  font-size: 0.98rem;
+}
+
+.estrellas {
+  margin-top: 4px;
+  font-size: 0.98rem;
+  line-height: 1;
+}
+
+/* Estilos de estrella (rellena / vacía) */
+.starFilled {
+  color: #ffb400; /* dorado */
+  margin-right: 2px;
+}
+.starEmpty {
+  color: #e6e6e6;
+  margin-right: 2px;
+}
+
+/* Contenido de la reseña */
+.contenido {
+  margin: 8px 0;
+  color: #243b53;
+  font-style: italic;
+  line-height: 1.45;
+  flex: 1 0 auto;
+}
+
+/* Pie de la card con fecha a la derecha */
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.puntajeNumerico {
+  font-weight: 700;
+  color: #2b6cb0;
+  font-size: 0.95rem;
+}
+
+.fecha {
+  font-size: 0.85rem;
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* Responsive: 2 cols tablet, 1 col móvil */
+@media (max-width: 1024px) {
+  .resenasGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .resenasGrid {
+    grid-template-columns: 1fr;
+  }
+  .resenaCard {
+    max-width: 100%;
+  }
+}
+

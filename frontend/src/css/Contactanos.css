@@ -1,0 +1,74 @@
+.contact-section {
+  background: linear-gradient(to bottom, #0f2242, #256272);
+  text-align: center;
+  padding: 3rem 1rem 0;
+  color: white;
+}
+
+.contact-header h2 {
+  font-family: var(--font-title);
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.contact-header p {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.contact-icons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.icon {
+  font-size: 2.5rem;
+  color: white;
+  transition: color 0.3s ease;
+}
+
+.icon.whatsapp:hover {
+  color: #25d366; /* verde WhatsApp */
+}
+
+.icon.gmail:hover {
+  color: #ea4335; /* rojo Gmail */
+}
+
+/* === FOOTER === */
+.footer {
+  background: #111;
+  color: #ccc;
+  padding: 2rem 1rem;
+  margin-top: 3rem;
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 2rem;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.footer-logo img {
+  max-width: 60px;
+}
+
+.footer-column h4 {
+  color: white;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-column li {
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}

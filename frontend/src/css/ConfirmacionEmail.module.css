@@ -1,0 +1,232 @@
+/* === ConfirmacionEmail.module.css === */
+
+/* Panel del formulario */
+.form-panel {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 420px;
+  margin: 1rem auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 95vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+ 
+  /* Animación de aparición global */
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Scroll interno */
+.form-panel::-webkit-scrollbar {
+  width: 8px;
+}
+.form-panel::-webkit-scrollbar-thumb {
+  background-color: rgba(30, 136, 229, 0.5);
+  border-radius: 4px;
+}
+.form-panel::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Título */
+.title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  color: var(--principal-oscuro);
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* Texto descriptivo */
+.text {
+  font-family: "Roboto", sans-serif;
+  font-size: 0.95rem;
+  color: var(--texto-secundario);
+  text-align: center;
+}
+
+/* Texto pequeño de ayuda */
+.textSmall {
+  font-family: "Roboto", sans-serif;
+  font-size: 0.85rem;
+  text-align: center;
+  color: var(--texto-secundario);
+  margin-top: 15px;
+}
+
+/* Animación tipo ola letra por letra */
+.wave-letter {
+  display: inline-block;
+  opacity: 0;
+  animation: waveIn 0.6s forwards;
+}
+
+.wave-letter.exit {
+  animation: waveOut 0.6s forwards;
+}
+
+@keyframes waveIn {
+  0% { opacity: 0; transform: translateY(20px); }
+  50% { opacity: 1; transform: translateY(-5px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes waveOut {
+  0% { opacity: 1; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-5px); }
+  100% { opacity: 0; transform: translateY(20px); }
+}
+
+/* Inputs de código */
+.code-inputs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+  position: relative;
+}
+
+.code-inputs input {
+  position: relative;
+  z-index: 1;
+  width: 45px;
+  height: 45px;
+  font-size: 1.5rem;
+  text-align: center;
+  border: 2px solid var(--fondo-secundario);
+  border-radius: 12px;
+  outline: none;
+  transition: all 0.3s ease;
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  background-color: #f0ffff; /* Nunca se vuelve blanca */
+}
+
+/* Pista de atletismo animada al focus o click */
+.code-inputs input.active::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  width: calc(100% + 8px);
+  height: calc(100% + 8px);
+  border-radius: 14px;
+  z-index: -1;
+  background: conic-gradient(from 0deg, #236AB9, #c0c0c0, #a57ee0, #236AB9);
+  animation: borderRace 3s linear infinite;
+  pointer-events: none;
+}
+
+/* Focus y pulso */
+.code-inputs input:focus {
+  border-color: #236AB9;
+  box-shadow: 0 0 8px rgba(35, 106, 185, 0.6), 0 0 20px rgba(255, 0, 255, 0.4);
+  animation: pulse 1.2s infinite;
+}
+
+/* Estado de error en inputs */
+.input-error {
+  border-color: #d9534f;
+  background-color: #fff5f5;
+  box-shadow: 0 0 6px rgba(217, 83, 79, 0.3);
+}
+
+/* Inputs completados */
+.input-complete {
+  border-color: #236AB9;
+  box-shadow: 0 0 6px rgba(35, 106, 185, 0.4);
+}
+
+/* Botones */
+.button {
+  background: var(--resaltar);
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.button:hover {
+  background: linear-gradient(90deg, var(--resaltar), var(--contraste));
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(30, 136, 229, 0.4);
+}
+
+.button:active {
+  transform: translateY(0);
+}
+
+.button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Mensajes de éxito o error */
+.mensaje {
+  font-size: 0.9rem;
+  font-weight: bold;
+  padding: 6px 20px;
+  border-radius: 8px;
+  text-align: center;
+  margin-top: 10px;
+  transition: all 0.3s ease-in-out;
+}
+
+.mensaje.exito {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.mensaje.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 🔹 Animaciones existentes */
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes borderRace {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(35, 106, 185, 0.6), 0 0 20px rgba(255, 0, 255, 0.4); }
+  50% { box-shadow: 0 0 12px rgba(35, 106, 185, 0.8), 0 0 25px rgba(255, 0, 255, 0.6); }
+}
+
+/* 🔹 Responsive para móviles */
+@media (max-width: 480px) {
+  .form-panel {
+    padding: 1rem;
+    max-width: 95%;
+  }
+
+  .code-inputs input {
+    width: 40px;
+    height: 40px;
+    font-size: 1.3rem;
+  }
+
+  .button {
+    font-size: 0.95rem;
+    padding: 8px;
+  }
+}
