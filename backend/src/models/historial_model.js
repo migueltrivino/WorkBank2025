@@ -4,7 +4,10 @@ const HistorialModel = {
   // Buscar historial de un usuario
   async findByUsuario(id_usuario) {
     const [rows] = await db.query(
-      `SELECT h.id_historial, r.nombre AS rol, c.nombre AS categoria, s.nombre AS servicio
+      `SELECT h.id_historial, 
+              r.nombre_rol AS rol, 
+              c.nombre_categoria AS categoria, 
+              s.nombre_servicio AS servicio
        FROM historial_contratacion h
        JOIN rol r ON h.id_rol = r.id_rol
        JOIN categoria c ON h.id_categoria = c.id_categoria

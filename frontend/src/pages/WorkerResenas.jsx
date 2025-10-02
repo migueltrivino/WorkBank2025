@@ -3,7 +3,7 @@ import Navbar from "../components/NavbarEmplo";
 import Sidebar from "../components/SidebarWorker";
 import MainWor_Resenas from "../components/MainWor_Resenas";
 import styles from "../css/Employer.module.css";
-import "../css/MainWor_Resenas.css";
+import "../css/MainWor_Resenas.module.css";
 import { getUser } from "../utils/auth";
 
 function WorkerResenas() {

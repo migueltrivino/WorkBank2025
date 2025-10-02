@@ -1,52 +1,58 @@
 const pool = require("../config/db");
 
 const Offer = {
-  // Crear una oferta
   create: async (data) => {
-    if (
-      !data.titulo_oferta ||
-      !data.descripcion_oferta ||
-      !data.fecha_vencimiento ||
-      !data.fecha_publicacion ||
-      !data.id_usuario ||
-      !data.id_servicio ||
-      !data.id_categoria
-    ) {
-      throw new Error("Todos los campos son obligatorios para crear una oferta.");
-    }
-
     const query = `
       INSERT INTO ofertas_laborales 
-      (titulo_oferta, descripcion_oferta, fecha_publicacion, fecha_vencimiento, id_servicio, id_categoria, id_usuario)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
+      (titulo_oferta, descripcion_oferta, pago, fecha_publicacion, fecha_vencimiento, id_servicio, id_categoria, id_usuario)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `;
-
     const [result] = await pool.query(query, [
       data.titulo_oferta,
       data.descripcion_oferta,
+      data.pago,
       data.fecha_publicacion,
       data.fecha_vencimiento,
       data.id_servicio,
       data.id_categoria,
-      data.id_usuario
+      data.id_usuario,
     ]);
-
     return result.insertId;
   },
 
-  // Obtener todas las ofertas
   getAll: async () => {
     const [rows] = await pool.query(`
-      SELECT o.id_oferta, o.titulo_oferta, o.descripcion_oferta, 
-             o.fecha_publicacion, o.fecha_vencimiento,
-             o.id_usuario, o.id_servicio, o.id_categoria
+      SELECT 
+        o.id_oferta, o.titulo_oferta, o.descripcion_oferta, o.pago, 
+        o.fecha_publicacion, o.fecha_vencimiento,
+        u.nombre AS nombre_empleador,
+        c.nombre_categoria AS categoria,
+        s.nombre_servicio AS servicio
       FROM ofertas_laborales o
+      JOIN usuarios u ON o.id_usuario = u.id_usuario
+      JOIN categoria c ON o.id_categoria = c.id_categoria
+      JOIN servicio s ON o.id_servicio = s.id_servicio
       ORDER BY o.fecha_publicacion DESC
     `);
     return rows;
   },
 
-  // Obtener una oferta por ID
+  getByUserId: async (id_usuario) => {
+    const [rows] = await pool.query(`
+      SELECT 
+        o.id_oferta, o.titulo_oferta, o.descripcion_oferta, o.pago, 
+        o.fecha_publicacion, o.fecha_vencimiento,
+        c.nombre_categoria AS categoria,
+        s.nombre_servicio AS servicio
+      FROM ofertas_laborales o
+      JOIN categoria c ON o.id_categoria = c.id_categoria
+      JOIN servicio s ON o.id_servicio = s.id_servicio
+      WHERE o.id_usuario = ?
+      ORDER BY o.fecha_publicacion DESC
+    `, [id_usuario]);
+    return rows;
+  },
+
   getById: async (id) => {
     const [rows] = await pool.query(
       "SELECT * FROM ofertas_laborales WHERE id_oferta = ?",
@@ -55,20 +61,6 @@ const Offer = {
     return rows[0];
   },
 
-  // Obtener todas las ofertas de un usuario
-  getByUserId: async (id_usuario) => {
-    const query = `
-      SELECT id_oferta, titulo_oferta, descripcion_oferta, fecha_publicacion, fecha_vencimiento,
-             id_servicio, id_categoria
-      FROM ofertas_laborales
-      WHERE id_usuario = ?
-      ORDER BY fecha_publicacion DESC
-    `;
-    const [rows] = await pool.query(query, [id_usuario]);
-    return rows;
-  },
-
-  // Actualizar una oferta por ID
   update: async (id_oferta, data) => {
     const fields = [];
     const values = [];
@@ -88,7 +80,6 @@ const Offer = {
     return result.affectedRows;
   },
 
-  // Eliminar una oferta por ID
   delete: async (id_oferta) => {
     const [result] = await pool.query(
       "DELETE FROM ofertas_laborales WHERE id_oferta = ?",

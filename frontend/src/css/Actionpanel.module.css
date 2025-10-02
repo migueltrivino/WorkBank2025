@@ -1,0 +1,144 @@
+
+/* Contenedor del panel */
+.actionPanel {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #1e1e1e;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* Botones individuales */
+.iconBtn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  padding: 0 12px; /* espacio para que icono no toque la pared */
+  width: 50px; /* cuadrado inicial */
+  height: 50px;
+  border: none;
+  border-radius: 12px;
+  background-color: #434344;
+  color: #c0bebe;
+  font-weight: 500;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(82, 81, 81, 0.05);
+  min-width: 50px; /* para animación */
+  transition: min-width 0.6s cubic-bezier(0.4,0,0.2,1),
+              background-color 0.3s ease;
+}
+
+/* Contenedor interno opcional (para texto + icono si quieres) */
+.iconBtnInner {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  width: 100%;
+  height: 100%;
+}
+
+/* Icono */
+.iconBtn svg {
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+/* Fondo animado tipo "isla" */
+.iconBtn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #4d4b4b;
+  border-radius: 12px;
+  transform: translateX(100%);
+  transition: transform 0.7s ease;
+  z-index: -1;
+}
+
+.iconBtn:hover::before {
+  transform: translateX(0);
+}
+
+/* Texto dentro del botón */
+.iconBtn span {
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(10px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Hover: expansión del botón padre */
+.iconBtn:hover {
+  min-width: 140px; /* ancho final con texto */
+  background-color: #303030;
+}
+
+/* Hover: icono y texto */
+.iconBtn:hover svg {
+  transform: scale(1.1);
+}
+
+.iconBtn:hover span {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Colores específicos */
+.red {
+  background-color: #883939;
+  color: #c0bebe;
+}
+
+.gray {
+  background-color: #28506b;
+  color: #c0bebe;
+}
+
+.active {
+  background-color: #434344;
+  color: #c0bebe;
+}
+
+/* =========================== */
+/* NUEVO: Contenedor de carpeta */
+/* =========================== */
+
+/* Cuando el formulario activa el FileUpload */
+.formsWrapper.withFile {
+  display: flex;
+  justify-content: space-between; /* formulario a la izquierda, carpeta a la derecha */
+  align-items: stretch; /* ambos estiran igual en altura */
+  gap: 1.5rem;
+}
+
+/* Contenedor del FileUpload */
+.fileRight {
+  flex: 1;               /* ocupa espacio sobrante */
+  max-width: 40%;        /* nunca pasa de 40% */
+  display: flex;
+  align-items: center;   /* centrado vertical */
+  justify-content: center; /* centrado horizontal */
+  animation: slideInRight 0.4s ease;
+  background: #2c2c2c;   /* se integra al estilo oscuro */
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  padding: 1rem;
+}
+
+/* Animación de entrada */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

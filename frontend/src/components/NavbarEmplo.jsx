@@ -1,7 +1,7 @@
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { removeToken } from "../utils/auth"; 
-import { useNavigate } from "react-router-dom";
-import { Bell, LogOut, User, Settings, Eye } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Bell, LogOut, User, Settings } from "lucide-react";
 import logo from "../assets/logos.png";
 import "../css/NavbarEmplo.css";
 
@@ -9,19 +9,20 @@ export default function Navbar({ notifOpen, setNotifOpen, menuOpen, setMenuOpen 
   const notifRef = useRef(null);
   const profileRef = useRef(null);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const [activeButton, setActiveButton] = useState("empleador"); // solo para indicador visual
 
   const handleLogout = () => {
-  removeToken();      
-  navigate("/iniciarsesion");   
-};
+    removeToken();
+    navigate("/iniciarsesion");
+  };
 
   useEffect(() => {
     function handleClickOutside(event) {
-      
       if (notifRef.current && !notifRef.current.contains(event.target)) {
         setNotifOpen(false);
       }
-      
       if (profileRef.current && !profileRef.current.contains(event.target)) {
         setMenuOpen(false);
       }
@@ -33,43 +34,87 @@ export default function Navbar({ notifOpen, setNotifOpen, menuOpen, setMenuOpen 
     };
   }, [setNotifOpen, setMenuOpen]);
 
+  // actualizar indicador según la ruta actual
+  useEffect(() => {
+    if (location.pathname.startsWith("/employer")) setActiveButton("empleador");
+    else setActiveButton("trabajador");
+  }, [location.pathname]);
+
+  const handleNavigate = (page) => {
+    setActiveButton(page); // actualiza indicador
+    if (page === "trabajador") navigate("/worker");
+    if (page === "empleador") navigate("/employer");
+  };
+
   return (
     <nav className="employer-navbar">
+      {/* Logo */}
       <div className="logo">
         <img src={logo} alt="WorkBank Logo" className="logo-img" />
         <h1>WorkBank.W</h1>
       </div>
 
+      {/* Sección derecha */}
       <div className="nav-right">
-        {/* Notificaciones */}
+        {/* ===== SWITCH VISUAL PARA CAMBIAR DE PÁGINA ===== */}
+        <div className={`role-switch ${activeButton}`}>
+          <div className="segment-indicator" aria-hidden="true" />
+          <button
+            type="button"
+            className="segment-btn trabajador"
+            onClick={() => handleNavigate("trabajador")}
+          >
+            Trabajador
+          </button>
+          <button
+            type="button"
+            className="segment-btn empleador"
+            onClick={() => handleNavigate("empleador")}
+          >
+            Empleador
+          </button>
+        </div>
+
+        {/* 🔔 Notificaciones */}
         <div className="notif-menu" ref={notifRef}>
           <Bell
-            size={22}
+            size={33}
             className="notif-icon"
             onClick={() => setNotifOpen(!notifOpen)}
           />
           {notifOpen && (
             <div className="notif-dropdown">
-              <p><strong>Notificaciones</strong></p>
-              <ul>
-                <li>
-                  📢 Nueva postulación en tu oferta
-                  <button><Eye size={16} /></button>
-                </li>
-                <li>
-                  ✅ Tu oferta fue publicada
-                  <button><Eye size={16} /></button>
-                </li>
-                <li>
-                  👤 Un candidato actualizó su perfil
-                  <button><Eye size={16} /></button>
-                </li>
-              </ul>
+              <div className="notif-card">
+                <img src="https://i.pravatar.cc/40?img=1" alt="user" />
+                <div className="notif-info">
+                  <h4>Nueva postulación en tu oferta</h4>
+                  <p>Un candidato aplicó a tu publicación reciente.</p>
+                  <span className="notif-link">Ver más</span>
+                </div>
+              </div>
+
+              <div className="notif-card">
+                <img src="https://i.pravatar.cc/40?img=2" alt="user" />
+                <div className="notif-info">
+                  <h4>Tu oferta fue publicada</h4>
+                  <p>La oferta de Desarrollador Web ya está en línea.</p>
+                  <span className="notif-link">Ver más</span>
+                </div>
+              </div>
+
+              <div className="notif-card">
+                <img src="https://i.pravatar.cc/40?img=3" alt="user" />
+                <div className="notif-info">
+                  <h4>Candidato actualizó su perfil</h4>
+                  <p>Juan Pérez ha mejorado su experiencia laboral.</p>
+                  <span className="notif-link">Ver más</span>
+                </div>
+              </div>
             </div>
           )}
         </div>
 
-        {/* Perfil */}
+        {/* 👤 Perfil */}
         <div className="profile-menu" ref={profileRef}>
           <img
             src="https://i.pravatar.cc/40"
@@ -79,9 +124,9 @@ export default function Navbar({ notifOpen, setNotifOpen, menuOpen, setMenuOpen 
           />
           {menuOpen && (
             <div className="dropdown">
-              <button><User size={16} /> Mi perfil</button>
-              <button><Settings size={16} /> Configuración</button>
-              <button onClick={handleLogout}><LogOut size={16} /> Cerrar sesión</button>
+              <button><User size={18} /> Mi perfil</button>
+              <button><Settings size={18} /> Configuración</button>
+              <button onClick={handleLogout}><LogOut size={18} /> Cerrar sesión</button>
             </div>
           )}
         </div>

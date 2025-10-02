@@ -8,7 +8,7 @@ function EmployerResenas() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
 
-  const { user } = useContext(AuthContext);
+
 
   return (
     <div className="employer-container">
@@ -21,7 +21,7 @@ function EmployerResenas() {
       <div className="layout">
         <Sidebar />
         <div className="main-scroll">
-           <MainResenas />
+          <MainResenas />
         </div>
       </div>
     </div>

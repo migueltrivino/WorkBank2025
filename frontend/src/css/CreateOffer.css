@@ -13,23 +13,21 @@
   backdrop-filter: blur(4px); /* 🔹 Efecto vidrio */
 }
 
+
+
 /* Contenedor del modal */
 .modal {
-  background: #ffffff;
+  background: #fff;
   padding: 2rem;
-  border-radius: 16px;
-  width: 420px;
-  max-width: 500px;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
-  animation: fadeIn 0.4s ease;
-  font-family: "Playfair Display";
-  max-height: 90vh;
-  overflow-y: auto;  
-  box-sizing: border-box;
-  margin: 0 auto;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none;
+  border-radius: 10px;
+  margin-top: 100px;
+  width: 90%;
+  max-width: 500px;      /* 🔹 ancho máximo */
+  max-height: 80vh;      /* 🔹 alto máximo */
+  overflow-y: auto;      /* 🔹 scroll interno */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
+
 
 .modal::-webkit-scrollbar {
   display: none; 

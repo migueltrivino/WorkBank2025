@@ -1,4 +1,4 @@
-/* === LoginPanel.module.css === */
+/* === LoginPanel.module.css (unificado) === */
 
 .right-panel {
     flex: 1.2;
@@ -8,8 +8,6 @@
     justify-content: center;
     align-items: center;
     padding: 40px;
-
-    /* 🔹 Ajustes para altura y scroll opcional */
     max-height: 95vh;
     overflow-y: auto;
     box-sizing: border-box;
@@ -77,8 +75,8 @@
     font-weight: 500;
 }
 
-/* Link de olvidar contraseña */
-.forgot {
+/* Links de registro y olvidar contraseña */
+.forgot, .register {
     font-size: 0.85rem;
     text-align: center;
     margin: 5px 0;
@@ -91,7 +89,7 @@
     transition: color 0.3s ease;
 }
 
-.forgot a:hover {
+.forgot a:hover, .register a:hover {
     color: var(--contraste);
 }
 
@@ -120,8 +118,8 @@
 .google-btn {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
     justify-content: center;
+    margin-bottom: 20px;
     gap: 12px;
     background: #fff;
     border: 1px solid var(--fondo-secundario);
@@ -136,14 +134,6 @@
 .google-btn:hover {
     background: var(--extra);
     color: white;
-}
-
-/* Registro */
-.register {
-    margin-top: 10px;
-    font-size: 0.9rem;
-    text-align: center;
-    font-family: "Roboto", sans-serif;
 }
 
 /* Mensajes generales */

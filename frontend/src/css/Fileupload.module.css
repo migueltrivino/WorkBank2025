@@ -1,0 +1,344 @@
+/* src/css/FileUpload.module.css */
+.container {
+  --transition: 350ms;
+  --folder-W: 120px;
+  --folder-H: 80px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 130px;
+  padding: 10px;
+
+  background: transparent;
+  border-radius: 15px;
+  height: calc(var(--folder-H) * 1.7);
+
+  position: sticky; /* 👈 hace que no se mueva al hacer scroll */
+  top: 20px;        /* se pega 20px debajo del header */
+}
+.folder {
+  position: absolute;
+  top: -20px;
+  left: calc(50% - 60px);
+  animation: float 2.5s infinite ease-in-out;
+  transition: transform var(--transition) ease;
+}
+
+.folder:hover {
+  transform: scale(1.05);
+}
+
+.folder .front-side,
+.folder .back-side {
+  position: absolute;
+  transition: transform var(--transition);
+  transform-origin: bottom center;
+}
+
+.folder .back-side::before,
+.folder .back-side::after {
+  content: "";
+  display: block;
+  background-color: white;
+  opacity: 0.5;
+  z-index: 0;
+  width: var(--folder-W);
+  height: var(--folder-H);
+  position: absolute;
+  transform-origin: bottom center;
+  border-radius: 15px;
+  transition: transform 350ms;
+  z-index: 0;
+}
+
+.container:hover .back-side::before {
+  transform: rotateX(-5deg) skewX(5deg);
+}
+.container:hover .back-side::after {
+  transform: rotateX(-15deg) skewX(12deg);
+}
+
+.folder .front-side {
+  z-index: 1;
+}
+
+.container:hover .front-side {
+  transform: rotateX(-40deg) skewX(15deg);
+}
+
+.folder .tip {
+  background: linear-gradient(135deg, #ff9a56, #ff6f56);
+  width: 80px;
+  height: 20px;
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: -10px;
+  z-index: 2;
+}
+
+.folder .cover {
+  background: linear-gradient(135deg, #ffe563, #ffc663);
+  width: var(--folder-W);
+  height: var(--folder-H);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+.custom-file-upload {
+  font-size: 1.1em;
+  color: #ffffff;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background var(--transition) ease;
+  display: inline-block;
+  width: 100%;
+  padding: 10px 35px;
+  position: relative;
+}
+
+.fileUploadContainer {
+  margin-top: 1.5rem; /* 🔥 ajusta este valor para separarla del botón */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  min-height: 200px;
+  border: 2px dashed #666;
+  border-radius: 12px;
+  background-color: rgba(65, 62, 62, 0.4);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.fileUploadContainer:hover {
+  border-color: #999;
+}
+
+/* Preview (cuando hay imagen) */
+.preview {
+  max-width: 70%;
+  max-height: 70px;
+  border-radius: 10px;
+}
+
+
+.custom-file-upload:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.custom-file-upload input[type="file"] {
+  display: none;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
+}
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Variables de color */
+:root {
+  --text-light: #f0f0f0;
+  --text-muted: #cccccc;
+  --accent: #ff6f56;
+  --font-title: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --font-body: 'Arial', sans-serif;
+}   
+
+/* Ajuste de la preview */
+.preview {
+  max-width: 180px;       /* 🔥 más pequeña */
+  max-height: 120px;
+  border-radius: 10px;
+  margin-bottom: 1rem;    /* espacio para los botones */
+  object-fit: cover;      /* mantiene proporción */
+  display: block;
+}
+
+/* Contenedor de botones debajo de la imagen */
+.previewActions {
+  display: flex;
+  gap: 10px;              /* separación entre botones */
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+/* Estilo de botones reutilizando el del formulario */
+.actionButton {
+  background: linear-gradient(135deg, #236AB9, #0A2F5C); /* igual que el submit */
+  color: #fff;
+  font-size: 0.9em;
+  font-weight: bold;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.actionButton:hover {
+  background: linear-gradient(135deg, #0A2F5C, #236AB9);
+  transform: scale(1.05);
+}
+
+
+.fileName {
+  color: #ddd;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 1rem;
+  object-fit: cover;
+}
+
+
+/* Animación de entrada */
+
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes slideInLeft {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes slideInRight {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes slideInDown {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================
+   FileUpload: botones & layout
+   ========================= */
+
+.previewWrapper,
+.fileWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+/* contenedor de acciones (botones) */
+.actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 12px;
+  width: 100%;
+}
+
+/* botón principal (estilo coherente con submitBtn) */
+.btn {
+  padding: 10px 18px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #5264ae, #6d83f2);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+  box-shadow: 0 6px 20px rgba(82, 100, 174, 0.25);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* hover / active / focus */
+.btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 30px rgba(82, 100, 174, 0.32);
+}
+.btn:active {
+  transform: translateY(0) scale(0.98);
+}
+.btn:focus {
+  outline: 3px solid rgba(82,100,174,0.18);
+  outline-offset: 2px;
+}
+
+/* botón secundario (Cancelar) */
+.btnCancel {
+  padding: 10px 18px;
+  border-radius: 28px;
+  background: transparent;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 14px;
+  border: 2px solid rgba(255,255,255,0.12);
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.18s ease, border-color 0.18s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btnCancel:hover {
+  background: rgba(255,255,255,0.04);
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,0.18);
+}
+.btnCancel:active {
+  transform: translateY(0) scale(0.98);
+}
+.btnCancel:focus {
+  outline: 3px solid rgba(255,255,255,0.08);
+  outline-offset: 2px;
+}
+
+/* tamaño fijo/suave para la preview (pequeña) */
+.preview {
+  width: 160px;       /* ancho fijo */
+  height: 120px;      /* alto fijo */
+  border-radius: 10px;
+  object-fit: cover;  /* recorta para llenar el cuadro */
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* adaptación en móviles: botones más pequeños */
+@media (max-width: 520px) {
+  .btn, .btnCancel {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  .preview {
+    width: 120px;
+    height: 90px;
+  }
+}

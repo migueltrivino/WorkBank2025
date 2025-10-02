@@ -74,6 +74,9 @@ function LoginPanel() {
             case 2:
               navigate("/worker");
               break;
+            case 3:
+              navigate("/admin");
+              break;
             default:
               navigate("/");
           }

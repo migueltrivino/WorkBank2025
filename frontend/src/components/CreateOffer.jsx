@@ -1,14 +1,20 @@
 import React, { useState, useRef, useEffect } from "react";
+import { getUser } from "../utils/auth"; // 🔹 traemos el usuario logueado
 import "../css/CreateOffer.css";
 
-export default function CreateOfferForm({ onClose, idUsuario }) {
+export default function CreateOfferForm({ onClose }) {
   const [titulo, setTitulo] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [fechaVencimiento, setFechaVencimiento] = useState("");
+  const [pago, setPago] = useState("");
   const [idServicio, setIdServicio] = useState("");
   const [idCategoria, setIdCategoria] = useState("");
 
   const modalRef = useRef(null);
+
+  // Obtener el usuario logueado desde localStorage
+  const usuario = getUser();
+  const idUsuario = usuario?.id_usuario;
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -16,6 +22,7 @@ export default function CreateOfferForm({ onClose, idUsuario }) {
         onClose();
       }
     }
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [onClose]);
@@ -23,15 +30,19 @@ export default function CreateOfferForm({ onClose, idUsuario }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!idUsuario) return;
+    if (!idUsuario) {
+      console.error("No hay usuario logueado.");
+      return;
+    }
 
     const nuevaOferta = {
       titulo_oferta: titulo,
       descripcion_oferta: descripcion,
+      pago: parseFloat(pago),
       fecha_vencimiento: fechaVencimiento,
       id_servicio: parseInt(idServicio),
       id_categoria: parseInt(idCategoria),
-      id_usuario: parseInt(idUsuario),
+      id_usuario: idUsuario, // 🔹 usuario logueado
     };
 
     try {
@@ -43,6 +54,8 @@ export default function CreateOfferForm({ onClose, idUsuario }) {
 
       if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
 
+      const data = await res.json();
+      console.log("Oferta creada:", data);
       onClose();
     } catch (err) {
       console.error("Error al crear la oferta:", err);
@@ -72,6 +85,19 @@ export default function CreateOfferForm({ onClose, idUsuario }) {
               value={descripcion}
               onChange={(e) => setDescripcion(e.target.value)}
               required
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Pago</label>
+            <input
+              type="number"
+              placeholder="Ej: 50000"
+              value={pago}
+              onChange={(e) => setPago(e.target.value)}
+              required
+              min="0"
+              step="1000"
             />
           </div>
 

@@ -1,0 +1,260 @@
+/* =========================
+  Main Offers - Contenedor principal
+========================= */
+.main-offers {
+  width: 203vh;
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(135deg, #f9f9f9, #f0f4f8);
+  min-height: 100vh; /* siempre al menos la altura de la pantalla */
+  height: auto;      /* se expande automáticamente si hay más contenido */
+}
+
+
+/* Loader con lápiz saltando */
+.loader-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  
+  align-items: center;      
+  height: 100vh;
+  width: 100%;
+  text-align: center;
+}
+
+.pencil-loader {
+  width: 20px;
+  height: 70px;
+  background: linear-gradient(180deg, #cfd8dc 0%, #90a4ae 100%);
+  position: relative;
+  border-radius: 4px;
+  animation: jump 0.8s infinite ease-in-out;
+  transform-origin: bottom center;
+}
+
+.pencil-loader::before {
+  content: "";
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 17px solid #212121;
+}
+
+.pencil-loader::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 0;
+  width: 100%;
+  height: 10px;
+  background: #263238;
+  border-radius: 3px 3px 0 0;
+}
+
+@keyframes jump {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(-10deg); }
+}
+
+.loader-page p {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #000000;
+  margin-top: 12px;
+}
+
+/* === CONTENEDOR DE TARJETAS === */
+.offers-container {
+  width: 100%;
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 48px;
+  margin-left: 150px ;
+}
+
+.offer-header{
+  margin-top: 50px;
+  margin-left: 50px;
+}
+
+/* === TARJETAS === */
+.offer-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.25s ease;
+}
+.offer-card:hover {
+  transform: translateY(-3px);
+}
+
+.offer-meta {
+  font-size: 0.9rem;
+  color: #444;
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* === BOTONES === */
+.offer-actions {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+}
+
+.btn-update {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  background-color: #1a73e8;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+.btn-update:hover {
+  background-color: #1558b0;
+}
+
+.btn-delete {
+  padding: 8px 14px;
+  border: 1px solid #d9534f;
+  border-radius: 8px;
+  background-color: transparent;
+  color: #d9534f;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+.btn-delete:hover {
+  background-color: #d9534f;
+  color: white;
+}
+
+.btn-cancel {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  background-color: #aaa;
+  color: white;
+  cursor: pointer;
+}
+.btn-cancel:hover {
+  background-color: #777;
+}
+
+/* === MODALES === */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal edición */
+.modal {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.edit-form label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.edit-form input,
+.edit-form textarea {
+  padding: 10px;
+  border: 1.5px solid #1a73e8;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+}
+.edit-form input:focus,
+.edit-form textarea:focus {
+  border-color: #1558b0;
+  box-shadow: 0 0 4px rgba(26,115,232,0.4);
+}
+
+/* Modal confirmación */
+.confirm-modal {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 300px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+.confirm-modal p {
+  margin-bottom: 16px;
+  font-size: 1rem;
+}
+
+.filter-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  width: 100%;
+  margin-left: 40px;
+}
+
+.filter-input-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  min-width: 260px;
+}
+
+.filter-input {
+  width: 100%;
+  padding: 10px 14px 10px 40px; /* 👈 espacio para la lupa */
+  border: 1.8px solid #ccc;
+  border-radius: 20px;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.3s ease;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.filter-input:focus {
+  border-color: #1a374d;
+  box-shadow: 0 4px 10px rgba(26, 55, 77, 0.25);
+}
+
+.filter-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #666;
+  pointer-events: none; /* la lupa no bloquea el click */
+}

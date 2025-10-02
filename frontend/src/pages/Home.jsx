@@ -4,6 +4,7 @@ import Hero from "../components/Hero";
 import About from "../components/About";
 import Oportunidades from "../components/Oportunidades";
 import ConocerMas from "../components/ConocerMas";
+import ContactForm from "../components/ContactForm";
 import Contactanos from "../components/Contactanos";
 
 function Home() {
@@ -23,7 +24,12 @@ function Home() {
 
       <ConocerMas />
 
+      
+
+
       <section id="contacto" className={styles.section}>
+        
+        <ContactForm />
         <Contactanos />
       </section>
     </div>

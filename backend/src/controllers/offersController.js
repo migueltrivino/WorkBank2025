@@ -10,6 +10,7 @@ exports.createOffer = async (req, res) => {
     if (
       !newOffer.titulo_oferta ||
       !newOffer.descripcion_oferta ||
+      !newOffer.pago ||
       !newOffer.fecha_vencimiento ||
       !newOffer.id_servicio ||
       !newOffer.id_categoria ||
@@ -18,6 +19,7 @@ exports.createOffer = async (req, res) => {
       return res.status(400).json({ message: "Todos los campos son obligatorios" });
     }
 
+    // Fecha de publicación generada automáticamente en el backend
     if (!newOffer.fecha_publicacion) newOffer.fecha_publicacion = new Date();
 
     const id = await Offer.create(newOffer);
@@ -74,7 +76,7 @@ exports.getOffersByUser = async (req, res) => {
 // ==========================
 exports.updateOffer = async (req, res) => {
   try {
-    const { id_oferta } = req.params; // coincide con router.put("/:id_oferta")
+    const { id_oferta } = req.params;
     const data = req.body;
 
     const affectedRows = await Offer.update(id_oferta, data);
@@ -87,7 +89,7 @@ exports.updateOffer = async (req, res) => {
 
     res.status(200).json({
       message: "Oferta actualizada con éxito",
-      offer: updatedOffer, // <-- importante para frontend
+      offer: updatedOffer,
     });
   } catch (error) {
     console.error("Error al actualizar oferta:", error);

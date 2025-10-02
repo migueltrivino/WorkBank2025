@@ -1,0 +1,186 @@
+/* Contenedor principal */
+.admin-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f5f7fa;
+  color: #1a1a1a;
+}
+
+/* Layout que contiene sidebar y main */
+.admin-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ================= Navbar ================= */
+.navbar-admin {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0a2f5c; /* azul oscuro */
+  color: #fff;
+  padding: 0 1rem;
+  height: 60px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  z-index: 100;
+}
+
+.navbar-logo span {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.notif-area {
+  position: relative;
+  cursor: pointer;
+}
+
+.notif-dropdown {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  width: 220px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  padding: 0.5rem;
+  color: #333;
+  z-index: 200;
+}
+
+.notif-card {
+  padding: 0.5rem;
+  border-bottom: 1px solid #eee;
+  font-size: 0.9rem;
+}
+
+.profile-area {
+  position: relative;
+  cursor: pointer;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  width: 180px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-dropdown button {
+  background: none;
+  border: none;
+  padding: 0.5rem 1rem;
+  text-align: left;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.profile-dropdown button:hover {
+  background-color: #f0f0f0;
+}
+
+/* ================= Sidebar ================= */
+.sidebar-admin {
+  width: 220px;
+  background-color: #236ab9; /* azul medio */
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+}
+
+.sidebar-admin ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-admin li {
+  margin-bottom: 1rem;
+}
+
+.sidebar-admin a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #fff;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.sidebar-admin a:hover {
+  background-color: rgba(255,255,255,0.1);
+}
+
+/* ================= Main ================= */
+.main-admin {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.main-admin h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #0a2f5c;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.cards-container .card {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: center;
+  font-weight: 500;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.cards-container .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 768px) {
+  .admin-layout {
+    flex-direction: column;
+  }
+
+  .sidebar-admin {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .sidebar-admin ul {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .sidebar-admin li {
+    margin-bottom: 0;
+  }
+}

@@ -12,6 +12,7 @@ import EmployerOffers from "./pages/EmployerOffers";
 import EmployerPostulaciones from "./pages/EmployerPostulaciones";
 import EmployerResenas from "./pages/EmployerResenas";
 import CompleteProfile from "./pages/CompleteProfile";
+import EmployerHistorial from "./pages/EmployerHistorial";
 
 
 import WorkerInicio from "./pages/WorkerInicio";
@@ -19,6 +20,10 @@ import WorkerOfertas from "./pages/WorkerOfertas";
 import WorkerPostulaciones from "./pages/WorkerPostulaciones";
 import WorkerResenas from "./pages/WorkerResenas";
 import WorkerHistorial from "./pages/WorkerHistorial";
+
+
+import AdminInicio from "./pages/Admin/adminInicio";
+import UsersAdmin from "./components/Admin/Usuarios/UsersAdmin";
 
 
 function App() {
@@ -34,6 +39,7 @@ function App() {
         <Route path="/postulaciones" element={<EmployerPostulaciones />} />
         <Route path="/resenas" element={<EmployerResenas />} />
         <Route path="/profile" element={<CompleteProfile />} />
+        <Route path="/historial" element={<EmployerHistorial />} />
 
         {/*Rutas worker*/}
         <Route path="/worker" element={<WorkerInicio />} />
@@ -45,6 +51,11 @@ function App() {
         {/*Rutas auth*/}
         <Route path="/registro" element={<Registro />} />
         <Route path="/iniciarsesion" element={<IniciarSesion />} />
+
+        {/*Rutas admin*/}
+        <Route path="/Admin" element={<AdminInicio />} />
+        <Route path="/admin/usuarios" element={<UsersAdmin />} />
+
       
 
       </Routes>

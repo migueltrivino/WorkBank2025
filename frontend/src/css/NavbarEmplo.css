@@ -1,15 +1,16 @@
 /* NAVBAR */
 .employer-navbar {
   height: 105px;
-  background: var(--navbar);
+  background: linear-gradient(90deg, #1a2a6c, #2a4d9c, #4f6bdc);
   color: var(--white);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 30px;
+  padding: 0 40px;
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 1000;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.25);
 }
 
 .logo {
@@ -17,113 +18,248 @@
   align-items: center;
   gap: 10px;
   font-family: 'Playfair Display', serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
 }
 
 .logo-img {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   object-fit: contain;
+  filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3));
+  transition: transform 0.3s ease;
+}
+.logo-img:hover { transform: rotate(-5deg) scale(1.05); }
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
 }
 
-.nav-right { display: flex; align-items: center; }
-
-/* PERFIL Y MENÚ */
+/* PERFIL */
 .profile-menu { position: relative; }
-
 .profile-img {
-  width: 40px; height: 40px;
+  width: 42px; height: 42px;
   border-radius: 50%;
   cursor: pointer;
-  border: 2px solid var(--accent);
+  border: 2px solid #ffffff88;
+  transition: border 0.3s ease, transform 0.3s ease;
+}
+.profile-img:hover {
+  border: 2px solid #4f6bdc;
+  transform: scale(1.05);
 }
 
 .dropdown {
   position: absolute;
-  top: 50px; right: 0;
-  background: var(--white);
-  border-radius: 8px;
-  box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
+  top: 55px; right: 0;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0px 6px 18px rgba(0,0,0,0.15);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  min-width: 150px;
+  min-width: 180px;
+  animation: slideDown 0.25s ease;
 }
 
 .dropdown button {
   background: none;
   border: none;
-  padding: 10px 15px;
+  padding: 12px 16px;
   text-align: left;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 8px;
-  color: var(--primary);
+  gap: 10px;
+  color: #333;
+  font-size: 14px;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 .dropdown button:hover {
-  background: var(--light);
+  background: #f3f4fa;
+  color: #1a2a6c;
+  font-weight: 500;
 }
 
-/* de notificaciones */
-.notif-menu { position: relative; padding: 18px; }
+/* ========== NOTIFICACIONES ========== */
+.notif-menu {
+  position: relative;
+  padding: 8px;
+}
 
-.notif-icon { cursor: pointer; transition: transform 0.2s ease; }
-.notif-icon:hover { transform: scale(1.1); }
+.notif-icon {
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+  padding: 8px;
+  border-radius: 50%;
+}
+.notif-icon:hover {
+  background: rgba(255,255,255,0.15);
+  transform: scale(1.15);
+}
 
 .notif-dropdown {
   position: absolute;
-  top: 35px; right: 0;
-  width: 280px;
-  max-height: 300px;
+  top: 45px;
+  right: 0;
+  width: 330px;
+  max-height: 380px;
   overflow-y: auto;
   background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
+  border-radius: 14px;
+  box-shadow: 0px 6px 18px rgba(0,0,0,0.15);
   padding: 12px;
   z-index: 100;
-  animation: fadeIn 0.3s ease-in-out;
+  animation: slideDown 0.25s ease;
 }
 
-.notif-dropdown p {
-  font-weight: bold;
-  font-size: 15px;
-  margin-bottom: 10px;
-}
-
-.notif-dropdown ul { list-style: none; padding: 0; margin: 0; }
-
-.notif-dropdown li {
+/* Tarjeta de notificación */
+.notif-card {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #ffffff;
-  color: #333 !important;
-  padding: 8px 10px;
-  border-radius: 6px;
-  margin-bottom: 8px;
+  align-items: flex-start;
+  gap: 12px;
+  background: #f9f9fb;
+  padding: 14px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.notif-card:hover {
+  background: #eef0f9;
+  transform: translateY(-2px);
+}
+
+.notif-card img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.notif-info h4 {
   font-size: 14px;
-  transition: background 0.2s ease;
+  font-weight: 600;
+  color: #1a2a6c;
+  margin: 0;
+}
+.notif-info p {
+  font-size: 13px;
+  color: #444;
+  margin: 4px 0 6px;
+  line-height: 1.3;
 }
 
-.notif-dropdown li:hover { background: #d6d8e8; }
-
-.notif-dropdown button {
-  background: transparent;
-  border: none;
+/* Ver más link */
+.notif-link {
+  font-size: 13px;
+  color: rgba(26, 42, 108, 0.4); /* sutil */
   cursor: pointer;
-  color: #555;
-  font-size: 16px;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, font-weight 0.2s ease;
+}
+.notif-link:hover {
+  color: #1a2a6c;
+  font-weight: 500;
 }
 
-.notif-dropdown button:hover { color: #4fe200; }
 
-/* Scroll bonito */
-.notif-dropdown::-webkit-scrollbar { width: 6px; }
-.notif-dropdown::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 4px;
+
+.notif-dropdown {
+  max-height: 300px;   /* límite de alto */
+  overflow-y: auto;    /* activa el scroll */
+  scrollbar-width: none;   /* Firefox: oculta barra */
+  -ms-overflow-style: none; /* IE/Edge antiguo */
 }
-.notif-dropdown::-webkit-scrollbar-thumb:hover { background: #999; }
+
+.notif-dropdown::-webkit-scrollbar {
+  display: none; /* Chrome, Safari y demás */
+}
+
+
+/* Animaciones */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ===== ROLE SWITCH (Trabajador / Empleador) ===== */
+.role-switch {
+  margin-top: 4px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 240px;           
+  height: 40px;
+  padding: 6px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #1a237e, #1a237e);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+  user-select: none;
+  gap: 6px;
+  border-bottom: solid 2px #fffa;
+  
+}
+
+/* el "píxel" blanco que se desplaza */
+.role-switch .segment-indicator {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: calc(50% - 12px);
+  height: calc(100% - 12px);
+  background: #fff;
+  border-radius: 999px;
+  transition: left 0.22s cubic-bezier(.2,.9,.2,1);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+  z-index: 1;
+}
+
+/* cuando está en "empleador" mover el indicador a la derecha */
+.role-switch.empleador .segment-indicator {
+  left: calc(50% + 6px);
+}
+
+/* botones (texto) encima del indicador */
+.role-switch .segment-btn {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  height: 100%;
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0 8px;
+  border-radius: 999px;
+  transition: color 0.18s ease;
+}
+
+/* texto morado cuando el botón queda sobre el indicador blanco */
+.role-switch.trabajador .segment-btn.trabajador {
+  color: #1a237e;
+}
+.role-switch.empleador .segment-btn.empleador {
+  color: #1a237e;
+}
+
+/* pequeño efecto hover */
+.role-switch .segment-btn:hover {
+  opacity: 0.95;
+}
+
+/* accesibilidad focus */
+.role-switch .segment-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.15);
+}
+

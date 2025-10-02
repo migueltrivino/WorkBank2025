@@ -1,8 +1,10 @@
 // src/components/RegistroPanel.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "../css/RegistroPanel.module.css";
 import { useNavigate } from "react-router-dom";
 import useToast from "./toast/useToast";
+import axios from "axios";
+
 
 function RegistroPanel({ onNext }) {
   const navigate = useNavigate();
@@ -26,6 +28,29 @@ function RegistroPanel({ onNext }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [errors, setErrors] = useState({});
+  const [idUsuario, setIdUsuario] = useState(null); // guardar id del usuario creado
+  
+
+      useEffect(() => {
+      const handleUnload = async (e) => {
+        if (idUsuario) {
+          try {
+            await axios.delete("http://localhost:4000/api/auth/cancel-registration", {
+              method: "DELETE", // ⚡ importante
+              data: { id_usuario: idUsuario },
+            });
+            console.log("Registro cancelado por abandono");
+          } catch (err) {
+            console.error("Error cancelando registro:", err);
+          }
+        }
+      };
+
+      window.addEventListener("beforeunload", handleUnload);
+
+      return () => window.removeEventListener("beforeunload", handleUnload);
+    }, [idUsuario]);
+
 
   // Manejo de cambios
   const handleChange = (e) => {
@@ -59,82 +84,99 @@ function RegistroPanel({ onNext }) {
   };
 
   // Validaciones + envío
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const newErrors = {};
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const newErrors = {};
 
-    // validaciones (usando los nombres actuales del state)
-    if (!formData.nombre.trim()) newErrors.nombre = "El nombre es obligatorio";
-    if (!formData.apellido.trim()) newErrors.apellido = "El apellido es obligatorio";
-    if (!formData.correo.trim()) newErrors.correo = "El correo es obligatorio";
-    if (!formData.numero_documento.trim()) newErrors.numero_documento = "El número de documento es obligatorio";
-    if (!formData.user_password) newErrors.user_password = "La contraseña es obligatoria";
-    if (!formData.confirmarPassword) newErrors.confirmarPassword = "Debes confirmar la contraseña";
+  // validaciones (usando los nombres actuales del state)
+  if (!formData.nombre.trim()) newErrors.nombre = "El nombre es obligatorio";
+  if (!formData.apellido.trim()) newErrors.apellido = "El apellido es obligatorio";
+  if (!formData.correo.trim()) newErrors.correo = "El correo es obligatorio";
+  if (!formData.numero_documento.trim()) newErrors.numero_documento = "El número de documento es obligatorio";
+  if (!formData.user_password) newErrors.user_password = "La contraseña es obligatoria";
+  if (!formData.confirmarPassword) newErrors.confirmarPassword = "Debes confirmar la contraseña";
 
-    if (formData.user_password && (formData.user_password.length < 8 || formData.user_password.length > 20))
-      newErrors.user_password = "La contraseña debe tener entre 8 y 20 caracteres";
-    if (formData.user_password && !/[!@#$%^&*(),.?\":{}|<>]/.test(formData.user_password))
-      newErrors.user_password = "La contraseña debe incluir al menos 1 carácter especial";
-    if (formData.user_password !== formData.confirmarPassword)
-      newErrors.confirmarPassword = "Las contraseñas no coinciden";
+  if (formData.user_password && (formData.user_password.length < 8 || formData.user_password.length > 20))
+    newErrors.user_password = "La contraseña debe tener entre 8 y 20 caracteres";
+  if (formData.user_password && !/[!@#$%^&*(),.?\":{}|<>]/.test(formData.user_password))
+    newErrors.user_password = "La contraseña debe incluir al menos 1 carácter especial";
+  if (formData.user_password !== formData.confirmarPassword)
+    newErrors.confirmarPassword = "Las contraseñas no coinciden";
 
-    // Validación de PDF obligatorio
-    if (!formData.documento_pdf) {
-      newErrors.documento_pdf = "El documento PDF es obligatorio";
+  // Validación de PDF obligatorio
+  if (!formData.documento_pdf) {
+    newErrors.documento_pdf = "El documento PDF es obligatorio";
+  } else {
+    const allowed = ["application/pdf", "image/png"];
+    if (!allowed.includes(formData.documento_pdf.type))
+      newErrors.documento_pdf = "Solo se permiten archivos PDF o PNG";
+  }
+
+  if (!formData.aceptarTerminos)
+    newErrors.aceptarTerminos = "Debes aceptar los términos y condiciones";
+
+  if (Object.keys(newErrors).length > 0) {
+    setErrors(newErrors);
+    const first = Object.keys(newErrors)[0];
+    const el = document.getElementsByName(first)[0];
+    if (el && el.focus) el.focus();
+    return;
+  }
+
+  setErrors({});
+
+  try {
+    const data = new FormData();
+    // append solo los campos que debe recibir el backend (evitar undefined)
+    data.append("nombre", formData.nombre);
+    data.append("apellido", formData.apellido);
+    data.append("correo", formData.correo);
+    data.append("user_password", formData.user_password);
+    data.append("tipo_documento", formData.tipo_documento);
+    data.append("numero_documento", formData.numero_documento);
+    data.append("id_rol", formData.id_rol);
+
+    if (formData.documento_pdf) {
+      data.append("documento_pdf", formData.documento_pdf);
+    }
+
+    const res = await fetch("http://localhost:4000/api/auth/register", {
+      method: "POST",
+      body: data,
+    });
+
+    const result = await res.json();
+
+    // Comentado duplicado original (no eliminar)
+    // if (res.ok) {
+    //   showToast(result.message || "Usuario registrado correctamente", "success");
+    //   const idUsuario = result.user?.id_usuario ?? null;
+    //   const correoUsuario = result.user?.correo ?? formData.correo; // <-- agregado
+    //   setTimeout(() => { if (onNext) onNext(idUsuario,  correoUsuario); }, 300);
+    // } else {
+    //   showToast(`❌ Error: ${result.message}`, "error");
+    // } 
+    // } catch (err) {
+    //   console.error("Error:", err);
+    //   showToast("❌ Error de conexión con el servidor", "error");
+    // }
+
+    if (res.ok) {
+      showToast(result.message || "Usuario registrado correctamente", "success");
+      const id = result.user?.id_usuario ?? null;
+      setIdUsuario(id); // <--- aquí guardamos el id para el efecto
+      const correoUsuario = result.user?.correo ?? formData.correo;
+      setTimeout(() => { if (onNext) onNext(id, correoUsuario); }, 300);
     } else {
-      const allowed = ["application/pdf", "image/png"];
-      if (!allowed.includes(formData.documento_pdf.type))
-        newErrors.documento_pdf = "Solo se permiten archivos PDF o PNG";
+      showToast(`❌ Error: ${result.message}`, "error");
     }
 
+  } catch (err) {
+    console.error("Error:", err);
+    showToast("❌ Error de conexión con el servidor", "error");
+  }
+};
 
-    if (!formData.aceptarTerminos)
-      newErrors.aceptarTerminos = "Debes aceptar los términos y condiciones";
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      const first = Object.keys(newErrors)[0];
-      const el = document.getElementsByName(first)[0];
-      if (el && el.focus) el.focus();
-      return;
-    }
-
-    setErrors({});
-
-    try {
-      const data = new FormData();
-      // append solo los campos que debe recibir el backend (evitar undefined)
-      data.append("nombre", formData.nombre);
-      data.append("apellido", formData.apellido);
-      data.append("correo", formData.correo);
-      data.append("user_password", formData.user_password);
-      data.append("tipo_documento", formData.tipo_documento);
-      data.append("numero_documento", formData.numero_documento);
-      data.append("id_rol", formData.id_rol);
-
-      if (formData.documento_pdf) {
-        data.append("documento_pdf", formData.documento_pdf);
-      }
-
-      const res = await fetch("http://localhost:4000/api/auth/register", {
-        method: "POST",
-        body: data,
-      });
-
-      const result = await res.json();
-
-      if (res.ok) {
-        showToast(result.message || "Usuario registrado correctamente", "success");
-        const idUsuario = result.user?.id_usuario ?? null;
-        setTimeout(() => { if (onNext) onNext(idUsuario); }, 300);
-      } else {
-        showToast(`❌ Error: ${result.message}`, "error");
-      }
-    } catch (err) {
-      console.error("Error:", err);
-      showToast("❌ Error de conexión con el servidor", "error");
-    }
-  };
 
   return (
     <div className={styles["left-panel"]}>

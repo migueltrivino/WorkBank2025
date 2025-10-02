@@ -1,0 +1,186 @@
+:global(html, body) {
+  height: 100%;
+  margin: 0;
+  font-family: "Inter", "Segoe UI", Roboto, sans-serif;
+  background: #f5f7fb;
+  overflow: hidden; /* bloquea el scroll global: todo el scroll será dentro del main */
+}
+
+
+.historialContainer {
+  width: 100vw;
+  height: 100vh;          /* ocupa toda la pantalla */
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 12px;
+  overflow: hidden;       /* evitamos scroll en el main mismo, lo tendrá el wrapper */
+}
+
+/* Header fijo */
+.headerTop {
+  flex: 0 0 auto;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.titulo {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #102a43;
+  margin-top: 26px;
+}
+.subtitulo {
+  margin: 4px 0 0;
+  color: #52606d;
+  font-size: 0.95rem;
+  margin-left: 10px;
+}
+
+
+.historialWrapper {
+  flex: 1 1 auto;                /* ocupa el espacio restante bajo el header */
+  overflow-y: auto;              /* <- aquí está el scroll funcional */
+  -webkit-overflow-scrolling: touch;
+  padding: 12px;                 /* respiración interior */
+  position: relative;
+  box-sizing: border-box;
+  margin-left: 187px;
+  margin-right: 100px;
+}
+.historialWrapper::after {
+  content: "";
+  display: block;
+  height: 72px; /* ajusta según la altura de la última fila / footer que necesites */
+}
+
+/* Ocultar scrollbar visualmente (pero mantener el scroll funcional) */
+.historialWrapper::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge (WebKit) */
+}
+:global(.historialWrapper) {
+  -ms-overflow-style: none;    /* IE 10+ */
+  scrollbar-width: none;       /* Firefox */
+}
+
+/* (Opcional) DEBUG — descomenta para ver contornos y comprobar límites
+.historialContainer { outline: 3px dashed rgba(2,6,23,0.06); }
+.historialWrapper { background: rgba(0,128,255,0.03); }
+.tablaWrapper { background: rgba(255,0,0,0.03); }
+*/
+
+/* Tabla y estilos visuales */
+.tablaWrapper {
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  background: #fff;
+  overflow: hidden;
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla th {
+  background: #f1f5f9;
+  padding: 14px;
+  text-align: left;
+  font-weight: 600;
+  color: #334155;
+  font-size: 0.95rem;
+}
+
+.tabla td {
+  padding: 14px;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 0.92rem;
+  color: #1e293b;
+}
+
+/* Perfil empleador */
+.fotoPerfil {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e2e8f0;
+}
+
+/* Pago */
+.pago {
+  font-weight: bold;
+  color: #2563eb;
+}
+
+/* Estados */
+.estado {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+}
+.pendiente {
+  background: #fff7ed;
+  color: #d97706;
+  border: 1px solid #fbbf24;
+}
+.aceptada {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #34d399;
+}
+.rechazada {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #f87171;
+}
+.desconocido {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tabla th,
+  .tabla td {
+    font-size: 0.85rem;
+    padding: 10px;
+  }
+  .fotoPerfil {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* Filtros (ya los tienes) */
+.filtros {
+  display: flex;
+  gap: 16px;
+  margin: 12px 0 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.selectFiltro {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #1e293b;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+.selectFiltro:hover {
+  border-color: #2563eb;
+  box-shadow: 0 3px 8px rgba(37, 99, 235, 0.2);
+}
+.selectFiltro:focus {
+  outline: none;
+  border-color: #2563eb;
+  background: #f0f7ff;
+}

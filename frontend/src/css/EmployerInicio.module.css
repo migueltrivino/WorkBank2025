@@ -1,0 +1,316 @@
+.main-container {
+  flex: 1;
+  width: 197.9vh;            /* 📌 tu ancho fijo */
+  max-width: 100%;          /* 📌 evita romperse en pantallas pequeñas */
+  max-height: calc(100vh - 90px); /* 📌 altura máxima según la pantalla (ajusta el 120px si tu navbar mide distinto) */
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  
+
+  margin-left: 90px;         /* ✅ espacio para el sidebar cerrado */
+  transition: margin-left 0.3s ease;
+
+  overflow-y: auto;          /* ✅ scroll interno solo en main */
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+/* cuando el sidebar se expanda */
+.sidebar:hover ~ .main-container {
+  margin-left: 240px;        /* ✅ se corre con el sidebar abierto */
+}
+
+
+/* ==== BIENVENIDA ==== */
+.welcome-title {
+  margin: 50px auto;
+  animation: fadeDown 0.8s ease-out;
+
+}
+
+.welcome-title h2 {
+  font-size: 42px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #1a237e;
+  font-family: sans-serif;
+}
+
+.user-name {
+  color: #3949ab;
+  font-weight: 700;
+}
+
+.frases-container {
+  margin-top: 15px;
+  margin-bottom: 40px;
+  text-align: center;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.frase {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #68759e;
+  font-family:  sans-serif;
+}
+
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  width: 90%;
+  margin: 10px auto 60px auto;
+  perspective: 1200px;
+}
+
+.stat-card {
+  width: 100%;
+  min-height: 280px;        
+  background: #fff;
+  border-radius: 18px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 100px rgba(0, 0, 0, 0.08);
+  position: relative;
+  cursor: pointer;
+}
+
+.stat-card:hover {
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+}
+
+.stat-card.flipped {
+  transform: rotateY(180deg);
+}
+
+/* ------------------------------------------------------------------
+   FRONT + BACK: estructura base (no forzar align-items aquí)
+   ------------------------------------------------------------------ */
+.card-front,
+.card-back {
+  position: absolute;
+  margin-top: 9px;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 18px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* contenido desde arriba */
+  /* NO pongas align-items aquí (lo controlamos por separado) */
+  box-sizing: border-box;
+}
+
+/* FRONT: mantiene el contenido centrado */
+.card-front {
+  align-items: center;
+}
+
+/* BACK: contenido alineado a la izquierda y control del overflow */
+.card-back {
+  transform: rotateY(180deg);
+  background: #f9fafb;
+  align-items: flex-start;      /* importante: fuerza alineación izquierda */
+  padding-left: 24px;           /* separación del borde izquierdo */
+  padding-right: 24px;          /* evita que toque el borde derecho */
+  overflow: auto;               /* por si el contenido es grande */
+}
+
+/* ------------------------------------------------------------------
+   WRAPPER para controlar ancho del contenido interno (tabla / chart)
+   ------------------------------------------------------------------ */
+
+/* Wrapper general para tablas / gráficos dentro del reverso */
+.card-back .content-wrapper,
+.card-back .table-wrapper,
+.card-back .chart-wrapper {
+  width: calc(100% - 48px);     /* deja espacio por los paddings (24px each) */
+  max-width: 920px;             /* ajusta a lo que necesites (antes estaba amplio) */
+  align-self: flex-start;       /* importante: que se pegue a la izquierda */
+  margin: 0;                    /* sin centrado automático */
+  display: flex;
+  justify-content: flex-start;  /* el contenido empieza a la izquierda */
+  box-sizing: border-box;
+}
+
+/* Si el elemento interno (tabla o Recharts) fuerza width:100%, lo limitamos */
+.card-back .content-wrapper table,
+.card-back .content-wrapper .recharts-wrapper,
+.card-back .content-wrapper .recharts-responsive-container {
+  width: auto !important;
+  max-width: 100%;
+}
+
+/* Ajuste visual fino: si quieres que la tabla quede un poco más a la izquierda */
+.card-back .content-wrapper.shift-left {
+  transform: translateX(-6%);   /* mueve el bloque hacia la izquierda (ajusta %) */
+}
+
+/* DEBUG temporario (quita después): ver cajas y anchos */
+.card-back.debug-outline { outline: 2px dashed orange; }
+.card-back .content-wrapper.debug-outline { outline: 2px dotted blue; }
+
+
+
+.card-back {
+  overflow: hidden; /* ni rueda, ni touch, ni barra */
+}
+
+
+
+
+.card-header {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.card-header h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1e3a8a;
+  font-family: 'Poppins', sans-serif;
+}
+
+.stat-number {
+  margin-top: 20px;
+  font-size: 42px;
+  font-weight: bold;
+  color: #2563eb;
+  margin-bottom: 8px;
+}
+
+.stat-sub {
+  font-size: 15px;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.ver-mas-btn {
+  margin-top: auto;
+  background: transparent;
+  border: none;
+  color: #2563eb;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.ver-mas-btn:hover {
+  color: #1e40af;
+  text-decoration: underline;
+}
+
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #374151;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: #111827;
+}
+
+
+
+/* ==== HELP CARD ==== */
+.help-card {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  max-width: 900px;
+  width: 100%;
+  min-height: 250px;
+  margin: 30px auto;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+  margin: 50px auto;
+}
+
+.help-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 25px rgba(26, 35, 126, 0.35);
+}
+
+.help-img {
+  border-radius: 16px;
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.help-text {
+  flex: 1;
+  text-align: left;
+}
+
+.help-text h2 {
+  font-size: 26px;
+  margin-bottom: 10px;
+  color: #111827;
+  font-family: 'Poppins', sans-serif;
+}
+
+.help-text p {
+  font-size: 17px;
+  margin-bottom: 20px;
+  color: #374151;
+}
+
+.offer-btn {
+  background: #3949ab;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 22px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.offer-btn:hover {
+  background: #1a237e;
+  transform: scale(1.05);
+}
+
+.trabajador-title {
+  font-weight: 700;
+  font-size: 1em;            
+  background: linear-gradient(90deg, #0d47a1, #2196f3, #0d47a1);
+  background-size: 300% 100%;        /* más grande para que se note el movimiento */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine-letters 4s ease-in-out infinite alternate;
+  letter-spacing: 1px;
+}
+
+/* 🔹 Animación: recorre de izq → der y luego der → izq */
+@keyframes shine-letters {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}

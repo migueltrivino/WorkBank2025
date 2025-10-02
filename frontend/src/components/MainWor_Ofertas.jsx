@@ -1,24 +1,26 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { getUser } from "../utils/auth"; // 🔹 traer usuario logueado
-import "../css/MainWor_Ofertas.css";
+import { getUser } from "../utils/auth"; 
+import styles from "../css/MainWor_Ofertas.module.css";
 
 export default function MainWor_Ofertas() {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [categoria, setCategoria] = useState("Todas");
-  const [onlyRecent, setOnlyRecent] = useState(false);
+  const [fechaFiltro, setFechaFiltro] = useState(""); // nueva fecha de filtro
   const [ofertas, setOfertas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalMessage, setModalMessage] = useState(null);
+  const [selectedOferta, setSelectedOferta] = useState(null);
 
   useEffect(() => {
     const fetchOfertas = async () => {
       try {
         const res = await fetch("http://localhost:4000/api/ofertas");
         const data = await res.json();
-        setOfertas(data);
+        setOfertas(Array.isArray(data) ? data : data.ofertas || []);
       } catch (error) {
         console.error("Error al cargar ofertas:", error);
+        setOfertas([]);
       } finally {
         setLoading(false);
       }
@@ -43,10 +45,8 @@ export default function MainWor_Ofertas() {
         if (categoria !== "Todas" && (o.nombre_categoria || "Sin categoría") !== categoria) {
           return false;
         }
-        if (onlyRecent) {
-          const limite = new Date();
-          limite.setDate(limite.getDate() - 30);
-          if (new Date(o.fecha_publicacion) < limite) return false;
+        if (fechaFiltro) {
+          if (new Date(o.fecha_publicacion) < new Date(fechaFiltro)) return false;
         }
         if (!term) return true;
         return (
@@ -58,24 +58,23 @@ export default function MainWor_Ofertas() {
         );
       })
       .sort((a, b) => new Date(b.fecha_publicacion) - new Date(a.fecha_publicacion));
-  }, [debouncedSearch, categoria, onlyRecent, ofertas]);
+  }, [debouncedSearch, categoria, fechaFiltro, ofertas]);
 
   const clearFilters = () => {
     setSearch("");
     setCategoria("Todas");
-    setOnlyRecent(false);
+    setFechaFiltro("");
   };
 
-  // 🔹 Función postularse usando usuario de localStorage
   const handlePostular = async (idOferta) => {
     try {
-      const storedUser = getUser(); // 🔹 traer usuario logueado
+      const storedUser = getUser();
       if (!storedUser) {
         alert("Debes iniciar sesión para postularte.");
         return;
       }
 
-      const token = storedUser.token; // si tu backend usa JWT
+      const token = storedUser.token;
       const res = await fetch("http://localhost:4000/api/postulaciones", {
         method: "POST",
         headers: {
@@ -83,7 +82,7 @@ export default function MainWor_Ofertas() {
           ...(token && { Authorization: `Bearer ${token}` }),
         },
         body: JSON.stringify({
-          id_usuario: storedUser.id_usuario, // 🔹 ID real del usuario
+          id_usuario: storedUser.id_usuario,
           id_oferta: idOferta,
         }),
       });
@@ -101,106 +100,114 @@ export default function MainWor_Ofertas() {
   };
 
   return (
-    <main className="ofertas-container">
+    <main className={styles["main-offers"]}>
+      {/* Modal mensaje de éxito/error */}
       {modalMessage && (
-        <div className="modal-overlay">
-          <div className="modal">
+        <div className={styles["modal-backdrop"]}>
+          <div className={styles["confirm-modal"]}>
             <p>{modalMessage}</p>
-            <button className="btn-close" onClick={() => setModalMessage(null)}>
+            <div className={styles["form-actions"]}>
+              <button className={styles["btn-cancel"]} onClick={() => setModalMessage(null)}>
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal detalle oferta */}
+      {selectedOferta && (
+        <div className={styles["modal-backdrop"]}>
+          <div className={styles["offer-detail-modal"]}>
+            <h2>{selectedOferta.titulo_oferta}</h2>
+            <p>{selectedOferta.descripcion_oferta}</p>
+            <div className={styles["offer-meta"]}>
+              <span><strong>Publicación:</strong> {new Date(selectedOferta.fecha_publicacion).toLocaleDateString()}</span>
+              <span><strong>Categoría:</strong> {selectedOferta.nombre_categoria || "Sin categoría"}</span>
+              <span><strong>Servicio:</strong> {selectedOferta.nombre_servicio || "Sin servicio"}</span>
+            </div>
+            <button className={styles["btn-cancel"]} onClick={() => setSelectedOferta(null)}>
               Cerrar
             </button>
           </div>
         </div>
       )}
 
-      <header className="ofertas-header">
-        <div>
-          <h1 className="titulo">Ofertas Disponibles</h1>
-          <p className="subtitulo">
-            Busca por título, descripción, categoría o servicio. Usa los filtros para refinar resultados.
-          </p>
-        </div>
+      <header className={styles["offers-header"]}>
+        <h1>Ofertas Disponibles</h1>
+        <p>Busca por título, descripción, categoría o servicio. Usa los filtros para refinar resultados.</p>
 
-        <div className="search-actions">
-          <div className="search-bar">
-            <input
-              aria-label="buscar ofertas"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Buscar ofertas..."
-            />
-            <button className="clear-search" title="Limpiar búsqueda" onClick={() => setSearch("")}>
-              ✕
-            </button>
-          </div>
-
+        {/* Filtros modernos */}
+        <div className={styles["filters-container"]}>
+          <input
+            type="text"
+            placeholder=" Buscar por nombre de oferta..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className={styles["filter-input"]}
+          />
+          <input
+            type="date"
+            value={fechaFiltro}
+            onChange={(e) => setFechaFiltro(e.target.value)}
+            className={styles["filter-date"]}
+          />
           <select
-            className="categoria-select"
             value={categoria}
             onChange={(e) => setCategoria(e.target.value)}
-            aria-label="Filtrar por categoría"
+            className={styles["filter-select"]}
           >
-            {categorias.map((c) => (
-              <option value={c} key={c}>
-                {c}
+            {categorias.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
               </option>
             ))}
           </select>
-
-          <label className="recent-toggle">
-            <input
-              type="checkbox"
-              checked={onlyRecent}
-              onChange={() => setOnlyRecent((s) => !s)}
-            />
-            Sólo recientes
-          </label>
-
-          <button className="btn-clear" onClick={clearFilters}>
-            Limpiar filtros
+          <button className={styles["btn-clear-filters"]} onClick={clearFilters}>
+            ✖ Limpiar filtros
           </button>
         </div>
       </header>
 
-      <div className="results-info">
-        {loading ? (
-          <span>Cargando ofertas...</span>
-        ) : (
-          <span>
-            {ofertasFiltradas.length} {ofertasFiltradas.length === 1 ? "resultado" : "resultados"}
-          </span>
-        )}
-        {debouncedSearch && <span className="search-term">Buscando: "{debouncedSearch}"</span>}
-      </div>
-
-      <section className="ofertas-grid">
-        {loading ? (
-          <div className="loading">🔄 Cargando...</div>
-        ) : ofertasFiltradas.length === 0 ? (
-          <div className="no-results">No se encontraron ofertas con esos filtros.</div>
-        ) : (
-          ofertasFiltradas.map((oferta) => (
-            <article key={oferta.id_oferta} className="oferta-card">
-              <div className="card-top">
-                <h2 className="oferta-title">{oferta.titulo_oferta}</h2>
-                <span className="badge">{oferta.nombre_categoria || "Sin categoría"}</span>
-              </div>
-
-              <p className="oferta-desc">{oferta.descripcion_oferta}</p>
-
-              <div className="card-bottom">
-                <span className="pago">{oferta.nombre_servicio || "Sin servicio"}</span>
-                <div className="card-actions">
-                  <button className="btn-detalle">Ver detalle</button>
-                  <button className="btn-aplicar" onClick={() => handlePostular(oferta.id_oferta)}>
+      {/* Loader */}
+      {loading ? (
+        <div className={styles["loader-page"]}>
+          <div className={styles["pencil-loader"]}></div>
+          <p>Cargando ofertas...</p>
+        </div>
+      ) : (
+        <div className={styles["offers-container"]}>
+          {ofertasFiltradas.length === 0 ? (
+            <p className={styles["no-results"]}>No se encontraron ofertas con esos filtros.</p>
+          ) : (
+            ofertasFiltradas.map((oferta) => (
+              <div key={oferta.id_oferta} className={styles["offer-card"]}>
+                <h3>{oferta.titulo_oferta}</h3>
+                <p>{oferta.descripcion_oferta}</p>
+                <div className={styles["offer-meta"]}>
+                  <span><strong>Publicación:</strong> {new Date(oferta.fecha_publicacion).toLocaleDateString()}</span>
+                  <span><strong>Categoría:</strong> {oferta.nombre_categoria || "Sin categoría"}</span>
+                  <span><strong>Servicio:</strong> {oferta.nombre_servicio || "Sin servicio"}</span>
+                </div>
+                <div className={styles["offer-actions"]}>
+                  <button
+                    className={styles["btn-invisible"]}
+                    onClick={() => setSelectedOferta(oferta)}
+                  >
+                    Ver detalle
+                  </button>
+                  <button
+                    className={styles["btn-postular"]}
+                    onClick={() => handlePostular(oferta.id_oferta)}
+                  >
                     Postularme
                   </button>
                 </div>
               </div>
-            </article>
-          ))
-        )}
-      </section>
+            ))
+          )}
+        </div>
+      )}
     </main>
   );
 }

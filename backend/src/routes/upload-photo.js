@@ -3,7 +3,7 @@ const express = require("express");
 const multer = require("multer");
 const path = require("path");
 const router = express.Router();
-const db = require("../config/db"); // conexión a la base de datos
+const db = require("../config/db");
 
 // ======================
 // Configuración de Multer
@@ -12,16 +12,16 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/"); // carpeta donde se guardarán las fotos
   },
-    filename: (req, file, cb) => {
+  filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
     const userId = req.body.id_usuario;
-    
+
     if (!userId) {
-        return cb(new Error("id_usuario es obligatorio para nombrar la foto"));
+      return cb(new Error("id_usuario es obligatorio para nombrar la foto"));
     }
 
     cb(null, `foto_${userId}${ext}`);
-    },
+  },
 });
 
 const upload = multer({ storage });
@@ -29,7 +29,7 @@ const upload = multer({ storage });
 // ======================
 // Endpoint: Subir foto + descripción
 // ======================
-router.post("/", upload.single("foto"), async (req, res) => {
+router.post("/upload-photo", upload.single("foto"), async (req, res) => {
   try {
     const { id_usuario, descripcion } = req.body;
     const fotoPath = req.file ? req.file.filename : null;
@@ -42,7 +42,7 @@ router.post("/", upload.single("foto"), async (req, res) => {
       return res.status(400).json({ message: "No se subió ningún archivo" });
     }
 
-    // 🔹 Actualizamos los campos correctos en la tabla
+    // 🔹 Guardar en DB
     await db.query(
       "UPDATE usuarios SET imagen_perfil = ?, descripcion = ? WHERE id_usuario = ?",
       [fotoPath, descripcion, id_usuario]

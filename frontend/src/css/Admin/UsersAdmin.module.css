@@ -1,0 +1,40 @@
+.admin-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.admin-layout {
+  display: flex;
+  flex: 1;
+}
+
+.admin-content {
+  flex: 1;
+  padding: 2rem;
+  background: #fff;
+  overflow-y: auto;       /* activa scroll vertical */
+  scrollbar-width: thin;  /* Firefox */
+  scrollbar-color: #A7C5EB #f1f1f1; /* color thumb y track Firefox */
+}
+
+/* Scroll personalizado para Chrome, Edge, Safari */
+.admin-content::-webkit-scrollbar {
+  width: 8px;             /* ancho de la barra */
+}
+
+.admin-content::-webkit-scrollbar-track {
+  background: #f1f1f1;    /* fondo de la barra */
+  border-radius: 10px;
+}
+
+.admin-content::-webkit-scrollbar-thumb {
+  background-color: #A7C5EB; /* azul pastel Work Bank */
+  border-radius: 10px;
+  border: 2px solid #f1f1f1; /* separador suave */
+}
+
+.page-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+}

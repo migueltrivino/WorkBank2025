@@ -1,19 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Navbar from "../components/NavbarEmplo";
 import Sidebar from "../components/SidebarEmplo";
 import MainOffers from "../components/MainOffers";
 import styles from "../css/Employer.module.css";
-import { getUser } from "../utils/auth";
 
 function EmployerOffers() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
-  const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    const loggedUser = getUser();
-    setUser(loggedUser);
-  }, []);
+  //  Usuario simulado
+  const user = { id_usuario: 1, nombre: "Usuario Demo" };
 
   return (
     <div className="employer-container">
@@ -25,8 +21,8 @@ function EmployerOffers() {
       />
       <div className={styles.layout}>
         <Sidebar />
-        <div className="main-scroll">
-          {user && user.id_usuario ? (
+        <div className={`${styles.main} main-scroll`}>
+          {user ? (
             <MainOffers idUsuario={user.id_usuario} />
           ) : (
             <p>Cargando usuario...</p>
@@ -38,3 +34,4 @@ function EmployerOffers() {
 }
 
 export default EmployerOffers;
+

@@ -1,0 +1,390 @@
+/* ===== Fuente refinada ===== */
+.usersAdmin {
+  font-family: 'Poppins', 'Roboto', sans-serif;
+  color: #1c1c1c;
+  padding: 70px 40px;
+  background: #f5f8ff; /* fondo muy suave */
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* ===== Encabezado con animación typewriter ===== */
+.headerTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #0A2F5C;
+}
+
+/* Loader typewriter */
+.typewriter {
+  position: relative;
+  width: 80px;
+  height: 60px;
+  background: #a7c5eb;
+  border-radius: 6px;
+  animation: bounceIn 1.2s ease;
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0.3); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ===== Tabla ===== */
+.usersTable {
+  width: calc(100% - 110px); /* más estirada hacia la derecha */
+  margin: 0 auto;
+  border-collapse: collapse;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+}
+
+.usersTable thead {
+  background: #236AB9;
+  color: #fff;
+  text-align: left;
+}
+
+.usersTable th, 
+.usersTable td {
+  padding: 16px 22px;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+/* ===== Filas ===== */
+.userRow {
+  background: #e9f2ff; /* azul pastel */
+  transition: background 0.3s ease;
+}
+
+.userRow:hover {
+  background: #d6e8ff; /* un azul más fuerte en hover */
+}
+
+.rowInactive {
+  background: #ffe9e9 !important; /* rojo pastel */
+}
+
+.rowInactive:hover {
+  background: #ffd6d6 !important; /* rojo más fuerte en hover */
+}
+
+/* ===== Foto y nombre ===== */
+.userPhoto {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #236AB9;
+}
+
+.userName {
+  font-weight: 600;
+  color: #0A2F5C;
+}
+
+/* ===== Switch ===== */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #d4e1f5;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px; width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+input:checked + .slider {
+  background-color: #4CAF50;
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+/* ===== Estado escrito ===== */
+.statusBadge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.active {
+  background: #e6f7ed;
+  color: #2e7d32;
+}
+
+.suspended {
+  background: #fdecea;
+  color: #c62828;
+}
+
+/* ===== Rating ===== */
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: #0A2F5C;
+}
+
+.starIcon {
+  color: #FFD700;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+/* ===== Botones de acción ===== */
+.userActions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.1rem;
+  border-radius: 10px;
+  padding: 8px;
+  transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
+}
+
+.btn:hover {
+  transform: translateY(-3px) scale(1.1);
+}
+
+.btnView:hover {
+  background: rgba(35, 106, 185, 0.15);
+  color: #236AB9;
+}
+
+.btnEdit:hover {
+  background: rgba(255, 193, 7, 0.15);
+  color: #FFC107;
+}
+
+.btnDelete:hover {
+  background: rgba(244, 67, 54, 0.15);
+  color: #F44336;
+}
+
+/* ===== Fila expandida ===== */
+.detailsRow td {
+  background: #f9fbff;
+  padding: 0;
+  border-top: 2px solid #e0e7ff;
+}
+
+.userDetails {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  font-size: 0.9rem;
+  padding: 20px;
+  animation: slideDown 0.4s ease;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.userDetails h4 {
+  color: #236AB9;
+  margin-bottom: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* ===== Loader “Ver más” ===== */
+.loaderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 25px 0;
+  background: #f9fbff;
+}
+
+.loaderVerMas {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  width: 100%;
+  animation: fadeIn 0.4s ease;
+}
+
+/* ===== Reseñas ===== */
+.reviewsList {
+  margin-top: 6px;
+  padding-left: 20px;
+  list-style: disc;
+}
+
+.reviewItem {
+  margin-bottom: 6px;
+  font-style: italic;
+  color: #333;
+  animation: fadeInUp 0.6s ease;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Modal seguridad ===== */
+.modalOverlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
+  z-index: 1000;
+}
+
+.modalContent {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  width: 400px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  animation: scaleUp 0.3s ease;
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modalContent h2 {
+  margin-bottom: 10px;
+  color: #0A2F5C;
+}
+
+.modalContent p {
+  margin-bottom: 20px;
+}
+
+.modalInput {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  margin-bottom: 20px;
+  font-size: 1rem;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: space-around;
+}
+
+.modalActions button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.modalActions button:first-child {
+  background: #ddd;
+}
+
+.modalActions button:last-child {
+  background: #236AB9;
+  color: #fff;
+}
+
+/* ===== Contenedor scrollable para filas de usuarios ===== */
+.usersTableWrapper {
+  max-height: 400px; /* ajusta según necesidad */
+  overflow-y: auto;
+}
+
+/* Para que la tabla se mantenga fija y no se mueva el encabezado */
+.usersTableWrapper table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Scroll personalizado azul pastel Work Bank */
+.usersTableWrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.usersTableWrapper::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.usersTableWrapper::-webkit-scrollbar-thumb {
+  background-color: #A7C5EB;
+  border-radius: 10px;
+  border: 2px solid #f1f1f1;
+}
+
+/* Firefox */
+.usersTableWrapper {
+  scrollbar-width: thin;
+  scrollbar-color: #A7C5EB #f1f1f1;
+}
+
+/* ===== Ajustes para que el header quede fijo ===== */
+.usersTable thead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

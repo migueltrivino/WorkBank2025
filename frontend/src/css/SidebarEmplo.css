@@ -1,56 +1,103 @@
+
+.main-with-sidebar {
+  flex: 1;
+  min-height: calc(100vh - var(--sidebar-top));
+  background: var(--white);
+  padding: 20px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+
+/* Cuando el sidebar se expande */
+.sidebar:hover ~ .main-with-sidebar,
+.sidebar:hover + .main-with-sidebar {
+  margin-left: var(--sidebar-expanded);
+}
+/* variables globales (ajusta --sidebar-top si tu navbar tiene otra altura) */
+:root{
+  --sidebar-collapsed: 90px;
+  --sidebar-expanded: 200px;
+  --sidebar-top: 105px;        /* altura del navbar -> Si tu navbar mide 90 cambia aquí */
+  --sidebar-transition: 0.32s;
+}
+
 /* === SIDEBAR === */
-
-.sidebar-link {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  text-decoration: none;
-  color: inherit;
-  padding: 6px 10px;
-  border-radius: 6px;
-  transition: background 0.2s;
-}
-
-.sidebar-link:hover {
-  background: rgba(0,0,0,0.05);
-  cursor: pointer;
-}
-
 .sidebar {
-  width: 90px;
-  background: var(--secondary);
-  color: var(--white);
+  width: var(--sidebar-collapsed);
+  background: #1a237e; /* azul oscuro */
+  color: #fff;
   padding: 20px 12px;
   overflow: hidden;
-  transition: width 0.3s ease;
   white-space: nowrap;
-  position: sticky;
-  top: 0;
-  height: calc(100vh - 105px);
-  flex-shrink: 0;
+  transition: width var(--sidebar-transition) cubic-bezier(.2,.9,.2,1);
+
+  position: fixed;
+  top: var(--sidebar-top);               /* <- asegura que quede debajo del navbar */
+  left: 0;
+  height: calc(100vh - var(--sidebar-top)); /* ocupa desde el top hasta abajo respetando navbar */
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.25);
+  z-index: 9999;
 }
 
-.sidebar:hover { width: 230px; }
-
-/* Secciones */
-.sidebar small {
-  font-size: 11px;
-  font-weight: bold;
-  letter-spacing: 1px;
-  color: #cfd8dc;
-  margin: 15px 0 8px 12px;
-  opacity: 0.8;
-  transition: opacity 0.3s;
+/* Sidebar expandido al hover */
+.sidebar:hover {
+  width: var(--sidebar-expanded);
 }
 
+/* === SÍNCRONIZAR EL MAIN: selector global para empujar el main cuando el sidebar cambia ===
+   REQUISITO: el <main> debe llevar también la clase global "main-with-sidebar"
+   (te dejo la instrucción exacta de JSX más abajo). */
+.sidebar + .main-with-sidebar,
+.sidebar ~ .main-with-sidebar {
+  /* estado base (mismo valor que .sidebar width colapsado) */
+  margin-left: var(--sidebar-collapsed);
+  transition: margin-left var(--sidebar-transition) ease;
+}
+
+/* cuando el sidebar se expande (hover) el main se desplaza */
+.sidebar:hover + .main-with-sidebar,
+.sidebar:hover ~ .main-with-sidebar {
+  margin-left: var(--sidebar-expanded);
+}
+
+/* pequeños ajustes responsive para pantallas chicas */
+@media (max-width: 900px) {
+  :root {
+    --sidebar-collapsed: 70px;
+    --sidebar-expanded: 150px;
+  }
+}
+
+
+/* === LINKS === */
+.sidebar-link,
+.sidebar-link:link,
+.sidebar-link:visited,
+.sidebar-link:active {
+  text-decoration: none !important;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+}
+
+.sidebar-link * {
+  text-decoration: none !important;
+  color: inherit;
+}
+
+/* Lista */
 .sidebar ul {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
   padding: 0;
   margin: 0;
 }
@@ -58,48 +105,83 @@
 .sidebar li {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   cursor: pointer;
-  padding: 10px 12px;
-  border-radius: 10px;
-  transition: all 0.3s ease;
+  padding: 12px 14px;
+  border-radius: 14px;
+  transition: all 0.35s ease;
+  color: #fff;             
+  font-weight: 500;
   position: relative;
+  overflow: visible;       
+  box-sizing: border-box;
+}
+
+/* Íconos siempre blancos */
+.sidebar li svg {
+  color: #fff;
+  font-size: 20px;
+  flex-shrink: 0;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+/* === MARCO ILUMINADO === */
+.sidebar li::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  border: 2px solid rgba(79, 195, 247, 0.0);
+  transform: scale(0.95);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.28s cubic-bezier(.2,.9,.2,1);
+}
+
+.sidebar li:hover::before {
+  transform: scale(1);
+  opacity: 1;
+  border-color: rgba(79, 195, 247, 0.6);
+  box-shadow: 0 0 14px rgba(79, 195, 247, 0.22);
 }
 
 /* Hover efecto */
 .sidebar li:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: translateX(4px);
+  transform: translateX(6px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
 }
 
-/* Icono activo */
+/* Icono hace zoom en hover */
+.sidebar li:hover svg {
+  transform: scale(1.30);
+  color: #4fc3f7;
+}
+
+/* Activo */
 .sidebar li.active {
-  background: rgba(255, 255, 255, 0.15);
+  background: linear-gradient(90deg, #3949ab, #5c6bc0);
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(92, 107, 192, 0.28);
+}
+
+.sidebar li.active svg {
+  transform: scale(1.18);
   color: #fff;
 }
 
-.sidebar li.active::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 10%;
-  bottom: 10%;
-  width: 4px;
-  border-radius: 4px;
-  background: #4fc3f7; /* barra azul brillante */
-}
-
-/* Label de ítems */
+/* Label oculto y animado */
 .sidebar .item-label {
   max-width: 0;
   opacity: 0;
   overflow: hidden;
-  transition: max-width 0.3s ease, opacity 0.25s ease, margin-left 0.3s;
+  transition: max-width 0.35s ease, opacity 0.28s ease, margin-left 0.28s ease;
   margin-left: 0;
+  color: #fff;
 }
 
 .sidebar:hover .item-label {
   max-width: 180px;
   opacity: 1;
-  margin-left: 4px;
+  margin-left: 8px;
 }
+

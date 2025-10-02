@@ -15,7 +15,7 @@ export default function Sidebar() {
         <li>
           <Link to="/worker/ofertas" className="sidebar-link">
             <FileText size={18} /> 
-            <span className="item-label">Ofertas Disponibles</span>
+            <span className="item-label">Ofertas</span>
           </Link>
         </li>
         <li>
@@ -33,7 +33,7 @@ export default function Sidebar() {
         <li>
           <Link to="/worker/historial" className="sidebar-link">
             <Bell size={18} /> 
-            <span className="item-label">Historial de Ofertas</span>
+            <span className="item-label">Historial</span>
           </Link>
         </li>
       </ul>

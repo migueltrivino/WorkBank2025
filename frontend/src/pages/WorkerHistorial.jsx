@@ -3,7 +3,7 @@ import Navbar from "../components/NavbarEmplo";
 import Sidebar from "../components/SidebarWorker";
 import MainWor_Historial from "../components/MainWor_Historial";
 import styles from "../css/Employer.module.css";
-import "../css/MainWor_Historial.css";
+import "../css/MainWor_Historial.module.css";
 import { getUser } from "../utils/auth"; // Función para obtener usuario del localStorage
 
 function WorkerHistorial() {
