@@ -1,0 +1,197 @@
+/* src/css/Admin/NavbarAdmin.module.css */
+
+/* NAVBAR ADMIN */
+.navbar-admin {
+  height: 105px;
+  background: linear-gradient(90deg, #1a2a6c, #2a4d9c, #4f6bdc);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.25);
+  font-family: 'Roboto', sans-serif;
+}
+
+/* LOGO */
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.navbar-logo span {
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* ACCIONES */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* NOTIFICACIONES */
+.notif-area {
+  position: relative;
+}
+
+.notif-icon {
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+  padding: 8px;
+  border-radius: 50%;
+}
+
+.notif-icon:hover {
+  background: rgba(255,255,255,0.15);
+  transform: scale(1.15);
+}
+
+/* Dropdown notificaciones */
+.notif-dropdown {
+  position: absolute;
+  top: 55px;
+  right: 0;
+  width: 330px;
+  max-height: 380px;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0px 6px 18px rgba(0,0,0,0.15);
+  padding: 12px;
+  z-index: 100;
+  animation: slideDown 0.25s ease;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.notif-dropdown::-webkit-scrollbar {
+  display: none;
+}
+
+/* Tarjeta de notificación */
+.notif-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #f9f9fb;
+  padding: 14px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.notif-card:hover {
+  background: #eef0f9;
+  transform: translateY(-2px);
+}
+
+/* Información interna de notificación */
+.notif-card img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.notif-info h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a2a6c;
+  margin: 0;
+}
+
+.notif-info p {
+  font-size: 13px;
+  color: #444;
+  margin: 4px 0 6px;
+  line-height: 1.3;
+}
+
+.notif-link {
+  font-size: 13px;
+  color: rgba(26, 42, 108, 0.4);
+  cursor: pointer;
+  transition: color 0.2s ease, font-weight 0.2s ease;
+}
+
+.notif-link:hover {
+  color: #1a2a6c;
+  font-weight: 500;
+}
+
+/* PERFIL */
+.profile-area {
+  position: relative;
+}
+
+.profile-img {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid #ffffff88;
+  transition: border 0.3s ease, transform 0.3s ease;
+}
+
+.profile-img:hover {
+  border: 2px solid #4f6bdc;
+  transform: scale(1.05);
+}
+
+/* Dropdown perfil */
+.profile-dropdown {
+  position: absolute;
+  top: 55px;
+  right: 0;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0px 6px 18px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 180px;
+  animation: slideDown 0.25s ease;
+  z-index: 999;
+}
+
+.profile-dropdown button {
+  background: none;
+  border: none;
+  padding: 12px 16px;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #333;
+  font-size: 14px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.profile-dropdown button:hover {
+  background: #f3f4fa;
+  color: #1a2a6c;
+  font-weight: 500;
+}
+
+/* ANIMACIONES */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* SCROLL SUAVE */
+body {
+  scroll-behavior: smooth;
+}

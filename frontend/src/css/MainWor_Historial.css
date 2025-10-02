@@ -1,0 +1,70 @@
+.historial-container {
+  flex: 1;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* Títulos */
+.historial-container .titulo {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+  color: #222;
+}
+
+.historial-container .subtitulo {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  color: #555;
+}
+
+/* Grid */
+.historial-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Cards */
+.historial-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  border-left: 5px solid #3b82f6; /* azul */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.historial-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+.historial-card h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #111;
+}
+
+.historial-card p {
+  font-size: 0.95rem;
+  margin: 0.2rem 0;
+  color: #444;
+}
+
+/* Estados */
+.estado.finalizada {
+  color: #10b981; /* verde */
+  font-weight: 600;
+}
+
+.estado.cancelada {
+  color: #ef4444; /* rojo */
+  font-weight: 600;
+}

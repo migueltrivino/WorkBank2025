@@ -1,0 +1,266 @@
+/* contenedor general */
+.ofertas-container {
+  flex: 1;
+  padding: 28px;
+  background: #f4f8fc;
+  font-family: "Poppins", sans-serif;
+  color: #10223a;
+}
+
+/* header */
+.ofertas-header {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.titulo {
+  font-size: 22px;
+  color: #0d3b86;
+  margin: 0;
+}
+
+.subtitulo {
+  margin: 4px 0 0 0;
+  color: #405770;
+  font-size: 13px;
+}
+
+/* barra de búsqueda y acciones */
+.search-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 10px;
+  padding: 6px;
+  box-shadow: 0 3px 8px rgba(13, 59, 134, 0.06);
+  min-width: 260px;
+}
+
+.search-bar input {
+  border: none;
+  outline: none;
+  padding: 8px 10px;
+  font-size: 14px;
+  width: 320px;
+  background: transparent;
+}
+
+.clear-search {
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 6px;
+  color: #7b8aa3;
+}
+
+/* select de categoría */
+.categoria-select {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #d6e0ef;
+  background: white;
+  font-size: 14px;
+  min-width: 160px;
+}
+
+/* checkbox recent */
+.recent-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #405770;
+  font-size: 13px;
+}
+
+/* boton limpiar */
+.btn-clear {
+  background: transparent;
+  border: 1px solid #cfe0ff;
+  color: #0d3b86;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* info de resultados */
+.results-info {
+  margin-top: 12px;
+  margin-bottom: 18px;
+  color: #405770;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 14px;
+}
+
+.search-term {
+  background: #e9f1ff;
+  color: #0d3b86;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+
+/* grid de ofertas */
+.ofertas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+/* tarjeta */
+.oferta-card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 6px 18px rgba(13, 59, 134, 0.06);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 180px;
+}
+
+.oferta-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(13, 59, 134, 0.12);
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.oferta-title {
+  font-size: 16px;
+  margin: 0;
+  color: #082a63;
+}
+
+.badge {
+  background: #e9f1ff;
+  color: #0d3b86;
+  padding: 6px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+/* descripción */
+.oferta-desc {
+  color: #475569;
+  font-size: 14px;
+  margin: 10px 0;
+  flex: 1;
+}
+
+/* pie de tarjeta */
+.card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.pago {
+  font-weight: 600;
+  color: #0d6efd;
+}
+
+/* acciones */
+.card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-detalle,
+.btn-aplicar {
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-detalle {
+  background: transparent;
+  color: #0d3b86;
+  border: 1px solid rgba(13, 59, 134, 0.08);
+}
+
+.btn-aplicar {
+  background: #0d6efd;
+  color: white;
+}
+
+.btn-aplicar:hover {
+  background: #0b5ed7;
+}
+
+/* no results */
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 30px;
+  color: #6b7280;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(13, 59, 134, 0.04);
+}
+
+/* 🔹 Estilos para el modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.modal p {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.btn-close {
+  background: #007bff;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-close:hover {
+  background: #0056b3;
+}
