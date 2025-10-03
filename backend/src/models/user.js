@@ -1,5 +1,6 @@
-// backend/src/models/user.js
+// src/models/User.js
 const db = require("../config/db");
+const bcrypt = require("bcryptjs");
 
 class User {
   // ------------------------
@@ -81,18 +82,18 @@ class User {
   }
 
   // ------------------------
-  // Buscar por ID (con historial y reseñas)
-    static async findById(id_usuario) {
+  // Traer usuario por ID (con historial, reseñas y calificación)
+  static async findById(id_usuario) {
     try {
       // Info básica del usuario
       const [rows] = await db.execute(
-        "SELECT id_usuario, nombre, apellido, correo, id_rol FROM usuarios WHERE id_usuario = ?",
+        "SELECT * FROM usuarios WHERE id_usuario = ?",
         [id_usuario]
       );
       if (!rows[0]) return null;
       const user = rows[0];
 
-      // Historial: ofertas, postulaciones y reseñas
+      // Historial
       const [historial] = await db.execute(
         `SELECT 
           (SELECT COUNT(*) FROM ofertas_laborales WHERE id_usuario = ?) AS ofertas,
@@ -102,7 +103,7 @@ class User {
       );
 
       // Reseñas recibidas
-      const [reseñas] = await db.execute(
+      const [resenas] = await db.execute(
         `SELECT r.id_resena AS id,
                 u.nombre AS autor,
                 r.contenido_resena AS texto,
@@ -123,25 +124,90 @@ class User {
       );
 
       return {
-        id_usuario: user.id_usuario,
-        nombre: user.nombre,
-        apellido: user.apellido,
-        correo: user.correo,
+        ...user,
         historial: historial[0],
-        reseñas,
+        reseñas: resenas,
         calificacion,
-        rol: user.id_rol,
       };
     } catch (err) {
       console.error("Error en User.findById:", err);
       throw err;
     }
   }
+
   // ------------------------
-  // Traer todos los usuarios
+  // Traer todos los usuarios (con rol y calificación promedio)
   static async findAll() {
-    const [rows] = await db.execute("SELECT * FROM usuarios");
-    return rows;
+    try {
+      const [rows] = await db.execute(
+        `SELECT u.id_usuario, u.nombre, u.apellido, u.correo, u.estado, u.fecha_creacion, u.imagen_perfil,
+                r.nombre_rol AS rol_nombre,
+                COALESCE(AVG(rv.puntaje_resena),0) AS calificacion
+         FROM usuarios u
+         LEFT JOIN rol r ON u.id_rol = r.id_rol
+         LEFT JOIN resena rv ON rv.id_destinatario = u.id_usuario
+         GROUP BY u.id_usuario`
+      );
+      return rows;
+    } catch (err) {
+      console.error("Error en User.findAll:", err);
+      throw err;
+    }
+  }
+
+  // ------------------------
+  // Actualizar usuario por ID (soporta password opcional)
+  static async updateById(id_usuario, updateData) {
+    try {
+      const updates = [];
+      const values = [];
+
+      for (const key in updateData) {
+        if (updateData[key] !== undefined && key !== "id_usuario") {
+          if (key === "password") {
+            const hashed = await bcrypt.hash(updateData[key], 10);
+            updates.push("user_password = ?");
+            values.push(hashed);
+          } else {
+            updates.push(`${key} = ?`);
+            values.push(updateData[key]);
+          }
+        }
+      }
+
+      if (updates.length === 0) return await User.findById(id_usuario);
+
+      values.push(id_usuario);
+
+      await db.execute(`UPDATE usuarios SET ${updates.join(", ")} WHERE id_usuario = ?`, values);
+      return await User.findById(id_usuario);
+    } catch (err) {
+      console.error("Error en User.updateById:", err);
+      throw err;
+    }
+  }
+
+  // ------------------------
+  // Cambiar estado
+  static async updateStatus(id_usuario, estado) {
+    try {
+      await db.execute("UPDATE usuarios SET estado = ? WHERE id_usuario = ?", [estado, id_usuario]);
+      return await User.findById(id_usuario);
+    } catch (err) {
+      console.error("Error en User.updateStatus:", err);
+      throw err;
+    }
+  }
+
+  // ------------------------
+  // Eliminar usuario
+  static async deleteById(id_usuario) {
+    try {
+      await db.execute("DELETE FROM usuarios WHERE id_usuario = ?", [id_usuario]);
+    } catch (err) {
+      console.error("Error en User.deleteById:", err);
+      throw err;
+    }
   }
 }
 

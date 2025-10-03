@@ -1,31 +1,53 @@
+// src/components/Admin/TableUsers.jsx
 import React, { useState, useEffect } from "react";
 import { FaEye, FaEdit, FaTrash, FaStar } from "react-icons/fa";
 import styles from "../../../css/Admin/TableUsers.module.css";
 import Vermas from "../../Loaders/Vermas";
 import UserDetail from "./UserDetails";
+import useToast from "../../toast/useToast";
+import AdminActionModal from "../Modals/AdminActionModal";
 
-function TableUsers() {
+function TableUsers({ currentAdmin }) {
   const [users, setUsers] = useState([]);
   const [expandedUserId, setExpandedUserId] = useState(null);
   const [loadingUserId, setLoadingUserId] = useState(null);
-  const [showModal, setShowModal] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [adminPass, setAdminPass] = useState("");
+  const { showToast } = useToast();
 
-  // ⚡ Traer todos los usuarios desde la base de datos
+  const [modal, setModal] = useState({
+    show: false,
+    type: "",
+    user: null,
+  });
+
+  console.log("🔵 [TableUsers] Render con currentAdmin:", currentAdmin);
+
+  // -------------------- Traer todos los usuarios --------------------
+  const fetchUsers = async () => {
+    console.log("📡 [fetchUsers] Iniciando petición...");
+    try {
+      const res = await fetch("http://localhost:4000/api/admin/users");
+      console.log("📡 [fetchUsers] Respuesta cruda:", res);
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      const data = await res.json();
+      console.log("✅ [fetchUsers] Usuarios cargados:", data);
+      setUsers(data);
+      showToast("✅ Usuarios cargados correctamente", "success");
+    } catch (err) {
+      console.error("❌ [fetchUsers] Error al cargar usuarios:", err);
+      showToast("❌ Error al cargar usuarios", "error");
+    }
+  };
+
   useEffect(() => {
-    fetch("http://localhost:4000/api/admin/users") // Ruta completa al backend
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-        return res.json();
-      })
-      .then((data) => setUsers(data))
-      .catch((err) => console.error("Error al cargar usuarios:", err));
+    fetchUsers();
   }, []);
 
-  // Expandir fila y traer datos completos del usuario
+  // -------------------- Expandir fila --------------------
   const handleView = async (userId) => {
+    console.log("👁 [handleView] UserId:", userId);
+
     if (expandedUserId === userId) {
+      console.log("↩️ [handleView] Cerrando detalles del usuario", userId);
       setExpandedUserId(null);
       return;
     }
@@ -35,61 +57,160 @@ function TableUsers() {
 
     try {
       const res = await fetch(`http://localhost:4000/api/admin/users/${userId}`);
+      console.log("📡 [handleView] Respuesta cruda:", res);
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       const fullUser = await res.json();
+      console.log("✅ [handleView] Datos completos de usuario:", fullUser);
 
       setUsers((prev) =>
-        prev.map((u) => (u.id_usuario === userId ? fullUser : u))
+        prev.map((u) => (u.id_usuario === userId ? { ...u, ...fullUser } : u))
       );
+      showToast("✅ Detalles del usuario cargados", "success");
     } catch (err) {
-      console.error("Error al cargar detalles del usuario:", err);
+      console.error("❌ [handleView] Error al cargar detalles:", err);
+      showToast("❌ Error al cargar detalles del usuario", "error");
     } finally {
       setLoadingUserId(null);
     }
   };
 
-  // Editar usuario
-  const handleEdit = (user) => console.log("Editar usuario:", user);
+  // -------------------- Modal --------------------
+  const openModal = (type, user) => {
+    console.log("🟠 [openModal] Tipo:", type, "Usuario:", user);
+    setModal({
+      show: true,
+      type,
+      user,
+    });
+  };
 
-  // Eliminar usuario
-  const handleDelete = (user) => {
-    if (window.confirm(`¿Seguro que deseas eliminar a ${user.nombre}?`)) {
-      console.log("Eliminar usuario:", user);
+  const closeModal = () => {
+    console.log("🔴 [closeModal] Cerrando modal...");
+    setModal({ show: false, type: "", user: null });
+  };
+
+  // -------------------- Confirmar acción --------------------
+  const confirmModal = async (payloadFromModal) => {
+    const { type, user } = modal;
+
+    console.log("⚡ [confirmModal] Acción:", type);
+    console.log("⚡ [confirmModal] Usuario objetivo:", user);
+    console.log("⚡ [confirmModal] currentAdmin:", currentAdmin);
+    console.log("⚡ [confirmModal] Payload recibido:", payloadFromModal);
+
+    if (!currentAdmin?.id_usuario) {
+      console.error("❌ [confirmModal] ID de admin no disponible");
+      showToast("❌ ID de admin no disponible", "error");
+      return;
+    }
+
+    try {
+      // -------------------- Editar --------------------
+      if (type === "edit") {
+        console.log("✏️ [confirmModal-edit] Enviando actualización...");
+        const res = await fetch(
+          `http://localhost:4000/api/admin/users/${user.id_usuario}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              adminId: currentAdmin.id_usuario,
+              nombre: payloadFromModal.nombre,
+              apellido: payloadFromModal.apellido,
+              correo: payloadFromModal.correo,
+            }),
+          }
+        );
+        console.log("📡 [confirmModal-edit] Respuesta cruda:", res);
+        if (!res.ok) {
+          const error = await res.json();
+          console.error("❌ [confirmModal-edit] Error:", error);
+          throw new Error(error.message || "Error al actualizar usuario");
+        }
+        const updatedUser = await res.json();
+        console.log("✅ [confirmModal-edit] Usuario actualizado:", updatedUser);
+
+        setUsers((prev) =>
+          prev.map((u) =>
+            u.id_usuario === user.id_usuario ? updatedUser : u
+          )
+        );
+        showToast("✅ Usuario actualizado correctamente", "success");
+      }
+
+      // -------------------- Eliminar --------------------
+      if (type === "delete") {
+        console.log("🗑️ [confirmModal-delete] Eliminando usuario...");
+        const res = await fetch(
+          `http://localhost:4000/api/admin/users/${user.id_usuario}`,
+          {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ adminId: currentAdmin.id_usuario }),
+          }
+        );
+        console.log("📡 [confirmModal-delete] Respuesta cruda:", res);
+        if (!res.ok) {
+          const error = await res.json();
+          console.error("❌ [confirmModal-delete] Error:", error);
+          throw new Error(error.message || "Error al eliminar usuario");
+        }
+        setUsers((prev) =>
+          prev.filter((u) => u.id_usuario !== user.id_usuario)
+        );
+        showToast("✅ Usuario eliminado correctamente", "success");
+      }
+
+      // -------------------- Cambiar Estado --------------------
+      if (type === "status") {
+        const newEstado = user.estado === 1 ? 0 : 1;
+        console.log("🔄 [confirmModal-status] Cambiando estado:", {
+          actual: user.estado,
+          nuevo: newEstado,
+        });
+
+        const res = await fetch(
+          `http://localhost:4000/api/admin/users/${user.id_usuario}/status`,
+          {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              adminId: currentAdmin.id_usuario,
+              estado: newEstado,
+            }),
+          }
+        );
+        console.log("📡 [confirmModal-status] Respuesta cruda:", res);
+        if (!res.ok) {
+          const error = await res.json();
+          console.error("❌ [confirmModal-status] Error:", error);
+          throw new Error(error.message || "Error al cambiar estado");
+        }
+        setUsers((prev) =>
+          prev.map((u) =>
+            u.id_usuario === user.id_usuario ? { ...u, estado: newEstado } : u
+          )
+        );
+        showToast(
+          `✅ Usuario ${newEstado === 1 ? "activado" : "desactivado"} correctamente`,
+          "success"
+        );
+      }
+
+      closeModal();
+    } catch (err) {
+      console.error("🔥 [confirmModal] Error general:", err);
+      showToast(`❌ ${err.message}`, "error");
     }
   };
 
-  // Abrir modal para confirmar cambio de estado
-  const handleToggleStatus = (user) => {
-    setSelectedUser(user);
-    setShowModal(true);
-  };
-
-  // Confirmar cambio de estado con contraseña
-  const confirmToggle = () => {
-    if (adminPass === "admin123") {
-      alert(
-        `Usuario ${selectedUser.nombre} cambiado de estado correctamente.`
-      );
-      setShowModal(false);
-      setAdminPass("");
-    } else {
-      alert("Contraseña incorrecta. Intenta de nuevo.");
-    }
-  };
-
+  // -------------------- Render --------------------
   return (
     <div className={styles.usersAdmin}>
-      {/* Header con animación */}
       <div className={styles.headerTop}>
         <h1 className={styles.title}>Administración de Usuarios</h1>
-        <div className={styles.typewriter}>
-          <div className="slide"><i></i></div>
-          <div className="paper"></div>
-          <div className="keyboard"></div>
-        </div>
       </div>
 
-      {/* Contenedor scrollable de la tabla */}
       <div className={styles.usersTableWrapper}>
         <table className={styles.usersTable}>
           <thead>
@@ -113,14 +234,20 @@ function TableUsers() {
                 >
                   <td>
                     <img
-                      src={user.imagen_perfil || "https://via.placeholder.com/80"}
+                      src={
+                        user.imagen_perfil || "https://via.placeholder.com/80"
+                      }
                       alt={user.nombre}
                       className={styles.userPhoto}
                     />
                   </td>
-                  <td className={styles.userName}>{user.nombre} {user.apellido}</td>
+                  <td>
+                    {user.nombre} {user.apellido}
+                  </td>
                   <td>{user.rol_nombre || "Usuario"}</td>
-                  <td>{new Date(user.fecha_creacion).toLocaleDateString()}</td>
+                  <td>
+                    {new Date(user.fecha_creacion).toLocaleDateString()}
+                  </td>
                   <td>
                     <span
                       className={`${styles.statusBadge} ${
@@ -134,7 +261,8 @@ function TableUsers() {
                   </td>
                   <td>
                     <span className={styles.rating}>
-                      <FaStar className={styles.starIcon} /> {user.calificacion || 0}
+                      <FaStar className={styles.starIcon} />{" "}
+                      {user.calificacion || 0}
                     </span>
                   </td>
                   <td>
@@ -148,14 +276,14 @@ function TableUsers() {
                       </button>
                       <button
                         className={`${styles.btn} ${styles.btnEdit}`}
-                        onClick={() => handleEdit(user)}
+                        onClick={() => openModal("edit", user)}
                         title="Editar usuario"
                       >
                         <FaEdit />
                       </button>
                       <button
                         className={`${styles.btn} ${styles.btnDelete}`}
-                        onClick={() => handleDelete(user)}
+                        onClick={() => openModal("delete", user)}
                         title="Eliminar usuario"
                       >
                         <FaTrash />
@@ -164,7 +292,7 @@ function TableUsers() {
                         <input
                           type="checkbox"
                           checked={user.estado === 1}
-                          onChange={() => handleToggleStatus(user)}
+                          onChange={() => openModal("status", user)}
                         />
                         <span className={styles.slider}></span>
                       </label>
@@ -172,7 +300,6 @@ function TableUsers() {
                   </td>
                 </tr>
 
-                {/* Fila expandida */}
                 {expandedUserId === user.id_usuario && (
                   <tr className={styles.detailsRow}>
                     <td colSpan="7">
@@ -192,29 +319,13 @@ function TableUsers() {
         </table>
       </div>
 
-      {/* Modal Seguridad */}
-      {showModal && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modalContent}>
-            <h2>Confirmar acción</h2>
-            <p>
-              Para cambiar el estado del usuario{" "}
-              <strong>{selectedUser?.nombre}</strong>, ingresa tu contraseña de
-              administrador:
-            </p>
-            <input
-              type="password"
-              value={adminPass}
-              onChange={(e) => setAdminPass(e.target.value)}
-              placeholder="Contraseña de admin"
-              className={styles.modalInput}
-            />
-            <div className={styles.modalActions}>
-              <button onClick={() => setShowModal(false)}>Cancelar</button>
-              <button onClick={confirmToggle}>Confirmar</button>
-            </div>
-          </div>
-        </div>
+      {modal.show && (
+        <AdminActionModal
+          modal={modal}
+          setModal={setModal}
+          confirmModal={confirmModal}
+          currentAdmin={currentAdmin}
+        />
       )}
     </div>
   );
