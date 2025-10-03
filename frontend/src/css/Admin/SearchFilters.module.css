@@ -1,63 +1,12 @@
-/* Navbar fijo */
-.admin-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-/* Layout principal */
-.admin-layout {
-  display: flex;
-  margin-top: 80px; /* altura navbar */
-  min-height: calc(100vh - 80px);
-  overflow-y: auto; /* todo el contenido scrollea */
-  scrollbar-width: thin;
-  scrollbar-color: #A7C5EB #f1f1f1;
-}
-
-.admin-layout::-webkit-scrollbar {
-  width: 8px;
-}
-
-.admin-layout::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 10px;
-}
-
-.admin-layout::-webkit-scrollbar-thumb {
-  background-color: #A7C5EB;
-  border-radius: 10px;
-  border: 2px solid #f1f1f1;
-}
-
-/* Sidebar */
-.admin-sidebar {
-  flex: 0 0 250px;
-  background: #f1f5f9;
-}
-
-/* Contenido principal */
-.admin-content {
-  flex: 1;
-  padding: 2rem;
-  background: #fff;
-}
-
-.page-title {
-  font-size: 1.8rem;
-  font-weight: bold;
-}
-
-/* ---------------- Buscador y filtros ---------------- */
 .searchFilters {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  margin-top: 20px; /* separado del título */
+  margin: 100px 0 0 100px;
   margin-bottom: 20px;
 }
 
-/* Buscador */
+/* 📌 Buscador */
 .searchBox {
   display: flex;
   align-items: center;
@@ -102,15 +51,15 @@
   background: #0a2f5c;
 }
 
-/* Checkboxes */
+/* 📌 Checkboxes */
 .checkboxContainer {
   display: flex;
   gap: 20px;
   padding: 10px;
   background: #f8fafc;
   border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1),
-              0 2px 4px -2px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+              0 2px 4px -2px rgba(0, 0, 0, 0.05);
 }
 
 .iosCheckbox {

@@ -6,6 +6,7 @@
   background: #f5f8ff; /* fondo muy suave */
   border-radius: 16px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  padding: 15px 0 0 120px;
 }
 
 /* ===== Encabezado con animación typewriter ===== */
