@@ -1,138 +1,291 @@
-.searchFilters {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin: 100px 0 0 100px;
-  margin-bottom: 20px;
+/* src/css/Admin/SearchFilters.module.css */
+
+/* ---------------------------
+   Theme variables (fácil de ajustar)
+   --------------------------- */
+:root{
+  --bg: #ffffff;
+  --surface: #f8fafc;
+  --muted: #6b7280;
+  --primary: #2563eb; /* azul principal */
+  --primary-600: #1d4ed8;
+  --accent: #06b6d4;
+  --success: #16a34a;
+  --danger: #dc2626;
+  --glass: rgba(255,255,255,0.72);
+  --radius: 12px;
+  --shadow-sm: 0 4px 10px rgba(16,24,40,0.06);
+  --shadow-md: 0 8px 30px rgba(16,24,40,0.08);
+  --transition: 200ms cubic-bezier(.2,.8,.2,1);
 }
 
-/* 📌 Buscador */
+/* ---------------------------
+   Container sticky / glass
+   --------------------------- */
+.searchFilters {
+  position: fixed;
+  top: 130px;
+  padding: 0 0 0 100px;
+  z-index: 40;
+  background: linear-gradient(180deg, var(--glass), rgba(255,255,255,0.9));
+  backdrop-filter: blur(6px) saturate(1.05);
+  -webkit-backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(15,23,42,0.06);
+  padding: 14px;
+  /* box-shadow: var(--shadow-sm); */
+  border-radius: 0 0 var(--radius) var(--radius);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ---------------------------
+   Search box (fixed height + nice input)
+   --------------------------- */
 .searchBox {
   display: flex;
   align-items: center;
-  background: #f1f5f9;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  gap: 5px;
+  width: 1250px;
+  min-height: 48px;
 }
 
 .iconWrapper {
-  background: #fff;
-  padding: 10px;
-  border-right: 1px solid #e2e8f0;
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(37,99,235,0.12), rgba(37,99,235,0.06));
+  box-shadow: 0 2px 8px rgba(37,99,235,0.06) inset;
 }
 
 .searchIcon {
-  width: 20px;
-  fill: #6b7280;
+  left: 40px;
+  position: inherit;
+  width: 18px;
+  height: 18px;
+  fill: var(--primary);
+  opacity: 0.98;
+  transition: transform var(--transition);
 }
 
+.iconWrapper:hover .searchIcon { transform: scale(1.05); }
+
+/* input principal */
 .input {
-  flex: 1;
-  padding: 10px;
-  border: none;
+  flex: 1 1 auto;
+  height: 44px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(15,23,42,0.06);
+  background: linear-gradient(180deg, #fff, #fbfdff);
+  font-size: 14px;
+  color: #0f172a;
   outline: none;
-  background: #fff;
-  font-size: 15px;
-  font-weight: 500;
+  transition: box-shadow var(--transition), border-color var(--transition), transform 120ms;
+  box-shadow: 0 1px 0 rgba(16,24,40,0.02);
+}
+
+.input::placeholder { color: #9aa4b2; }
+
+.input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 6px 22px rgba(37,99,235,0.12);
+  transform: translateY(-1px);
+}
+
+/* Buttons */
+.searchBtn,
+.clearBtn {
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .searchBtn {
-  background: #236ab9;
-  color: white;
-  font-weight: 600;
-  padding: 10px 15px;
-  border: none;
-  cursor: pointer;
-  transition: 0.2s;
+  background: linear-gradient(180deg, var(--primary), var(--primary-600));
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(37,99,235,0.12);
 }
 
-.searchBtn:hover {
-  background: #0a2f5c;
+.searchBtn:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.searchBtn:active { transform: translateY(-1px); }
+
+.clearBtn {
+  background: transparent;
+  border: 1px solid rgba(15,23,42,0.06);
+  color: var(--muted);
+}
+.clearBtn:hover { background: rgba(15,23,42,0.03); transform: translateY(-2px); }
+
+/* ---------------------------
+   Advanced filters layout (responsive grid)
+   --------------------------- */
+.advancedFilters {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr;
+  align-items: center;
+  width: 100%;
 }
 
-/* 📌 Checkboxes */
-.checkboxContainer {
-  display: flex;
-  gap: 20px;
-  padding: 10px;
-  background: #f8fafc;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-              0 2px 4px -2px rgba(0, 0, 0, 0.05);
+/* En pantallas amplias, dos columnas y filas compactas */
+@media (min-width: 880px) {
+  .advancedFilters {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
 }
 
-.iosCheckbox {
+/* Cada fila interna */
+.filterRow {
   display: flex;
   align-items: center;
   gap: 8px;
-  cursor: pointer;
+  flex-wrap: nowrap;
 }
 
-.iosCheckbox input {
+/* etiqueta */
+.filterLabel {
+  min-width: 78px;
+  font-size: 13px;
+  color: #334155;
+  font-weight: 600;
+}
+
+/* Selects y date inputs comparten look */
+.select,
+.date {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 40px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(15,23,42,0.06);
+  background: linear-gradient(180deg,#fff,#fbfdff);
+  box-shadow: 0 2px 8px rgba(8,10,15,0.02) inset;
+  font-size: 13px;
+  color: #0f172a;
+  transition: box-shadow var(--transition), border-color var(--transition), transform 120ms;
+}
+
+/* Focus states */
+.select:focus,
+.date:focus {
+  border-color: var(--primary);
+  box-shadow: 0 8px 26px rgba(37,99,235,0.08);
+  outline: none;
+  transform: translateY(-2px);
+}
+
+/* Añadimos un icono calendario dentro del input date (no requiere JS) */
+.date {
+  padding-right: 40px; /* espacio para el icono */
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 20px 20px;
+  /* calendar SVG (inline) */
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='5' width='18' height='16' rx='2' ry='2'/><line x1='16' y1='3' x2='16' y2='7'/><line x1='8' y1='3' x2='8' y2='7'/></svg>");
+}
+
+/* En WebKit ocultamos el icono nativo para que se vea el nuestro */
+.date::-webkit-clear-button,
+.date::-webkit-inner-spin-button,
+.date::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  width: 0;
+  height: 0;
   display: none;
 }
 
-.checkboxWrapper {
-  position: relative;
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
-  transition: transform 0.2s ease;
+/* ---------------------------
+   Rating selects
+   --------------------------- */
+.ratingSelects {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.checkboxBg {
-  position: absolute;
-  inset: 0;
-  border-radius: 8px;
-  border: 2px solid var(--checkbox-border);
-  background: white;
-  transition: all 0.2s ease;
+.ratingSelects .select {
+  width: 80px;
 }
 
-.checkboxIcon {
-  position: absolute;
-  inset: 0;
-  margin: auto;
-  width: 80%;
-  height: 80%;
-  color: white;
-  transform: scale(0);
-  transition: all 0.2s ease;
+/* ---------------------------
+   Chips (para mostrar filtros activos si en el futuro los implementas)
+   --------------------------- */
+.chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.chip {
+  background: rgba(37,99,235,0.08);
+  color: var(--primary);
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid rgba(37,99,235,0.08);
+  transition: transform var(--transition);
+}
+.chip:hover { transform: translateY(-3px); }
+
+/* ---------------------------
+   Loading / No results (mejorados)
+   --------------------------- */
+.loadingMsg,
+.noResultsMsg {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 13px;
 }
 
-.checkPath {
-  stroke-dasharray: 40;
-  stroke-dashoffset: 40;
-  stroke: currentColor;
-  stroke-width: 3;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: stroke-dashoffset 0.3s ease 0.1s;
+/* Spinner */
+.loadingMsg .spinner {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(37,99,235,0.18);
+  border-top-color: var(--primary);
+  animation: spin 900ms linear infinite;
 }
 
-/* Checked */
-.iosCheckbox input:checked + .checkboxWrapper .checkboxBg {
-  background: var(--checkbox-color);
-  border-color: var(--checkbox-color);
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
-.iosCheckbox input:checked + .checkboxWrapper .checkboxIcon {
-  transform: scale(1);
+.loadingMsg {
+  background: linear-gradient(90deg, rgba(37,99,235,0.06), rgba(6,182,212,0.04));
+  color: var(--primary);
 }
 
-.iosCheckbox input:checked + .checkboxWrapper .checkPath {
-  stroke-dashoffset: 0;
+.noResultsMsg {
+  background: linear-gradient(90deg, rgba(220,38,38,0.04), rgba(220,38,38,0.02));
+  color: var(--danger);
 }
 
-.label {
-  font-size: 14px;
-  font-weight: 500;
-  color: #374151;
+/* ---------------------------
+   Small helpers / responsiveness
+   --------------------------- */
+@media (max-width: 640px) {
+  .searchBox { gap: 8px; }
+  .iconWrapper { width: 40px; height: 40px; }
+  .input { height: 42px; font-size: 14px; }
+  .searchBtn, .clearBtn { height: 42px; padding: 0 12px; }
+  .advancedFilters { grid-template-columns: 1fr; gap: 8px; }
+  .filterLabel { min-width: 66px; font-size: 12px; }
 }
-
-/* Colores */
-.blue { --checkbox-color: #3b82f6; --checkbox-bg: #dbeafe; --checkbox-border: #93c5fd; }
-.green { --checkbox-color: #10b981; --checkbox-bg: #d1fae5; --checkbox-border: #6ee7b7; }
-.purple { --checkbox-color: #8b5cf6; --checkbox-bg: #ede9fe; --checkbox-border: #c4b5fd; }
-.red { --checkbox-color: #ef4444; --checkbox-bg: #fee2e2; --checkbox-border: #fca5a5; }
