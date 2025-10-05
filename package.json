@@ -1,5 +1,8 @@
 {
   "dependencies": {
-    "multer": "^2.0.2"
+    "multer": "^2.0.2",
+    "react-icons": "^5.5.0",
+    "recharts": "^3.2.1",
+    "swiper": "^12.0.2"
   }
 }

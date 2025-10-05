@@ -1,63 +1,199 @@
-/* Navbar fijo */
+:root {
+  --blue: #236AB9;
+  --dark-blue: #0A2F5C;
+  --light-blue: #A7C5EB;
+  --green: #38A169;
+  --orange: #FFB703;
+  --purple: #9F7AEA;
+  --red: #E53E3E;
+  --gold: #F6C90E;
+  --bg: #ffffff;
+}
+
+/* 🔹 Contenedor general */
 .admin-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden; /* evita scroll doble */
 }
 
-/* Layout principal */
+/* 🔹 Layout principal */
 .admin-layout {
   display: flex;
+  flex: 1;
   margin-top: 80px; /* altura navbar */
-  min-height: calc(100vh - 80px);
-  overflow-y: auto; /* todo el contenido scrollea */
-  scrollbar-width: thin;
-  scrollbar-color: #A7C5EB #f1f1f1;
+  overflow: hidden;
 }
 
-.admin-layout::-webkit-scrollbar {
-  width: 8px;
-}
-
-.admin-layout::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 10px;
-}
-
-.admin-layout::-webkit-scrollbar-thumb {
-  background-color: #A7C5EB;
-  border-radius: 10px;
-  border: 2px solid #f1f1f1;
-}
-
-/* Sidebar */
+/* 🔹 Sidebar fijo */
 .admin-sidebar {
   flex: 0 0 250px;
   background: #f1f5f9;
+  height: calc(100vh - 80px);
+  position: sticky;
+  top: 80px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.admin-sidebar::-webkit-scrollbar {
+  display: none;
 }
 
-/* Contenido principal */
+/* 🔹 Contenido principal con scroll invisible */
 .admin-content {
   flex: 1;
-  padding: 2rem;
+  padding: 1.5rem 2rem;
   background: #fff;
+  overflow-y: auto;
+  scrollbar-width: none;
+  width: 90%;
+  max-width: 1400px;
+  margin: 0 auto;
+  border-radius: 12px;
+}
+.admin-content::-webkit-scrollbar {
+  display: none;
 }
 
+/* 🔹 Bloques apilados (estadísticas, filtros, tabla, etc.) */
+.block-section {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  padding: 1.2rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* 🔹 Título general */
 .page-title {
   font-size: 1.8rem;
   font-weight: bold;
+  margin-bottom: 1rem;
 }
 
-/* ---------------- Buscador y filtros ---------------- */
+/* =========================================================
+   🔸 BLOQUE DE ESTADÍSTICAS CON TABS FIJOS
+========================================================= */
+.statsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  background: var(--bg);
+  padding: 0;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  position: relative;
+  z-index: 1;
+  transform: scale(0.95);
+  margin:-100px;
+}
+
+/* Tabs fijos */
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 0.5rem;
+  border-bottom: 2px solid #e9eef5;
+  border-radius: 10px 10px 0 0;
+}
+
+.tab {
+  background: var(--light-blue);
+  color: var(--dark-blue);
+  border: none;
+  border-radius: 10px;
+  padding: 0.4rem 0.8rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.tab:hover {
+  background: var(--blue);
+  color: white;
+}
+.active {
+  background: var(--blue);
+  color: white;
+  transform: scale(1.05);
+}
+
+/* Contenido del tab */
+.tabContent {
+  animation: fadeIn 0.4s ease-in-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Carrusel horizontal de tarjetas */
+.cardsGrid {
+  display: flex;
+  gap: 0.8rem;
+  overflow-x: auto;
+  padding-bottom: 0.3rem;
+  scroll-behavior: smooth;
+}
+.cardsGrid::-webkit-scrollbar {
+  height: 6px;
+}
+.cardsGrid::-webkit-scrollbar-thumb {
+  background: var(--light-blue);
+  border-radius: 10px;
+}
+.cardsGrid::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Tarjetas */
+.card {
+  min-width: 120px;
+  flex: 0 0 auto;
+  border-radius: 10px;
+  color: white;
+  text-align: center;
+  padding: 0.8rem;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+.card:nth-child(1) { background: linear-gradient(135deg, var(--blue), var(--dark-blue)); }
+.card:nth-child(2) { background: linear-gradient(135deg, var(--green), #81E6D9); }
+.card:nth-child(3) { background: linear-gradient(135deg, var(--red), #FEB2B2); }
+.card:nth-child(4) { background: linear-gradient(135deg, var(--orange), #FBD38D); }
+
+/* Iconos y texto */
+.icon { font-size: 1.4rem; margin-bottom: 0.3rem; }
+.card h3 { font-size: 0.85rem; margin-bottom: 0.3rem; font-weight: 600; }
+.card p { font-size: 1.2rem; font-weight: 700; }
+
+/* =========================================================
+   🔸 BLOQUE DE BUSCADOR Y FILTROS
+========================================================= */
 .searchFilters {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  margin-top: 20px; /* separado del título */
   margin-bottom: 20px;
 }
 
-/* Buscador */
 .searchBox {
   display: flex;
   align-items: center;
@@ -66,18 +202,11 @@
   overflow: hidden;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
-
 .iconWrapper {
   background: #fff;
   padding: 10px;
   border-right: 1px solid #e2e8f0;
 }
-
-.searchIcon {
-  width: 20px;
-  fill: #6b7280;
-}
-
 .input {
   flex: 1;
   padding: 10px;
@@ -87,7 +216,6 @@
   font-size: 15px;
   font-weight: 500;
 }
-
 .searchBtn {
   background: #236ab9;
   color: white;
@@ -97,7 +225,6 @@
   cursor: pointer;
   transition: 0.2s;
 }
-
 .searchBtn:hover {
   background: #0a2f5c;
 }
@@ -112,69 +239,13 @@
   box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1),
               0 2px 4px -2px rgba(0,0,0,0.05);
 }
-
 .iosCheckbox {
   display: flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
 }
-
-.iosCheckbox input {
-  display: none;
-}
-
-.checkboxWrapper {
-  position: relative;
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
-  transition: transform 0.2s ease;
-}
-
-.checkboxBg {
-  position: absolute;
-  inset: 0;
-  border-radius: 8px;
-  border: 2px solid var(--checkbox-border);
-  background: white;
-  transition: all 0.2s ease;
-}
-
-.checkboxIcon {
-  position: absolute;
-  inset: 0;
-  margin: auto;
-  width: 80%;
-  height: 80%;
-  color: white;
-  transform: scale(0);
-  transition: all 0.2s ease;
-}
-
-.checkPath {
-  stroke-dasharray: 40;
-  stroke-dashoffset: 40;
-  stroke: currentColor;
-  stroke-width: 3;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: stroke-dashoffset 0.3s ease 0.1s;
-}
-
-/* Checked */
-.iosCheckbox input:checked + .checkboxWrapper .checkboxBg {
-  background: var(--checkbox-color);
-  border-color: var(--checkbox-color);
-}
-
-.iosCheckbox input:checked + .checkboxWrapper .checkboxIcon {
-  transform: scale(1);
-}
-
-.iosCheckbox input:checked + .checkboxWrapper .checkPath {
-  stroke-dashoffset: 0;
-}
+.iosCheckbox input { display: none; }
 
 .label {
   font-size: 14px;
@@ -182,22 +253,19 @@
   color: #374151;
 }
 
-/* Contenido principal */
-.admin-content {
-  flex: 1;
-  padding: 2rem;
-  background: #fff;
-
-  /* 🔥 Ajuste al 90% centrado */
-  width: 90%;
-  max-width: 1400px; /* opcional para que no crezca infinito en pantallas muy grandes */
-  margin: 0 auto; /* centra el contenido */
-  border-radius: 12px; /* para que se vea más limpio */
-}
-
-
 /* Colores */
 .blue { --checkbox-color: #3b82f6; --checkbox-bg: #dbeafe; --checkbox-border: #93c5fd; }
 .green { --checkbox-color: #10b981; --checkbox-bg: #d1fae5; --checkbox-border: #6ee7b7; }
 .purple { --checkbox-color: #8b5cf6; --checkbox-bg: #ede9fe; --checkbox-border: #c4b5fd; }
 .red { --checkbox-color: #ef4444; --checkbox-bg: #fee2e2; --checkbox-border: #fca5a5; }
+
+/* =========================================================
+   🔸 RESPONSIVE
+========================================================= */
+@media (max-width: 768px) {
+  .admin-sidebar { flex: 0 0 200px; }
+  .page-title { font-size: 1.4rem; }
+  .admin-content { padding: 1rem; }
+  .tab { font-size: 0.75rem; padding: 0.3rem 0.6rem; }
+  .card { min-width: 100px; padding: 0.7rem; }
+}

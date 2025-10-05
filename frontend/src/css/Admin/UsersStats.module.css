@@ -1,0 +1,186 @@
+/* src/css/Admin/UsersStats.module.css */
+
+:root {
+  --blue: #236ab9;
+  --dark-blue: #0a2f5c;
+  --light-blue: #a7c5eb;
+  --green: #38a169;
+  --orange: #ffb703;
+  --purple: #9f7aea;
+  --red: #e53e3e;
+  --gold: #f6c90e;
+  --bg: #ffffff;
+}
+
+/* 🔹 Contenedor principal */
+.statsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: var(--bg);
+  padding: 0.8rem 1.2rem;
+  border-radius: 16px;
+  margin-top: 200px; /* queda justo debajo del navbar */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  position: relative;
+  z-index: 1;
+  align-items: right;
+  left: 100px;
+}
+
+/* 🔹 Tabs (barra fija arriba del componente) */
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+  position: sticky;
+  top: 80px; /* justo debajo del navbar */
+  background: var(--bg);
+  z-index: 10;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+.tab {
+  background: var(--light-blue);
+  color: var(--dark-blue);
+  border: none;
+  border-radius: 8px;
+  padding: 0.35rem 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+}
+.tab:hover {
+  background: var(--blue);
+  color: white;
+}
+.active {
+  background: var(--blue);
+  color: white;
+  transform: scale(1.05);
+}
+
+/* 🔹 Contenido animado */
+.tabContent {
+  animation: fadeIn 0.3s ease-in-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 🔹 Carrusel horizontal compacto */
+.cardsGrid {
+  display: flex;
+  gap: 1.8rem;
+  padding-bottom: 0.4rem;
+  scroll-behavior: smooth;
+  position: relative;
+  left: 18rem;
+}
+.cardsGrid::-webkit-scrollbar {
+  height: 6px;
+}
+.cardsGrid::-webkit-scrollbar-thumb {
+  background: var(--light-blue);
+  border-radius: 8px;
+}
+.cardsGrid::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* 🔹 Tarjetas más pequeñas */
+.card {
+  min-width: 130px;
+  flex: 0 0 auto;
+  border-radius: 10px;
+  color: white;
+  text-align: center;
+  padding: 0.7rem;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Colores */
+.card:nth-child(1) {
+  background: linear-gradient(135deg, var(--blue), var(--dark-blue));
+}
+.card:nth-child(2) {
+  background: linear-gradient(135deg, var(--green), #81e6d9);
+}
+.card:nth-child(3) {
+  background: linear-gradient(135deg, var(--red), #feb2b2);
+}
+.card:nth-child(4) {
+  background: linear-gradient(135deg, var(--orange), #fbd38d);
+}
+
+/* Iconos y texto más compactos */
+.icon {
+  font-size: 1.2rem;
+  margin-bottom: 0.2rem;
+}
+.card h3 {
+  font-size: 0.8rem;
+  margin-bottom: 0.2rem;
+  font-weight: 600;
+}
+.card p {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+/* 🔹 Chart box más compacta */
+.chartBox {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 0.8rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+.chartBox:hover {
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.08);
+}
+.chartBox h2 {
+  font-size: 0.9rem;
+  color: var(--dark-blue);
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* 🔹 Responsivo */
+@media (max-width: 768px) {
+  .statsContainer {
+    padding: 0.7rem;
+  }
+  .tab {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.7rem;
+  }
+  .card {
+    min-width: 110px;
+    padding: 0.6rem;
+  }
+  .card p {
+    font-size: 1rem;
+  }
+}

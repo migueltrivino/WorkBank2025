@@ -4,6 +4,7 @@ import NavbarAdmin from "../NavbarAdmin";
 import SidebarAdmin from "../SidebarAdmin";
 import TableUsers from "./TableUsers";
 import SearchFilters from "../SearchFilters"; // buscador + filtros
+import UsersStats from "../UsersStats"; // ✅ NUEVO componente de estadísticas
 import styles from "../../../css/Admin/UsersAdmin.module.css";
 
 export default function UsersAdmin() {
@@ -13,7 +14,14 @@ export default function UsersAdmin() {
 
   // Estados
   const [searchQuery, setSearchQuery] = useState("");
-  const [appliedFilters, setAppliedFilters] = useState({ estados: [], roles: [], dateFrom: null, dateTo: null, ratingMin: 0, ratingMax: 5 });
+  const [appliedFilters, setAppliedFilters] = useState({
+    estados: [],
+    roles: [],
+    dateFrom: null,
+    dateTo: null,
+    ratingMin: 0,
+    ratingMax: 5,
+  });
   const [allUsers, setAllUsers] = useState([]); // dataset original desde API
   const [filteredUsers, setFilteredUsers] = useState([]); // dataset filtrado que se pasa a TableUsers
   const [loading, setLoading] = useState(true); // cargando usuarios inicial
@@ -44,8 +52,6 @@ export default function UsersAdmin() {
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
         if (!mounted) return;
-        // Asegurarnos de que los campos sean consistentes:  
-        // tu API devuelve id_usuario, nombre, apellido, correo, estado, fecha_creacion, rol_nombre, calificacion, imagen_perfil
         setAllUsers(data);
         setFilteredUsers(data);
       } catch (err) {
@@ -63,15 +69,11 @@ export default function UsersAdmin() {
 
   // Aplicar búsqueda + filtros (debounce corto para UX en tiempo real)
   useEffect(() => {
-    // limpiar debounce previo
     if (debounceRef.current) clearTimeout(debounceRef.current);
-
-    // marcar que estamos "filtrando" (UX)
     setFiltering(true);
 
     debounceRef.current = setTimeout(() => {
       let result = [...allUsers];
-
       const q = (searchQuery || "").trim().toLowerCase();
 
       // 1) Filtro por texto (nombre/correo)
@@ -84,22 +86,20 @@ export default function UsersAdmin() {
         });
       }
 
-      // 2) Filtro por estados (array de strings "activo"/"inactivo")
-      if (appliedFilters.estados && appliedFilters.estados.length > 0) {
+      // 2) Filtro por estados
+      if (appliedFilters.estados?.length > 0) {
         result = result.filter((u) => appliedFilters.estados.includes(u.estado));
       }
 
-      // 3) Filtro por roles (array de strings "admin" / "trabajador")
-      if (appliedFilters.roles && appliedFilters.roles.length > 0) {
-        // tu API devuelve rol_nombre: "Admin" u otro; ajusta según convenga
+      // 3) Filtro por roles
+      if (appliedFilters.roles?.length > 0) {
         result = result.filter((u) => {
           const roleName = (u.rol_nombre || "").toLowerCase();
-          // comparamos con appliedFilters.roles que contiene "admin" o "trabajador"
-          return appliedFilters.roles.some(r => roleName.includes(r));
+          return appliedFilters.roles.some((r) => roleName.includes(r));
         });
       }
 
-      // 4) Filtro por rango de fecha (si dateFrom/dateTo existen)
+      // 4) Filtro por rango de fechas
       if (appliedFilters.dateFrom) {
         const from = new Date(appliedFilters.dateFrom);
         result = result.filter((u) => {
@@ -109,24 +109,25 @@ export default function UsersAdmin() {
       }
       if (appliedFilters.dateTo) {
         const to = new Date(appliedFilters.dateTo);
-        // incluir todo el día final
-        to.setHours(23,59,59,999);
+        to.setHours(23, 59, 59, 999);
         result = result.filter((u) => {
           const fecha = u.fecha_creacion ? new Date(u.fecha_creacion) : null;
           return fecha && fecha <= to;
         });
       }
 
-      // 5) Filtro por calificación (ratingMin..ratingMax)
+      // 5) Filtro por calificación
       result = result.filter((u) => {
-        // tu API devuelve calificacion (número)
         const c = Number(u.calificacion ?? 0);
-        return c >= (appliedFilters.ratingMin ?? 0) && c <= (appliedFilters.ratingMax ?? 5);
+        return (
+          c >= (appliedFilters.ratingMin ?? 0) &&
+          c <= (appliedFilters.ratingMax ?? 5)
+        );
       });
 
       setFilteredUsers(result);
       setFiltering(false);
-    }, 200); // debounce 200ms - búsqueda "en tiempo real" pero no instant que haga jank
+    }, 200);
 
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
@@ -148,19 +149,27 @@ export default function UsersAdmin() {
         <main className={styles["admin-content"]}>
           <h1 className={styles["page-title"]}></h1>
 
-          {/* Buscador + filtros */}
+          {/* 📊 Sección de estadísticas (entre Navbar y filtros) */}
+          <UsersStats />
+
+          {/* 🔍 Buscador + filtros */}
           <SearchFilters
             onSearch={(q) => setSearchQuery(q)}
             onFilter={(filters) => {
-              // filters shape: { estados:[], roles:[], dateFrom, dateTo, ratingMin, ratingMax }
               setAppliedFilters((prev) => ({
                 ...prev,
                 estados: filters.estados ?? [],
                 roles: filters.roles ?? [],
                 dateFrom: filters.dateFrom ?? null,
                 dateTo: filters.dateTo ?? null,
-                ratingMin: typeof filters.ratingMin === "number" ? filters.ratingMin : prev.ratingMin ?? 0,
-                ratingMax: typeof filters.ratingMax === "number" ? filters.ratingMax : prev.ratingMax ?? 5,
+                ratingMin:
+                  typeof filters.ratingMin === "number"
+                    ? filters.ratingMin
+                    : prev.ratingMin ?? 0,
+                ratingMax:
+                  typeof filters.ratingMax === "number"
+                    ? filters.ratingMax
+                    : prev.ratingMax ?? 5,
               }));
             }}
           />
@@ -174,10 +183,14 @@ export default function UsersAdmin() {
             <div style={{ padding: 16 }}>No hay resultados que coincidan.</div>
           ) : null}
 
-          {/* Tabla con resultados filtrados */}
+          {/* Tabla de resultados filtrados */}
           <TableUsers
             data={filteredUsers}
-            filters={{ query: searchQuery, estados: appliedFilters.estados, roles: appliedFilters.roles }}
+            filters={{
+              query: searchQuery,
+              estados: appliedFilters.estados,
+              roles: appliedFilters.roles,
+            }}
             currentAdmin={currentAdmin}
           />
         </main>
