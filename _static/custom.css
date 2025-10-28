@@ -1,0 +1,320 @@
+/* ============================================================
+   🌐 Work Bank - Manual de Usuario (CSS Profesional)
+   Autor: Equipo de Desarrollo Work Bank
+   Versión: 1.0 - Octubre 2025
+   ============================================================ */
+
+/* 🔹 Variables de color */
+:root {
+  --dark-blue: #0A2F5C;
+  --medium-blue: #236AB9;
+  --light-blue: #A7C5EB;
+  --white: #FFFFFF;
+  --black: #000000;
+  --gray: #f5f6fa;
+  --accent: #3BAFDA;
+}
+
+/* 🔸 Estilo general */
+body {
+  font-family: "Poppins", "Roboto", sans-serif;
+  background: linear-gradient(135deg, var(--dark-blue), var(--medium-blue));
+  color: var(--white);
+  margin: 0;
+  padding: 0;
+  line-height: 1.7;
+  transition: all 0.3s ease-in-out;
+}
+
+/* 🔹 Contenedor principal */
+.document {
+  background: var(--white);
+  color: var(--black);
+  margin: 3rem auto;
+  padding: 3rem 4rem;
+  max-width: 950px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  animation: fadeInUp 1s ease;
+}
+
+/* 🔸 Encabezado */
+h1, h2, h3, h4, h5 {
+  color: var(--dark-blue);
+  font-weight: 700;
+  position: relative;
+  margin-top: 1.5rem;
+}
+
+h1 {
+  text-align: center;
+  color: var(--medium-blue);
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  animation: fadeIn 1.2s ease;
+}
+
+h2::before {
+  content: "◆ ";
+  color: var(--medium-blue);
+}
+
+h2 {
+  border-bottom: 2px solid var(--light-blue);
+  padding-bottom: 0.3rem;
+  margin-top: 2rem;
+}
+
+h3 {
+  color: var(--medium-blue);
+}
+
+/* 🔹 Párrafos y texto */
+p {
+  font-size: 1.05rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+strong {
+  color: var(--medium-blue);
+}
+
+/* 🔸 Listas */
+ul, ol {
+  padding-left: 1.5rem;
+}
+
+ul li {
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+ul li::before {
+  content: "✔";
+  position: absolute;
+  left: -1.2rem;
+  color: var(--accent);
+  font-weight: bold;
+  transition: transform 0.3s;
+}
+
+ul li:hover::before {
+  transform: scale(1.2);
+}
+
+/* 🔹 Tablas */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 0.8rem 1rem;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+th {
+  background-color: var(--medium-blue);
+  color: var(--white);
+}
+
+tr:nth-child(even) {
+  background-color: #f8f9fb;
+}
+
+/* 🔸 Notas y alertas */
+.admonition {
+  border-left: 5px solid var(--accent);
+  background: var(--light-blue);
+  color: #111;
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.8s ease;
+}
+
+.admonition-title {
+  font-weight: 600;
+  color: var(--dark-blue);
+  margin-bottom: 0.5rem;
+}
+
+/* 🔹 Enlaces */
+a {
+  color: var(--medium-blue);
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+a:hover {
+  color: var(--dark-blue);
+  text-decoration: underline;
+}
+
+/* 🔸 Código y resaltado */
+code {
+  background-color: #f4f4f4;
+  color: var(--dark-blue);
+  padding: 0.2rem 0.4rem;
+  border-radius: 5px;
+  font-size: 0.95rem;
+}
+
+pre {
+  background: #1e293b;
+  color: #f8f8f2;
+  padding: 1rem;
+  border-radius: 10px;
+  overflow-x: auto;
+  font-size: 0.9rem;
+}
+
+/* 🔹 Imágenes */
+img, .image, figure {
+  display: block;
+  margin: 2rem auto;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+img:hover, .image:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
+}
+
+/* 🔸 Footer */
+footer {
+  text-align: center;
+  padding: 1rem 0;
+  color: #fff;
+  font-size: 0.9rem;
+  margin-top: 2rem;
+  opacity: 0.8;
+  animation: fadeIn 2s ease;
+}
+
+/* 🔹 Íconos */
+.icon {
+  color: var(--medium-blue);
+  margin-right: 0.4rem;
+  font-size: 1.2rem;
+  transition: color 0.3s, transform 0.3s;
+}
+
+.icon:hover {
+  color: var(--accent);
+  transform: rotate(8deg);
+}
+
+/* 🔸 Animaciones */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 🔹 Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--light-blue);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--medium-blue);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--dark-blue);
+}
+
+/* 🔸 Botones personalizados */
+button, .btn {
+  background: var(--medium-blue);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1.4rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+}
+
+button:hover, .btn:hover {
+  background: var(--dark-blue);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+}
+
+/* 🔹 Bloques destacados */
+.highlight-box {
+  background: var(--gray);
+  border-left: 5px solid var(--medium-blue);
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  transition: 0.3s ease;
+}
+
+.highlight-box:hover {
+  background: #eef3fb;
+}
+
+/* 🔸 Sección de título principal */
+header {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+header h1 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: 1.2px;
+}
+
+header p {
+  font-size: 1.1rem;
+  color: #e0e0e0;
+}
+
+/* 🔹 Animación de entrada global */
+.fade-in {
+  animation: fadeIn 1s ease;
+}
+
+
